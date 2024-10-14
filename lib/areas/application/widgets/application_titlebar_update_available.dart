@@ -13,8 +13,10 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final applicationVersion = ref.watch(applicationVersionProvider);
 
-    final currentVersion = applicationVersion.currentApplicationVersion?.text ?? "Unknown";
-    final latestVersion = applicationVersion.latestApplicationVersion?.text ?? "Unknown";
+    final currentVersion =
+        applicationVersion.currentApplicationVersion?.text ?? "Unknown";
+    final latestVersion =
+        applicationVersion.latestApplicationVersion?.text ?? "Unknown";
 
     const detailsUrl = "https://www.questpdf.com/companion/download.html";
 
@@ -22,7 +24,7 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
       isVisibile: applicationVersion.isUpdateAvailable,
       icon: Symbols.upgrade_rounded,
       emphasized: true,
-      emphasisColor: Theme.of(context).colorScheme.primaryContainer,
+      emphasisColor: Colors.blue,
       title: "Update Available",
       content: [
         "Please consider updating the application to receive the latest features and improvements.",
