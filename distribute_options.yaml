@@ -1,0 +1,18 @@
+output: dist/
+
+variables:
+releases:
+  - name: dev-release
+    jobs:
+      - name: linux-deb
+        package:
+          platform: linux
+          target: deb
+      - name: macos-dmg
+        package:
+          platform: macos
+          target: dmg
+      - name: windows-msix
+        package:
+          platform: windows
+          target: exe

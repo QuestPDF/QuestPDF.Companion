@@ -1,0 +1,7 @@
+app_id: com.questpdf.companion
+publisher: QuestPDF
+publisher_url: https://www.questpdf.com
+display_name: QuestPDF Companion
+create_desktop_icon: true
+locales:
+  - en

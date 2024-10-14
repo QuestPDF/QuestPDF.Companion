@@ -1,0 +1,17 @@
+display_name: QuestPDF Companion
+package_name: questpdf-companion
+maintainer:
+  name: QuestPDF, Marcin Ziąbek CodeFlint
+  email: contact@questpdf.com
+priority: optional
+section: x11
+installed_size: 100000000
+essential: false
+icon: assets/questpdf-logo.png
+
+keywords:
+  - quest
+  - pdf
+  - companion
+
+startup_notify: true

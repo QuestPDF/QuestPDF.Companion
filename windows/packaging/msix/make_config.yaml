@@ -1,0 +1,4 @@
+logo_path: assets/questpdf-logo.png
+publisher_display_name: QuestPDF; Marcin Ziąbek CodeFlint
+publisher: CN=QuestPDF, O=Marcin Ziabek CodeFlint
+sign_msix: "false"
