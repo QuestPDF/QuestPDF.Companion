@@ -35,12 +35,12 @@ dependencies:
   http: ^1.2.2
   path: ^1.9.0
   json_annotation: ^4.9.0
-  flutter_riverpod: ^2.5.3
+  flutter_riverpod: ^2.6.1
   multi_split_view: ^3.5.0
   url_launcher: ^6.3.1
-  material_symbols_icons: ^4.2788.0
-  package_info_plus: ^8.0.3
-  process_run: ^1.2.1
+  material_symbols_icons: ^4.2789.0
+  package_info_plus: ^8.1.0
+  process_run: ^1.2.1+1
   shared_preferences: ^2.3.2
   dartx: ^1.2.0
   window_manager: ^0.4.2
