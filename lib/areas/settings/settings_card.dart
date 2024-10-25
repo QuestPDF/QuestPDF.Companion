@@ -4,6 +4,8 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
 import 'package:questpdf_companion/shared/open_source_code_path_in_editor.dart';
 
+import '../../typography.dart';
+
 class SettingsCard extends ConsumerStatefulWidget {
   const SettingsCard({super.key});
 
@@ -42,7 +44,8 @@ class SettingsCardState extends ConsumerState<SettingsCard> {
 
     final titleTextStyle = Theme.of(context).textTheme.titleMedium;
     final categoryTextStyle = Theme.of(context).textTheme.titleSmall;
-    final labelTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w300);
+    final labelTextStyle =
+        Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
     Widget buildThemeModeSection() {
       return Column(

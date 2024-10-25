@@ -9,6 +9,7 @@ import 'package:questpdf_companion/shared/convert_layout_error_measurement_to_co
 
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
+import '../../../typography.dart';
 import '../../document_hierarchy/models/document_hierarchy_element.dart';
 import '../../document_hierarchy/models/document_hierarchy_element_layout_error_measurement.dart';
 import '../../document_hierarchy/models/element_size.dart';
@@ -115,9 +116,9 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
   Widget buildSourceCodeFilePath(ThemeData theme, String filePath) {
     final bodyTextStyle = theme.textTheme.bodyMedium;
 
-    final primaryStyle = bodyTextStyle?.copyWith(fontWeight: FontWeight.w500);
-    final secondaryTextStyle =
-        bodyTextStyle?.copyWith(color: bodyTextStyle.color?.withAlpha(160), fontWeight: FontWeight.w400);
+    final primaryStyle = bodyTextStyle?.copyWith(fontWeight: FontWeightOptimizedForOperatingSystem.bold);
+    final secondaryTextStyle = bodyTextStyle?.copyWith(
+        color: bodyTextStyle.color?.withAlpha(160), fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
 
     return RichText(
         text: TextSpan(children: [

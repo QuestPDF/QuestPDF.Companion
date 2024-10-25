@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:questpdf_companion/areas/generic_exception/models/generic_exception_stack_frame.dart';
 
+import '../../../typography.dart';
 import 'generic_exception_stack_frame_preview.dart';
 
 class GenericExceptionViewItem extends StatelessWidget {
@@ -18,10 +19,9 @@ class GenericExceptionViewItem extends StatelessWidget {
       final titleTextStyle =
           Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer);
 
-      final descriptionTextStyle = Theme.of(context)
-          .textTheme
-          .bodyMedium
-          ?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer, fontWeight: FontWeight.w300);
+      final descriptionTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Theme.of(context).colorScheme.onErrorContainer,
+          fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
       return Container(
         color: Theme.of(context).colorScheme.errorContainer,

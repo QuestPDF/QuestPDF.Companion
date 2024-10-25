@@ -3,6 +3,7 @@ import 'package:material_symbols_icons/symbols.dart';
 
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
+import '../../../typography.dart';
 import '../../application/state/application_state_provider.dart';
 import '../models/generic_exception_stack_frame.dart';
 
@@ -31,8 +32,8 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
 
     Widget buildStackFrameDescription() {
       final primaryStyle = Theme.of(context).textTheme.bodyMedium;
-      final secondaryTextStyle =
-          primaryStyle?.copyWith(color: primaryStyle.color?.withAlpha(160), fontWeight: FontWeight.w300);
+      final secondaryTextStyle = primaryStyle?.copyWith(
+          color: primaryStyle.color?.withAlpha(160), fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
       final regex = RegExp(
           r'^(?<namespace>(?:\w+\.)+)(?<className>[\w\[\]\<\>\$\|]+)\.(?<methodName>[\w\[\]\<\>\$\|]+)(?<arguments>(\(.*)\))$');

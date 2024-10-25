@@ -7,6 +7,7 @@ import 'package:questpdf_companion/areas/application/widgets/application_titleba
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_feedback.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_layout_error.dart';
 
+import '../../../typography.dart';
 import '../state/application_state_provider.dart';
 import 'application_titlebar_close_button.dart';
 import 'application_titlebar_hierarchy_visibility_toggle.dart';
@@ -63,10 +64,9 @@ class ApplicationTitlebar extends ConsumerWidget {
     final libraryTitleStyle =
         Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.white);
 
-    final applicationTitleStyle = Theme.of(context)
-        .textTheme
-        .headlineSmall
-        ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant, fontWeight: FontWeight.w300);
+    final applicationTitleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
     final titleText = ShaderMask(
         shaderCallback: (bounds) {

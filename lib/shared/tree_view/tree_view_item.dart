@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/shared/tree_view/tree_view_model.dart';
 
+import '../../typography.dart';
+
 class TreeViewItem<TContent> extends StatefulWidget {
   final int indentationLevel;
   final TreeViewModel<TContent> node;
@@ -23,9 +25,10 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   static const IconData folderOpenIcon = Symbols.folder_open_rounded;
   static const IconData folderItemIcon = Symbols.keyboard_arrow_right_rounded;
 
-  static const TextStyle labelStyle = TextStyle(fontWeight: FontWeight.w300);
-  static const TextStyle highlightedLabelStyle = TextStyle(fontWeight: FontWeight.w400);
-  static const TextStyle hintStyle = TextStyle(fontWeight: FontWeight.w200, fontStyle: FontStyle.italic);
+  static TextStyle labelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.normal);
+  static TextStyle highlightedLabelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
+  static TextStyle hintStyle =
+      TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.thin, fontStyle: FontStyle.italic);
 
   static const highEmphasisOpacity = 255;
   static const lowEmphasisOpacity = 128;
