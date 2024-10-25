@@ -17,7 +17,7 @@ Future openSourceCodePathInEditor(CodeEditor editor, String filePath, int lineNu
   if (codeEditor == CodeEditor.visualCode) await shell.run('code -g $filePath:$lineNumber');
 
   if (codeEditor == CodeEditor.visualStudio)
-    await shell.run('devenv /Command "File.OpenFile $filePath" /Edit $filePath:$lineNumber');
+    await shell.run('start devenv /Command "Edit.Goto $lineNumber" $filePath');
 }
 
 Future tryOpenSourceCodePathInEditor(BuildContext context, CodeEditor editor, String filePath, int lineNumber) async {
