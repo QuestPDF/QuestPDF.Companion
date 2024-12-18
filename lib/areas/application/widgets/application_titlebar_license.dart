@@ -29,7 +29,7 @@ class ApplicationTitlebarLicense extends ConsumerWidget {
         ApplicationTitlebarCardAction(label: "Guide", url: licenseSelectionGuideUrl),
         ApplicationTitlebarCardAction(label: "Pricing", url: pricingUrl),
       ],
-      onClicked: () => launchUrl(Uri.parse(licenseDetails.url)),
+      onClicked: () => launchUrl(Uri.parse(pricingUrl)),
     );
   }
 }
