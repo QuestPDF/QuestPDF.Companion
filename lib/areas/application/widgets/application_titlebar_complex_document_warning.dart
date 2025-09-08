@@ -11,11 +11,13 @@ class ApplicationTitlebarComplexDocumentWarning extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isComplexDocument = ref.watch(applicationStateProvider.select((x) => x.isComplexDocument));
-    const detailsUrl = "https://www.questpdf.com/companion/warnings.html#complex-document";
+    final isComplexDocument =
+        ref.watch(applicationStateProvider.select((x) => x.isComplexDocument));
+    const detailsUrl =
+        "https://www.questpdf.com/companion/warnings.html#complex-document";
 
     return ApplicationTitlebarCard(
-      isVisibile: isComplexDocument,
+      isVisible: isComplexDocument,
       icon: Symbols.speed_rounded,
       emphasized: true,
       emphasisColor: Colors.orange,

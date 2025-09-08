@@ -11,7 +11,7 @@ class ApplicationTitlebarCardAction {
 }
 
 class ApplicationTitlebarCard extends ConsumerWidget {
-  final bool isVisibile;
+  final bool isVisible;
 
   final IconData icon;
   final bool emphasized;
@@ -25,7 +25,7 @@ class ApplicationTitlebarCard extends ConsumerWidget {
 
   const ApplicationTitlebarCard({
     super.key,
-    required this.isVisibile,
+    required this.isVisible,
     required this.icon,
     required this.emphasized,
     required this.emphasisColor,
@@ -38,7 +38,10 @@ class ApplicationTitlebarCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titleTextStyle = Theme.of(context).textTheme.titleMedium;
-    final contentStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.outline);
+    final contentStyle = Theme.of(context)
+        .textTheme
+        .bodyMedium
+        ?.copyWith(color: Theme.of(context).colorScheme.outline);
 
     Widget buildTooltipContent() {
       return Container(
@@ -65,7 +68,8 @@ class ApplicationTitlebarCard extends ConsumerWidget {
                         return Padding(
                           padding: const EdgeInsets.only(left: 8),
                           child: OutlinedButton(
-                              onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
+                              onPressed: () => launchUrl(Uri.parse(action.url)),
+                              child: Text(action.label)),
                         );
                       }).toList(),
                     ),
@@ -77,24 +81,34 @@ class ApplicationTitlebarCard extends ConsumerWidget {
     }
 
     Widget buildIndicatorIcon() {
-      final iconColor = emphasized ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
-      final style = emphasized ? IconButton.styleFrom(backgroundColor: emphasisColor) : IconButton.styleFrom();
+      final iconColor = emphasized
+          ? Colors.white
+          : Theme.of(context).colorScheme.onSurfaceVariant;
+      final style = emphasized
+          ? IconButton.styleFrom(backgroundColor: emphasisColor)
+          : IconButton.styleFrom();
 
       return Padding(
-        padding: emphasized ? const EdgeInsets.symmetric(horizontal: 4) : EdgeInsets.zero,
+        padding: emphasized
+            ? const EdgeInsets.symmetric(horizontal: 4)
+            : EdgeInsets.zero,
         child: IconButton(
             icon: Icon(icon, color: iconColor),
-            visualDensity: emphasized ? VisualDensity.compact : VisualDensity.standard,
-            padding: emphasized ? const EdgeInsets.symmetric(vertical: 4, horizontal: 8) : const EdgeInsets.all(0),
+            visualDensity:
+                emphasized ? VisualDensity.compact : VisualDensity.standard,
+            padding: emphasized
+                ? const EdgeInsets.symmetric(vertical: 4, horizontal: 8)
+                : const EdgeInsets.all(0),
             style: style,
             onPressed: onClicked),
       );
     }
 
     return Visibility(
-      visible: isVisibile,
+      visible: isVisible,
       child: Tooltip(
-        richMessage: WidgetSpan(child: IntrinsicWidth(child: buildTooltipContent())),
+        richMessage:
+            WidgetSpan(child: IntrinsicWidth(child: buildTooltipContent())),
         padding: EdgeInsets.zero,
         enableTapToDismiss: false,
         decoration: const BoxDecoration(),

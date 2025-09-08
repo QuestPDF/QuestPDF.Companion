@@ -13,10 +13,11 @@ class ApplicationTitlebarLayoutError extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     const learnMoreUrl = "https://www.questpdf.com/concepts/layout-error.html";
 
-    final containsLayoutError = ref.watch(documentLayoutErrorProvider.select((x) => x.containsLayoutError));
+    final containsLayoutError = ref.watch(
+        documentLayoutErrorProvider.select((x) => x.containsLayoutError));
 
     return ApplicationTitlebarCard(
-      isVisibile: containsLayoutError,
+      isVisible: containsLayoutError,
       icon: Symbols.scan_delete_rounded,
       emphasized: true,
       emphasisColor: Colors.red,
@@ -25,7 +26,9 @@ class ApplicationTitlebarLayoutError extends ConsumerWidget {
         "The provided document content contains conflicting size constraints.",
         "Please use the layout debugger to identify the issue."
       ],
-      actions: const [ApplicationTitlebarCardAction(label: "Learn more", url: learnMoreUrl)],
+      actions: const [
+        ApplicationTitlebarCardAction(label: "Learn more", url: learnMoreUrl)
+      ],
       onClicked: () => launchUrl(Uri.parse(learnMoreUrl)),
     );
   }

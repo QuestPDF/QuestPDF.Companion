@@ -14,7 +14,7 @@ class ApplicationTitlebarFeedback extends ConsumerWidget {
         "https://github.com/QuestPDF/QuestPDF/issues/new?assignees=&labels=companion-app&projects=&template=companion_app_feedback.md&title=";
 
     return ApplicationTitlebarCard(
-      isVisibile: true,
+      isVisible: true,
       icon: Symbols.emoji_emotions_rounded,
       emphasized: false,
       emphasisColor: Colors.transparent,

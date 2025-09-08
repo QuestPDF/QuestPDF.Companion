@@ -13,7 +13,7 @@ class ApplicationTitlebarFeatures extends ConsumerWidget {
     const learnMoreUrl = "https://www.questpdf.com/companion/features.html";
 
     return ApplicationTitlebarCard(
-      isVisibile: true,
+      isVisible: true,
       icon: Symbols.menu_book_rounded,
       emphasized: false,
       emphasisColor: Colors.transparent,

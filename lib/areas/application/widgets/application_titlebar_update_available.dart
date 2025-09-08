@@ -21,7 +21,7 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
     const detailsUrl = "https://www.questpdf.com/companion/download.html";
 
     return ApplicationTitlebarCard(
-      isVisibile: applicationVersion.isUpdateAvailable,
+      isVisible: applicationVersion.isUpdateAvailable,
       icon: Symbols.upgrade_rounded,
       emphasized: true,
       emphasisColor: Colors.blue,

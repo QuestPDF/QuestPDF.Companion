@@ -12,21 +12,23 @@ class ApplicationTitlebarLicense extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLicense = ref.watch(applicationStateProvider.select((x) => x.currentLicense));
+    final currentLicense =
+        ref.watch(applicationStateProvider.select((x) => x.currentLicense));
 
     if (currentLicense == null) return const SizedBox();
 
     final licenseDetails = getLicenseDetails(currentLicense);
 
     return ApplicationTitlebarCard(
-      isVisibile: true,
+      isVisible: true,
       icon: Symbols.license_rounded,
       emphasized: true,
       emphasisColor: licenseDetails.indicatorColor,
       title: "Your License: ${licenseDetails.title}",
       content: [licenseDetails.description],
       actions: const [
-        ApplicationTitlebarCardAction(label: "Guide", url: licenseSelectionGuideUrl),
+        ApplicationTitlebarCardAction(
+            label: "Guide", url: licenseSelectionGuideUrl),
         ApplicationTitlebarCardAction(label: "Pricing", url: pricingUrl),
       ],
       onClicked: () => launchUrl(Uri.parse(pricingUrl)),
