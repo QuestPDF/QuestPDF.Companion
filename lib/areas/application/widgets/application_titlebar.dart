@@ -13,6 +13,8 @@ import 'application_titlebar_close_button.dart';
 import 'application_titlebar_hierarchy_visibility_toggle.dart';
 import 'application_titlebar_hot_reload_warning.dart';
 import 'application_titlebar_license.dart';
+import 'application_titlebar_maximize_button.dart';
+import 'application_titlebar_minimize_button.dart';
 import 'application_titlebar_update_available.dart';
 
 class ApplicationTitlebar extends ConsumerWidget {
@@ -24,7 +26,7 @@ class ApplicationTitlebar extends ConsumerWidget {
 
     List<Widget> build() {
       if (currentMode == ApplicationMode.welcomeScreen || currentMode == ApplicationMode.communicationError) {
-        return [const Spacer(), const ApplicationTitlebarUpdateAvailable(), const ApplicationTitlebarCloseButton()];
+        return [const Spacer(), const ApplicationTitlebarUpdateAvailable(), const ApplicationTitlebarMinimizeButton(), const ApplicationTitlebarMaximizeButton(), const ApplicationTitlebarCloseButton()];
       }
 
       if (currentMode == ApplicationMode.settings) {
@@ -32,6 +34,8 @@ class ApplicationTitlebar extends ConsumerWidget {
           const SizedBox(width: 12),
           ...buildApplicationTitle(context),
           const Spacer(),
+          const ApplicationTitlebarMinimizeButton(),
+          const ApplicationTitlebarMaximizeButton(),
           const ApplicationTitlebarCloseButton()
         ];
       }
@@ -49,6 +53,8 @@ class ApplicationTitlebar extends ConsumerWidget {
         const SizedBox(width: 16),
         const ApplicationTitlebarFeatures(),
         const ApplicationTitlebarFeedback(),
+        const ApplicationTitlebarMinimizeButton(),
+        const ApplicationTitlebarMaximizeButton(),
         const ApplicationTitlebarCloseButton()
       ];
     }
