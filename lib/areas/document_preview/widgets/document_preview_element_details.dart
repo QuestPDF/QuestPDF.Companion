@@ -64,11 +64,7 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 64,
         runSpacing: 8,
-        children: [
-          navigationSection,
-          ...(hasLayoutErrors ? layoutErrorSection : layoutSection),
-          ...buildElementConfigurationSection(theme, selectedElement)
-        ],
+        children: [navigationSection, ...(hasLayoutErrors ? layoutErrorSection : layoutSection)],
       ),
     );
   }
@@ -205,13 +201,6 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     tryOpenSourceCodePathInEditor(
         context, applicationStateProviderInstance.defaultCodeEditor, location.filePath, location.lineNumber);
-  }
-
-  List<Widget> buildElementConfigurationSection(ThemeData theme, DocumentHierarchyElement element) {
-    if (element.elementType == "TextBlock") return [];
-    if (element.hint.isNullOrBlank) return [];
-
-    return [buildDetailsIcon(theme, Symbols.widgets_rounded, "Element configuration", element.hint ?? "")];
   }
 
   Iterable<Widget> buildLayoutErrorMeasurementSection(
