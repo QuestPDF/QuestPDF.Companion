@@ -11,10 +11,8 @@ class ApplicationTitlebarHotReloadWarning extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isDocumentHotReloaded = ref
-        .watch(applicationStateProvider.select((x) => x.isDocumentHotReloaded));
-    const detailsUrl =
-        "https://www.questpdf.com/companion/warnings.html#hot-reload";
+    final isDocumentHotReloaded = ref.watch(applicationStateProvider.select((x) => x.isDocumentHotReloaded));
+    const detailsUrl = "https://www.questpdf.com/companion/warnings.html#hot-reload";
 
     return ApplicationTitlebarCard(
       isVisible: isDocumentHotReloaded,

@@ -6,23 +6,16 @@ part of 'document_hierarchy_element_layout_error_measurement.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DocumentHierarchyElementLayoutErrorMeasurement
-    _$DocumentHierarchyElementLayoutErrorMeasurementFromJson(
-            Map<String, dynamic> json) =>
-        DocumentHierarchyElementLayoutErrorMeasurement(
-          (json['pageNumber'] as num).toInt(),
-          json['availableSpace'] == null
-              ? null
-              : ElementSize.fromJson(
-                  json['availableSpace'] as Map<String, dynamic>),
-          json['measurementSize'] == null
-              ? null
-              : ElementSize.fromJson(
-                  json['measurementSize'] as Map<String, dynamic>),
-          $enumDecodeNullable(_$SpacePlanTypeEnumMap, json['spacePlanType']),
-          json['wrapReason'] as String?,
-          json['isLayoutErrorRootCause'] as bool,
-        );
+DocumentHierarchyElementLayoutErrorMeasurement _$DocumentHierarchyElementLayoutErrorMeasurementFromJson(
+        Map<String, dynamic> json) =>
+    DocumentHierarchyElementLayoutErrorMeasurement(
+      (json['pageNumber'] as num).toInt(),
+      json['availableSpace'] == null ? null : ElementSize.fromJson(json['availableSpace'] as Map<String, dynamic>),
+      json['measurementSize'] == null ? null : ElementSize.fromJson(json['measurementSize'] as Map<String, dynamic>),
+      $enumDecodeNullable(_$SpacePlanTypeEnumMap, json['spacePlanType']),
+      json['wrapReason'] as String?,
+      json['isLayoutErrorRootCause'] as bool,
+    );
 
 Map<String, dynamic> _$DocumentHierarchyElementLayoutErrorMeasurementToJson(
         DocumentHierarchyElementLayoutErrorMeasurement instance) =>

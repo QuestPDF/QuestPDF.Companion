@@ -13,10 +13,8 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final applicationVersion = ref.watch(applicationVersionProvider);
 
-    final currentVersion =
-        applicationVersion.currentApplicationVersion?.text ?? "Unknown";
-    final latestVersion =
-        applicationVersion.latestApplicationVersion?.text ?? "Unknown";
+    final currentVersion = applicationVersion.currentApplicationVersion?.text ?? "Unknown";
+    final latestVersion = applicationVersion.latestApplicationVersion?.text ?? "Unknown";
 
     const detailsUrl = "https://www.questpdf.com/companion/download.html";
 

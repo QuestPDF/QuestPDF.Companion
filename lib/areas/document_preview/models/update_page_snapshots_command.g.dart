@@ -6,16 +6,11 @@ part of 'update_page_snapshots_command.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UpdatePageSnapshotsCommand _$UpdatePageSnapshotsCommandFromJson(
-        Map<String, dynamic> json) =>
+UpdatePageSnapshotsCommand _$UpdatePageSnapshotsCommandFromJson(Map<String, dynamic> json) =>
     UpdatePageSnapshotsCommand(
-      (json['pages'] as List<dynamic>)
-          .map((e) => PageSnapshotRendered.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      (json['pages'] as List<dynamic>).map((e) => PageSnapshotRendered.fromJson(e as Map<String, dynamic>)).toList(),
     );
 
-Map<String, dynamic> _$UpdatePageSnapshotsCommandToJson(
-        UpdatePageSnapshotsCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$UpdatePageSnapshotsCommandToJson(UpdatePageSnapshotsCommand instance) => <String, dynamic>{
       'pages': instance.pages,
     };

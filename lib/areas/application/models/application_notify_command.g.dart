@@ -6,16 +6,12 @@ part of 'application_notify_command.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ApplicationNotifyCommand _$ApplicationNotifyCommandFromJson(
-        Map<String, dynamic> json) =>
-    ApplicationNotifyCommand(
+ApplicationNotifyCommand _$ApplicationNotifyCommandFromJson(Map<String, dynamic> json) => ApplicationNotifyCommand(
       json['clientId'] as String,
       $enumDecode(_$LicenseTypeEnumMap, json['license']),
     );
 
-Map<String, dynamic> _$ApplicationNotifyCommandToJson(
-        ApplicationNotifyCommand instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ApplicationNotifyCommandToJson(ApplicationNotifyCommand instance) => <String, dynamic>{
       'clientId': instance.clientId,
       'license': _$LicenseTypeEnumMap[instance.license]!,
     };

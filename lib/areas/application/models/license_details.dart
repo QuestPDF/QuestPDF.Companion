@@ -6,8 +6,7 @@ class LicenseDetails {
   final String description;
   final MaterialColor indicatorColor;
 
-  const LicenseDetails(
-      {required this.title, required this.description, required this.indicatorColor});
+  const LicenseDetails({required this.title, required this.description, required this.indicatorColor});
 }
 
 const pricingUrl = "https://www.questpdf.com/license/";
