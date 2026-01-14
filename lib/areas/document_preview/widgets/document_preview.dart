@@ -679,7 +679,7 @@ class DocumentPreviewPainter extends CustomPainter {
     }
 
     void drawImageWithHighlightBlur() {
-      final blurSigma = 4 + 4 * sqrt(scale);
+      final blurSigma = 4 * sqrt(scale);
 
       final blurPaint = getHighQualityPaint()..imageFilter = ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma);
 
