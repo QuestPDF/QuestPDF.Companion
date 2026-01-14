@@ -46,7 +46,7 @@ class TreeView<TContent> extends ConsumerWidget {
         itemCount: visibleItems.length,
         physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
-        padding: const EdgeInsets.only(left: 12, right: 12, top: 2, bottom: 8),
+        padding: const EdgeInsets.only(left: 12, right: 12, top: 0, bottom: 8),
         prototypeItem: const SizedBox(height: itemHeight),
         itemBuilder: (context, index) {
           return buildItem(visibleItems[index]);
