@@ -4,7 +4,6 @@ typedef IsTreeViewModelItemDimmed<TContent> = bool Function(TContent value);
 
 class TreeViewModel<TContent> {
   final String label;
-  final IconData? icon;
   final Color? annotationColor;
 
   final String? hint;
@@ -30,7 +29,6 @@ class TreeViewModel<TContent> {
 
   TreeViewModel(
       {required this.label,
-      this.icon,
       this.annotationColor,
       this.hint,
       required this.isHintImportant,

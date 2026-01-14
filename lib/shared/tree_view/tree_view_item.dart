@@ -15,7 +15,7 @@ class TreeViewItem<TContent> extends StatefulWidget {
 }
 
 class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
-  static const double indentationSize = 22;
+  static const double indentationSize = 24;
   static const double iconSize = 18;
   static const double iconSpacing = indentationSize - iconSize;
   static const double annotationSize = 8;
@@ -78,20 +78,18 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
   Widget buildContentRow() {
     final row = Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [if (node.annotationColor != null) buildAnnotation(), ...buildTree(), Expanded(child: buildLabel())]);
 
     if (!isHovered && !node.isSelected) return row;
 
     return Stack(
       clipBehavior: Clip.none,
-      children: [buildHighlight(), row],
+      children: [buildHighlight(), Center(child: row)],
     );
   }
 
   Widget buildHighlight() {
-    const verticalSpacing = -1.0;
+    const verticalSpacing = 0.0;
     const horizontalSpacing = -6.0;
 
     return Positioned(
@@ -100,8 +98,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
       left: horizontalSpacing,
       right: horizontalSpacing,
       child: Container(
-          decoration:
-              BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8)))),
+          decoration: BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8)))),
     );
   }
 
@@ -132,8 +129,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
       if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 18, color: iconColor),
       if (node.parent?.isFolder ?? false) const SizedBox(width: iconSpacing),
       if (node.isFolder) Icon(folderIcon, size: iconSize, color: iconColor),
-      if (node.isFolder) const SizedBox(width: iconSpacing),
-      buildIcon(iconColor)
+      if (node.isFolder) const SizedBox(width: iconSpacing)
     ];
   }
 
@@ -145,14 +141,6 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
         decoration: BoxDecoration(
             color: node.annotationColor?.withAlpha(isDimmed ? lowEmphasisOpacity : highEmphasisOpacity),
             borderRadius: const BorderRadius.all(Radius.circular(annotationSize))));
-  }
-
-  Widget buildIcon(Color color) {
-    if (node.icon == null) {
-      return Container();
-    }
-
-    return Container(margin: const EdgeInsets.only(right: iconSpacing), child: Icon(node.icon, size: 18, color: color));
   }
 
   Widget buildLabel() {

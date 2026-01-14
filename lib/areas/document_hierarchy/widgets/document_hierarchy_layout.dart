@@ -5,7 +5,6 @@ import 'package:questpdf_companion/shared/convert_layout_error_measurement_to_co
 import '../../../shared/tree_view/tree_view.dart';
 import '../../../shared/tree_view/tree_view_model.dart';
 import '../../../shared/tree_view_defaults/tree_view_default_highlighting.dart';
-import '../../../shared/tree_view_defaults/tree_view_default_icon.dart';
 import '../../../shared/tree_view_defaults/tree_view_default_label.dart';
 import '../../document_preview/state/document_preview_visible_content_state.dart';
 import '../models/document_hierarchy_element.dart';
@@ -44,7 +43,6 @@ class DocumentHierarchyLayout extends ConsumerWidget {
               label: getDefaultTreeViewLabel(element.elementType, element.properties) ?? "",
               hint: element.hint,
               isHintImportant: element.elementType == "TextBlock",
-              icon: getDefaultTreeViewElementIcon(element.elementType, element.properties),
               annotationColor: getAnnotationColor(element),
               isHighlighted: getDefaultTreeViewHighlighting(element.elementType, element.properties),
               isExpanded: element.isExpanded,

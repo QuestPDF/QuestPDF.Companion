@@ -17,7 +17,7 @@ class TreeView<TContent> extends ConsumerWidget {
 
   const TreeView({super.key, required this.rootNode, required this.selectedElementContent, this.onHover});
 
-  static const itemHeight = 18.0;
+  static const itemHeight = 22.0;
   static final scrollController = ScrollController();
 
   @override
@@ -36,8 +36,7 @@ class TreeView<TContent> extends ConsumerWidget {
 
         if (elementOffset < targetPositionStart || elementOffset > targetPositionEnd) {
           final targetPosition = selectedElementIndex * itemHeight - scrollController.position.viewportDimension / 2;
-          scrollController.animateTo(targetPosition,
-              duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+          scrollController.animateTo(targetPosition, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
         }
       }
     });
