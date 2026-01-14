@@ -284,8 +284,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     if (isControlPressed) {
       Future(() {
-        final location = documentHierarchyProviderInstance
-            .findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
+        final location =
+            documentHierarchyProviderInstance.findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
 
         if (location == null) return;
 
@@ -346,9 +346,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     final currentZoomLevel = calculateZoomLevelFromScale(scale, isHighResolution);
 
-    final neededImages = getVisiblePages(visibleBoxBufferFactor: 1)
-        .map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel))
-        .toList();
+    final neededImages =
+        getVisiblePages(visibleBoxBufferFactor: 1).map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel)).toList();
 
     documentPreviewImageCacheStateInstance.updateNeededImages(neededImages);
   }
@@ -455,9 +454,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final scrollbarStart = -translate.dy * ratio;
     final scrollbarHeight = renderBox.size.height * ratio + minScrollbarHeight;
 
-    final scrollbarColor = (scrollbarHover || scrollbarMove)
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.outline;
+    final scrollbarColor =
+        (scrollbarHover || scrollbarMove) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline;
 
     return Positioned(
         right: 0,
@@ -483,8 +481,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
               child: Container(
                 width: 8,
                 height: scrollbarHeight,
-                decoration:
-                    BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
+                decoration: BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
               ),
             ),
           ),
@@ -573,7 +570,7 @@ class DocumentPreviewPainter extends CustomPainter {
 
   void drawMagnification(Canvas canvas, Size drawingAreaSize) {
     const magnificationFactor = 3.0;
-    const magnifierSize = 250.0;
+    const magnifierSize = 300.0;
 
     if (interactionType != PointerHoverInteraction.zoom) return;
 
