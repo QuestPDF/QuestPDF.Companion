@@ -13,6 +13,7 @@ import 'application_titlebar_close_button.dart';
 import 'application_titlebar_hierarchy_visibility_toggle.dart';
 import 'application_titlebar_hot_reload_warning.dart';
 import 'application_titlebar_license.dart';
+import 'application_titlebar_logo.dart';
 import 'application_titlebar_update_available.dart';
 
 class ApplicationTitlebar extends ConsumerWidget {
@@ -38,8 +39,9 @@ class ApplicationTitlebar extends ConsumerWidget {
 
       return [
         if (currentMode == ApplicationMode.documentPreview) const ApplicationTitlebarHierarchyVisibilityToggle(),
-        if (currentMode != ApplicationMode.documentPreview) const SizedBox(width: 12),
-        ...buildApplicationTitle(context),
+        if (currentMode != ApplicationMode.documentPreview) const SizedBox(width: 24),
+        const SizedBox(width: 8),
+        const ApplicationTitlebarLogo(),
         const Spacer(),
         const ApplicationTitlebarLayoutError(),
         const ApplicationTitlebarHotReloadWarning(),
@@ -65,8 +67,7 @@ class ApplicationTitlebar extends ConsumerWidget {
         Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.white);
 
     final applicationTitleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
-        fontWeight: FontWeightOptimizedForOperatingSystem.normal);
+        color: Theme.of(context).colorScheme.onSurfaceVariant, fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
     final titleText = ShaderMask(
         shaderCallback: (bounds) {

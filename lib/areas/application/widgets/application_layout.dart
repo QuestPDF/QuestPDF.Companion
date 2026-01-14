@@ -16,7 +16,7 @@ class ApplicationLayout extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const toolbarHeight = 40.0;
+    const toolbarHeight = 44.0;
 
     final currentMode = ref.watch(applicationStateProvider.select((x) => x.currentMode));
 
