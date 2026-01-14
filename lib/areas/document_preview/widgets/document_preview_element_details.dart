@@ -29,23 +29,26 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
   @override
   Widget build(BuildContext context) {
     return Card(
-        margin: const EdgeInsets.all(0),
-        shape: applicationStateProviderInstance.showDocumentHierarchy
-            ? const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8)))
-            : const Border(),
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.max,
-            children: [buildTopBar(context), buildSourceCodePreview(context)]));
+      margin: const EdgeInsets.all(0),
+      shape: applicationStateProviderInstance.showDocumentHierarchy
+          ? const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8)))
+          : const Border(),
+      color: Theme.of(context).colorScheme.secondaryContainer,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.max,
+        children: [buildTopBar(context), buildSourceCodePreview(context)],
+      ),
+    );
   }
 
   Widget buildTopBar(BuildContext context) {
     final theme = Theme.of(context);
 
     final selectedElement = ref.watch(documentHierarchyProvider.select((x) => x.selectedElement));
-    final selectedElementPageLocationIndex =
-        ref.watch(documentHierarchyProvider.select((x) => x.selectedElementPageLocationIndex));
+    final selectedElementPageLocationIndex = ref.watch(
+      documentHierarchyProvider.select((x) => x.selectedElementPageLocationIndex),
+    );
     final layoutError = ref.watch(documentLayoutErrorProvider);
 
     if (selectedElement == null || selectedElementPageLocationIndex == null) return const SizedBox();
@@ -69,19 +72,15 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     );
   }
 
-  Widget buildDetailsIcon(ThemeData theme, IconData icon, String tooltip, String value) {
-    return Tooltip(
-      message: tooltip,
-      child: Row(mainAxisSize: MainAxisSize.min, mainAxisAlignment: MainAxisAlignment.start, children: [
-        Icon(icon, size: 24, color: theme.colorScheme.onSecondaryContainer.withAlpha(192)),
-        const SizedBox(width: 12),
-        Text(value, style: theme.textTheme.bodySmall),
-      ]),
-    );
+  Widget buildDetailsSection(String tooltip, String value) {
+    return Tooltip(message: tooltip, child: Text(value));
   }
 
   List<Widget> buildLayoutSection(
-      ThemeData theme, DocumentHierarchyElement selectedElement, int selectedElementPageLocationIndex) {
+    ThemeData theme,
+    DocumentHierarchyElement selectedElement,
+    int selectedElementPageLocationIndex,
+  ) {
     final location = selectedElement.pageLocations[selectedElementPageLocationIndex];
 
     String formatPages() {
@@ -103,9 +102,9 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     }
 
     return [
-      buildDetailsIcon(theme, Symbols.description_rounded, "Element page visibility:\ncurrent / range", formatPages()),
-      buildDetailsIcon(theme, Symbols.location_searching_rounded, "Element position", formatPosition()),
-      buildDetailsIcon(theme, Symbols.aspect_ratio_rounded, "Element size:\nwidth / height", formatSize()),
+      buildDetailsSection("Element page visibility:\nC = current page\nR = page range", formatPages()),
+      buildDetailsSection("Element position", formatPosition()),
+      buildDetailsSection("Element size:\nW = width\nH = height", formatSize()),
     ];
   }
 
@@ -114,14 +113,19 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     final primaryStyle = bodyTextStyle?.copyWith(fontWeight: FontWeightOptimizedForOperatingSystem.bold);
     final secondaryTextStyle = bodyTextStyle?.copyWith(
-        color: bodyTextStyle.color?.withAlpha(160), fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
+      color: bodyTextStyle.color?.withAlpha(160),
+      fontWeight: FontWeightOptimizedForOperatingSystem.semibold,
+    );
 
     return RichText(
-        text: TextSpan(children: [
-      TextSpan(text: path.dirname(filePath), style: secondaryTextStyle),
-      TextSpan(text: path.separator, style: secondaryTextStyle),
-      TextSpan(text: path.basename(filePath), style: primaryStyle),
-    ]));
+      text: TextSpan(
+        children: [
+          TextSpan(text: path.dirname(filePath), style: secondaryTextStyle),
+          TextSpan(text: path.separator, style: secondaryTextStyle),
+          TextSpan(text: path.basename(filePath), style: primaryStyle),
+        ],
+      ),
+    );
   }
 
   Widget buildSourceCodePreview(BuildContext context) {
@@ -129,30 +133,33 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     final theme = Theme.of(context);
 
-    final location =
-        documentHierarchyProviderInstance.findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
+    final location = documentHierarchyProviderInstance.findSourceCodeLocationOf(
+      documentHierarchyProviderInstance.selectedElement,
+    );
 
     if (location == null) return const SizedBox.shrink();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Divider(
-          color: theme.colorScheme.onSecondaryContainer.withAlpha(128),
-          height: 0,
-        ),
+        Divider(color: theme.colorScheme.onSecondaryContainer.withAlpha(128), height: 0),
         Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               buildSourceCodeFilePath(theme, location.filePath),
               const SizedBox(height: 12),
               SourceCodeVisualization(
-                  filePath: location.filePath,
-                  highlightLineNumber: location.lineNumber,
-                  showLinesBuffer: 9,
-                  backgroundColor: theme.colorScheme.surfaceContainerLow,
-                  highlightColor: theme.colorScheme.secondaryContainer),
-            ]))
+                filePath: location.filePath,
+                highlightLineNumber: location.lineNumber,
+                showLinesBuffer: 9,
+                backgroundColor: theme.colorScheme.surfaceContainerLow,
+                highlightColor: theme.colorScheme.secondaryContainer,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -161,50 +168,64 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     final enablePositionButtons = selectedElement.pageLocations.length != 1;
     final theme = Theme.of(context);
 
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      IconButton(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
           icon: const Icon(Symbols.arrow_upward_alt_rounded),
           tooltip: "Previous occurrence",
           onPressed: enablePositionButtons
               ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(-1)
               : null,
           constraints: const BoxConstraints(),
-          padding: const EdgeInsets.all(2)),
-      IconButton(
+          padding: const EdgeInsets.all(2),
+        ),
+        IconButton(
           icon: const Icon(Symbols.arrow_downward_alt_rounded),
           tooltip: "Next occurrence",
           onPressed: enablePositionButtons
               ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
               : null,
           constraints: const BoxConstraints(),
-          padding: const EdgeInsets.all(2)),
-      const SizedBox(width: 4),
-      MouseRegion(
-        onEnter: (_) => setState(() => showSourceCodePreview = true),
-        onExit: (_) => setState(() => showSourceCodePreview = false),
-        child: IconButton(
+          padding: const EdgeInsets.all(2),
+        ),
+        const SizedBox(width: 4),
+        MouseRegion(
+          onEnter: (_) => setState(() => showSourceCodePreview = true),
+          onExit: (_) => setState(() => showSourceCodePreview = false),
+          child: IconButton(
             icon: const Icon(Symbols.terminal_rounded),
             onPressed: () => tryToOpenInCodeEditor(context),
             constraints: const BoxConstraints(),
-            padding: const EdgeInsets.all(2)),
-      ),
-      const SizedBox(width: 8),
-      Text(selectedElement.elementType, style: theme.textTheme.titleSmall)
-    ]);
+            padding: const EdgeInsets.all(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(selectedElement.elementType, style: theme.textTheme.titleSmall),
+      ],
+    );
   }
 
   tryToOpenInCodeEditor(BuildContext context) async {
-    final location =
-        documentHierarchyProviderInstance.findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
+    final location = documentHierarchyProviderInstance.findSourceCodeLocationOf(
+      documentHierarchyProviderInstance.selectedElement,
+    );
 
     if (location == null) return;
 
     tryOpenSourceCodePathInEditor(
-        context, applicationStateProviderInstance.defaultCodeEditor, location.filePath, location.lineNumber);
+      context,
+      applicationStateProviderInstance.defaultCodeEditor,
+      location.filePath,
+      location.lineNumber,
+    );
   }
 
   Iterable<Widget> buildLayoutErrorMeasurementSection(
-      ThemeData theme, DocumentLayoutErrorProvider layoutErrorState, DocumentHierarchyElement element) {
+    ThemeData theme,
+    DocumentLayoutErrorProvider layoutErrorState,
+    DocumentHierarchyElement element,
+  ) {
     if (!layoutErrorState.containsLayoutError) return [];
 
     final currentLayoutErrorPageNumber = layoutErrorState.currentlySelectedLayoutError.measurement.pageNumber;
@@ -235,36 +256,41 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
         width: indicatorSize,
         height: indicatorSize,
         decoration: BoxDecoration(
-            color: measurement.getAnnotationColor(),
-            borderRadius: const BorderRadius.all(Radius.circular(indicatorSize)),
-            border: Border.all(color: Colors.black, width: 0.5)),
+          color: measurement.getAnnotationColor(),
+          borderRadius: const BorderRadius.all(Radius.circular(indicatorSize)),
+          border: Border.all(color: Colors.black, width: 0.5),
+        ),
       );
     }
 
     Widget buildMeasurementStatus() {
-      return Row(mainAxisSize: MainAxisSize.min, children: [
-        buildIndicator(),
-        const SizedBox(width: 12),
-        Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(formatSpacePlanType(), style: theme.textTheme.bodySmall),
-          if (measurement?.wrapReason != null) Text(measurement?.wrapReason ?? "", style: theme.textTheme.bodySmall)
-        ])
-      ]);
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          buildIndicator(),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(formatSpacePlanType(), style: theme.textTheme.bodySmall),
+              if (measurement?.wrapReason != null) Text(measurement?.wrapReason ?? "", style: theme.textTheme.bodySmall),
+            ],
+          ),
+        ],
+      );
     }
 
     Widget? buildAvailableSpace() {
       if (measurement == null) return null;
 
-      return buildDetailsIcon(
-          theme, Symbols.pageless_rounded, "Available space:\nwidth / height", formatSize(measurement.availableSpace));
+      return buildDetailsSection("Available space:\nW = width\nH = height", formatSize(measurement.availableSpace));
     }
 
     Widget? buildRequestedSpace() {
       if (measurement == null) return null;
       if (measurement.spacePlanType == SpacePlanType.wrap) return null;
 
-      return buildDetailsIcon(theme, Symbols.aspect_ratio_rounded, "Requested space:\nwidth / height",
-          formatSize(measurement.measurementSize));
+      return buildDetailsSection("Requested space:\nW = width\nH = height", formatSize(measurement.measurementSize));
     }
 
     return [buildAvailableSpace(), buildRequestedSpace(), buildMeasurementStatus()].whereNotNull();
