@@ -73,7 +73,8 @@ flutter:
   uses-material-design: false
 
   assets:
-    - assets/questpdf-logo.png
+    - assets/questpdf-logo-light.png
+    - assets/questpdf-logo-dark.png
     - assets/JetBrainsMono.ttf
 
   fonts:
