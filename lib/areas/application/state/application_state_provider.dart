@@ -89,7 +89,7 @@ class ApplicationStateProvider extends ChangeNotifier {
   }
 
   void checkIfDisplayComplexDocumentWarningBasedOnJsonLength(int size) {
-    isComplexDocument = size > 1000 * 1000;
+    isComplexDocument = size > 5 * 1000 * 1000;
     notifyListeners();
   }
 }

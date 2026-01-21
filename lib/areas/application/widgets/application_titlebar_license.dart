@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../shared/font_awesome_icon.dart';
 import '../models/license_details.dart';
 import 'application_titlebar_card.dart';
 
@@ -20,7 +20,7 @@ class ApplicationTitlebarLicense extends ConsumerWidget {
 
     return ApplicationTitlebarCard(
       isVisible: true,
-      icon: Symbols.license_rounded,
+      icon: FontAwesomeIcons.certificate,
       emphasized: true,
       emphasisColor: licenseDetails.indicatorColor,
       title: "Your License: ${licenseDetails.title}",

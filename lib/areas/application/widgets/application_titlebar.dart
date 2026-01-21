@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_complex_document_warning.dart';
@@ -7,7 +5,6 @@ import 'package:questpdf_companion/areas/application/widgets/application_titleba
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_feedback.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_layout_error.dart';
 
-import '../../../typography.dart';
 import '../state/application_state_provider.dart';
 import 'application_titlebar_close_button.dart';
 import 'application_titlebar_hierarchy_visibility_toggle.dart';
@@ -25,62 +22,52 @@ class ApplicationTitlebar extends ConsumerWidget {
 
     List<Widget> build() {
       if (currentMode == ApplicationMode.welcomeScreen || currentMode == ApplicationMode.communicationError) {
-        return [const Spacer(), const ApplicationTitlebarUpdateAvailable(), const ApplicationTitlebarCloseButton()];
+        return [
+          const SizedBox(width: 8),
+          const ApplicationTitlebarLogo(),
+          const Spacer(),
+          const ApplicationTitlebarUpdateAvailable(),
+          const ApplicationTitlebarCloseButton(),
+          const SizedBox(width: 6)
+        ];
       }
 
       if (currentMode == ApplicationMode.settings) {
         return [
           const SizedBox(width: 12),
-          ...buildApplicationTitle(context),
+          const ApplicationTitlebarLogo(),
           const Spacer(),
-          const ApplicationTitlebarCloseButton()
+          const ApplicationTitlebarCloseButton(),
+          const SizedBox(width: 6)
         ];
       }
 
       return [
-        if (currentMode == ApplicationMode.documentPreview) const ApplicationTitlebarHierarchyVisibilityToggle(),
-        if (currentMode != ApplicationMode.documentPreview) const SizedBox(width: 24),
         const SizedBox(width: 8),
         const ApplicationTitlebarLogo(),
         const Spacer(),
+        if (currentMode == ApplicationMode.documentPreview) const ApplicationTitlebarHierarchyVisibilityToggle(),
+        if (currentMode != ApplicationMode.documentPreview) const SizedBox(width: 24),
         const ApplicationTitlebarLayoutError(),
         const ApplicationTitlebarHotReloadWarning(),
         const ApplicationTitlebarComplexDocumentWarning(),
         const ApplicationTitlebarLicense(),
         const ApplicationTitlebarUpdateAvailable(),
-        const SizedBox(width: 16),
+        SizedBox(
+          height: 24,
+          child: VerticalDivider(width: 32),
+        ),
         const ApplicationTitlebarFeatures(),
         const ApplicationTitlebarFeedback(),
-        const ApplicationTitlebarCloseButton()
+        SizedBox(
+          height: 24,
+          child: VerticalDivider(width: 32),
+        ),
+        const ApplicationTitlebarCloseButton(),
+        const SizedBox(width: 6)
       ];
     }
 
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: build());
-  }
-
-  List<Widget> buildApplicationTitle(BuildContext context) {
-    const libraryTitleGradient =
-        LinearGradient(colors: [Color(0xFF05D9FF), Color(0xFF2680FF)], transform: GradientRotation(pi / 3));
-
-    final libraryTitleStyle =
-        Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.white);
-
-    final applicationTitleStyle = Theme.of(context).textTheme.headlineSmall?.copyWith(
-        color: Theme.of(context).colorScheme.onSurfaceVariant, fontWeight: FontWeightOptimizedForOperatingSystem.normal);
-
-    final titleText = ShaderMask(
-        shaderCallback: (bounds) {
-          return libraryTitleGradient.createShader(
-            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-          );
-        },
-        child: Text("QuestPDF", style: libraryTitleStyle));
-
-    return [
-      titleText,
-      const SizedBox(width: 8),
-      Text("Companion", style: applicationTitleStyle),
-    ];
+    return Row(children: build());
   }
 }

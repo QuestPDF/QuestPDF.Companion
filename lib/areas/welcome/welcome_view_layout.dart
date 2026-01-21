@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_button.dart';
+
+import '../../shared/font_awesome_icon.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_header.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_version.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,22 +24,22 @@ class WelcomeViewLayout extends StatelessWidget {
               const SizedBox(height: 32),
               WelcomeViewButton(
                   title: "Introduction",
-                  icon: Symbols.rocket_launch_rounded,
+                  icon: FontAwesomeIcons.rocket,
                   onClick: () => openUrl("https://www.questpdf.com/companion/usage.html")),
               const SizedBox(height: 8),
               WelcomeViewButton(
                   title: "Application Features",
-                  icon: Symbols.menu_book_rounded,
+                  icon: FontAwesomeIcons.book,
                   onClick: () => openUrl("https://www.questpdf.com/companion/features.html")),
               const SizedBox(height: 8),
               WelcomeViewButton(
                   title: "Software License",
-                  icon: Symbols.license_rounded,
+                  icon: FontAwesomeIcons.certificate,
                   onClick: () => openUrl("https://www.questpdf.com/license/")),
               const SizedBox(height: 8),
               WelcomeViewButton(
                   title: "Settings",
-                  icon: Symbols.settings_rounded,
+                  icon: FontAwesomeIcons.gear,
                   onClick: () => applicationStateProviderInstance.changeMode(ApplicationMode.settings)),
               const SizedBox(height: 16),
               const WelcomeViewVersion()

@@ -28,7 +28,7 @@ class DocumentPreviewWithHierarchyView extends ConsumerWidget {
         Area(
           size: 300,
           min: 250,
-          max: 500,
+          max: 600,
           builder: (context, area) => const DocumentHierarchyLayout(),
         ),
         Area(

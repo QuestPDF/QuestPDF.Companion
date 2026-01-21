@@ -1,12 +1,12 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:path/path.dart' as path;
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/page_location.dart';
 import 'package:questpdf_companion/shared/convert_layout_error_measurement_to_color.dart';
 
+import '../../../shared/font_awesome_icon.dart';
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
 import '../../../typography.dart';
@@ -30,9 +30,7 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.all(0),
-      shape: applicationStateProviderInstance.showDocumentHierarchy
-          ? const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(8)))
-          : const Border(),
+      shape: const Border(),
       color: Theme.of(context).colorScheme.secondaryContainer,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -172,33 +170,27 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          icon: const Icon(Symbols.arrow_upward_alt_rounded),
-          tooltip: "Previous occurrence",
-          onPressed: enablePositionButtons
-              ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(-1)
-              : null,
-          constraints: const BoxConstraints(),
-          padding: const EdgeInsets.all(2),
-        ),
+            icon: Icon(FontAwesomeIcons.arrowUp, size: 16),
+            visualDensity: VisualDensity.compact,
+            tooltip: "Previous occurrence",
+            onPressed: enablePositionButtons
+                ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(-1)
+                : null),
         IconButton(
-          icon: const Icon(Symbols.arrow_downward_alt_rounded),
-          tooltip: "Next occurrence",
-          onPressed: enablePositionButtons
-              ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
-              : null,
-          constraints: const BoxConstraints(),
-          padding: const EdgeInsets.all(2),
-        ),
-        const SizedBox(width: 4),
+            icon: Icon(FontAwesomeIcons.arrowDown, size: 16),
+            visualDensity: VisualDensity.compact,
+            tooltip: "Next occurrence",
+            onPressed: enablePositionButtons
+                ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
+                : null),
+        const SizedBox(width: 8),
         MouseRegion(
           onEnter: (_) => setState(() => showSourceCodePreview = true),
           onExit: (_) => setState(() => showSourceCodePreview = false),
           child: IconButton(
-            icon: const Icon(Symbols.terminal_rounded),
-            onPressed: () => tryToOpenInCodeEditor(context),
-            constraints: const BoxConstraints(),
-            padding: const EdgeInsets.all(2),
-          ),
+              icon: Icon(FontAwesomeIcons.terminal, size: 16),
+              visualDensity: VisualDensity.compact,
+              onPressed: () => tryToOpenInCodeEditor(context)),
         ),
         const SizedBox(width: 8),
         Text(selectedElement.elementType, style: theme.textTheme.titleSmall),

@@ -64,8 +64,8 @@ class ApplicationTitlebarCard extends ConsumerWidget {
                       children: actions.map((action) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 8),
-                          child: OutlinedButton(
-                              onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
+                          child:
+                              OutlinedButton(onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
                         );
                       }).toList(),
                     ),
@@ -83,7 +83,7 @@ class ApplicationTitlebarCard extends ConsumerWidget {
       return Padding(
         padding: emphasized ? const EdgeInsets.symmetric(horizontal: 4) : EdgeInsets.zero,
         child: IconButton(
-            icon: Icon(icon, color: iconColor),
+            icon: Icon(icon, color: iconColor, size: 20),
             visualDensity: emphasized ? VisualDensity.compact : VisualDensity.standard,
             padding: emphasized ? const EdgeInsets.symmetric(vertical: 4, horizontal: 8) : const EdgeInsets.all(0),
             style: style,

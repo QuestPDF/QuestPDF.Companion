@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/areas/application/state/application_version_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../shared/font_awesome_icon.dart';
 import 'application_titlebar_card.dart';
 
 class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
@@ -20,7 +20,7 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
 
     return ApplicationTitlebarCard(
       isVisible: applicationVersion.isUpdateAvailable,
-      icon: Symbols.upgrade_rounded,
+      icon: FontAwesomeIcons.cloudArrowUp,
       emphasized: true,
       emphasisColor: Colors.blue,
       title: "Update Available",

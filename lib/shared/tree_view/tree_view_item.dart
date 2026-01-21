@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/shared/tree_view/tree_view_model.dart';
 
 import '../../typography.dart';
@@ -16,14 +15,14 @@ class TreeViewItem<TContent> extends StatefulWidget {
 
 class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   static const double indentationSize = 24;
-  static const double iconSize = 18;
+  static const double iconSize = 16;
   static const double iconSpacing = indentationSize - iconSize;
   static const double annotationSize = 8;
   static const double annotationSpacing = indentationSize - annotationSize;
 
-  static const IconData folderClosedIcon = Symbols.folder_rounded;
-  static const IconData folderOpenIcon = Symbols.folder_open_rounded;
-  static const IconData folderItemIcon = Symbols.keyboard_arrow_right_rounded;
+  static const IconData folderClosedIcon = IconData(0xf07b, fontFamily: "FontAwesome Light");
+  static const IconData folderOpenIcon = IconData(0xf07c, fontFamily: "FontAwesome Light");
+  static const IconData folderItemIcon = IconData(0xf105, fontFamily: "FontAwesome Light");
 
   static TextStyle labelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.normal);
   static TextStyle highlightedLabelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
@@ -126,7 +125,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
     return [
       SizedBox(width: indentationLevel * indentationSize),
-      if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 18, color: iconColor),
+      if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 16, color: iconColor),
       if (node.parent?.isFolder ?? false) const SizedBox(width: iconSpacing),
       if (node.isFolder) Icon(folderIcon, size: iconSize, color: iconColor),
       if (node.isFolder) const SizedBox(width: iconSpacing)

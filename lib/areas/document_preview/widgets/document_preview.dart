@@ -420,8 +420,6 @@ class DocumentPreviewState extends State<DocumentPreview> {
               key: previewKey,
               painter: DocumentPreviewPainter(
                   backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  roundCorners: applicationStateProviderInstance.showDocumentHierarchy ||
-                      documentHierarchySearchStateInstance.searchPhrase != null,
                   translate: translate,
                   scale: scale,
                   visiblePages: getVisiblePages(),
@@ -518,7 +516,6 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
 class DocumentPreviewPainter extends CustomPainter {
   final Color backgroundColor;
-  final bool roundCorners;
   final Offset translate;
   final double scale;
   final List<PageDrawingPlan> visiblePages;
@@ -532,7 +529,6 @@ class DocumentPreviewPainter extends CustomPainter {
 
   DocumentPreviewPainter(
       {required this.backgroundColor,
-      required this.roundCorners,
       required this.translate,
       required this.scale,
       required this.visiblePages,
@@ -562,8 +558,6 @@ class DocumentPreviewPainter extends CustomPainter {
     final backgroundPaint = Paint()..color = backgroundColor;
     final drawingRect = Rect.fromLTWH(0, 0, drawingAreaSize.width, drawingAreaSize.height);
     final drawingClip = RRect.fromRectAndCorners(drawingRect, topLeft: const Radius.circular(12));
-
-    if (roundCorners) canvas.clipRRect(drawingClip);
 
     canvas.drawRect(drawingRect, backgroundPaint);
   }

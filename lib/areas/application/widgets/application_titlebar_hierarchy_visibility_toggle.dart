@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
+import '../../../shared/font_awesome_icon.dart';
 import '../state/application_state_provider.dart';
 
 class ApplicationTitlebarHierarchyVisibilityToggle extends ConsumerWidget {
@@ -10,7 +10,7 @@ class ApplicationTitlebarHierarchyVisibilityToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isHierarchyVisible = ref.watch(applicationStateProvider.select((x) => x.showDocumentHierarchy));
-    final icon = isHierarchyVisible ? Symbols.left_panel_close_rounded : Symbols.right_panel_close_rounded;
+    final icon = isHierarchyVisible ? FontAwesomeIcons.sidebarLeft : FontAwesomeIcons.sidebarRight;
 
     return Padding(
       padding: const EdgeInsets.only(left: 1),

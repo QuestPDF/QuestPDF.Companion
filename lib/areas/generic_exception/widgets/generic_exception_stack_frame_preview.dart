@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
+import '../../../shared/font_awesome_icon.dart';
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
 import '../../../typography.dart';
@@ -73,9 +73,7 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
       if (stackFrame.lineNumber == null) return const SizedBox();
 
       return IconButton(
-          icon: isExpanded!
-              ? const Icon(Symbols.keyboard_arrow_up_rounded)
-              : const Icon(Symbols.keyboard_arrow_down_rounded),
+          icon: isExpanded! ? Icon(FontAwesomeIcons.chevronUp, size: 16) : Icon(FontAwesomeIcons.chevronDown, size: 16),
           color: Theme.of(context).colorScheme.primary,
           tooltip: 'Show source-code snippet',
           onPressed: () => setState(() {
