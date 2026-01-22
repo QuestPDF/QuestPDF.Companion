@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_complex_document_warning.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_features.dart';
-import 'package:questpdf_companion/areas/application/widgets/application_titlebar_feedback.dart';
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_layout_error.dart';
 
 import '../state/application_state_provider.dart';
@@ -23,7 +22,7 @@ class ApplicationTitlebar extends ConsumerWidget {
     List<Widget> build() {
       if (currentMode == ApplicationMode.welcomeScreen || currentMode == ApplicationMode.communicationError) {
         return [
-          const SizedBox(width: 8),
+          const SizedBox(width: 12),
           const ApplicationTitlebarLogo(),
           const Spacer(),
           const ApplicationTitlebarUpdateAvailable(),
@@ -43,22 +42,17 @@ class ApplicationTitlebar extends ConsumerWidget {
       }
 
       return [
-        const SizedBox(width: 8),
+        const SizedBox(width: 12),
         const ApplicationTitlebarLogo(),
         const Spacer(),
-        if (currentMode == ApplicationMode.documentPreview) const ApplicationTitlebarHierarchyVisibilityToggle(),
-        if (currentMode != ApplicationMode.documentPreview) const SizedBox(width: 24),
         const ApplicationTitlebarLayoutError(),
         const ApplicationTitlebarHotReloadWarning(),
         const ApplicationTitlebarComplexDocumentWarning(),
         const ApplicationTitlebarLicense(),
         const ApplicationTitlebarUpdateAvailable(),
-        SizedBox(
-          height: 24,
-          child: VerticalDivider(width: 32),
-        ),
+        const ApplicationTitlebarHierarchyVisibilityToggle(),
         const ApplicationTitlebarFeatures(),
-        const ApplicationTitlebarFeedback(),
+        // const ApplicationTitlebarFeedback(),
         SizedBox(
           height: 24,
           child: VerticalDivider(width: 32),

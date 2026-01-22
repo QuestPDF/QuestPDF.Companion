@@ -77,16 +77,31 @@ class ApplicationTitlebarCard extends ConsumerWidget {
     }
 
     Widget buildIndicatorIcon() {
+      final buttonStyle = ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          ),
+          iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
+            if (emphasized) return emphasisColor;
+
+            if (states.contains(WidgetState.hovered)) return Theme.of(context).colorScheme.surfaceContainerHighest;
+
+            return null;
+          }));
+
       final iconColor = emphasized ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
       final style = emphasized ? IconButton.styleFrom(backgroundColor: emphasisColor) : IconButton.styleFrom();
 
       return Padding(
-        padding: emphasized ? const EdgeInsets.symmetric(horizontal: 4) : EdgeInsets.zero,
+        padding: EdgeInsets.only(left: emphasized ? 16 : 8, right: emphasized ? 2 : 0),
         child: IconButton(
             icon: Icon(icon, color: iconColor, size: 20),
-            visualDensity: emphasized ? VisualDensity.compact : VisualDensity.standard,
-            padding: emphasized ? const EdgeInsets.symmetric(vertical: 4, horizontal: 8) : const EdgeInsets.all(0),
-            style: style,
+            visualDensity: VisualDensity.standard,
+            padding: EdgeInsets.all(4),
+            style: buttonStyle,
             onPressed: onClicked),
       );
     }

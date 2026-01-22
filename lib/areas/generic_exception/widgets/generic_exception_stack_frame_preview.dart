@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/font_awesome_icon.dart';
+import '../../../shared/font_awesome_icons.dart';
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
 import '../../../typography.dart';

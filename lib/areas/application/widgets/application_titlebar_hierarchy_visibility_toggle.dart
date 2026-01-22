@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../shared/font_awesome_icon.dart';
+import '../../../shared/font_awesome_icons.dart';
 import '../state/application_state_provider.dart';
 
 class ApplicationTitlebarHierarchyVisibilityToggle extends ConsumerWidget {
@@ -13,9 +13,9 @@ class ApplicationTitlebarHierarchyVisibilityToggle extends ConsumerWidget {
     final icon = isHierarchyVisible ? FontAwesomeIcons.sidebarLeft : FontAwesomeIcons.sidebarRight;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 1),
+      padding: const EdgeInsets.only(left: 8),
       child: IconButton(
-          icon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant),
+          icon: Icon(icon, color: Theme.of(context).colorScheme.onSurfaceVariant, size: 20),
           tooltip: isHierarchyVisible ? "Hide document hierarchy" : "Show document hierarchy",
           onPressed: applicationStateProviderInstance.toggleDocumentHierarchyVisibility),
     );

@@ -6,7 +6,7 @@ import 'package:questpdf_companion/areas/application/state/application_state_pro
 import 'package:questpdf_companion/areas/document_hierarchy/models/page_location.dart';
 import 'package:questpdf_companion/shared/convert_layout_error_measurement_to_color.dart';
 
-import '../../../shared/font_awesome_icon.dart';
+import '../../../shared/font_awesome_icons.dart';
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../../shared/source_code_visualization.dart';
 import '../../../typography.dart';
@@ -183,7 +183,6 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
             onPressed: enablePositionButtons
                 ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
                 : null),
-        const SizedBox(width: 8),
         MouseRegion(
           onEnter: (_) => setState(() => showSourceCodePreview = true),
           onExit: (_) => setState(() => showSourceCodePreview = false),
@@ -192,7 +191,7 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
               visualDensity: VisualDensity.compact,
               onPressed: () => tryToOpenInCodeEditor(context)),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 24),
         Text(selectedElement.elementType, style: theme.textTheme.titleSmall),
       ],
     );

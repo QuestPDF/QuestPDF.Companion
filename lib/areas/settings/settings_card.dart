@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
 import 'package:questpdf_companion/shared/open_source_code_path_in_editor.dart';
 
-import '../../shared/font_awesome_icon.dart';
+import '../../shared/font_awesome_icons.dart';
 import '../../typography.dart';
 
 class SettingsCard extends ConsumerStatefulWidget {
@@ -60,13 +60,9 @@ class SettingsCardState extends ConsumerState<SettingsCard> {
                     label: Text('System', style: labelTextStyle),
                     icon: Icon(FontAwesomeIcons.desktop)),
                 ButtonSegment(
-                    value: ThemeMode.light,
-                    label: Text('Light', style: labelTextStyle),
-                    icon: Icon(FontAwesomeIcons.sun)),
+                    value: ThemeMode.light, label: Text('Light', style: labelTextStyle), icon: Icon(FontAwesomeIcons.sun)),
                 ButtonSegment(
-                    value: ThemeMode.dark,
-                    label: Text('Dark', style: labelTextStyle),
-                    icon: Icon(FontAwesomeIcons.moon))
+                    value: ThemeMode.dark, label: Text('Dark', style: labelTextStyle), icon: Icon(FontAwesomeIcons.moon))
               ],
               selected: {
                 applicationState.themeMode

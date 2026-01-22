@@ -19,18 +19,18 @@ class FontAwesomeIcons {
   static final IconData chevronDown = icon(0xf078);
 
   // Panels
-  static final IconData sidebarLeft = icon(0xf06e);
-  static final IconData sidebarRight = icon(0xf070);
+  static final IconData sidebarLeft = icon(0xf013);
+  static final IconData sidebarRight = icon(0xf013);
 
   // General icons
-  static final IconData speed = icon(0xf3fd);
+  static final IconData speed = icon(0xf628);
   static final IconData book = icon(0xf02d);
   static final IconData feedback = icon(0xf4aa);
-  static final IconData sync = icon(0xf021);
-  static final IconData fileSlash = icon(0xf573);
-  static final IconData certificate = icon(0xf5ea);
+  static final IconData codeNavigation = icon(0xf121);
+  static final IconData layoutError = icon(0xe290);
+  static final IconData certificate = icon(0xf007);
   static final IconData cloudArrowUp = icon(0xf0ee);
-  static final IconData terminal = icon(0xf120);
+  static final IconData terminal = icon(0xe212);
   static final IconData desktop = icon(0xf108);
   static final IconData sun = icon(0xf185);
   static final IconData moon = icon(0xf186);

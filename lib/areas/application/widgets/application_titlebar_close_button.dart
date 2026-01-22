@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:questpdf_companion/shared/font_awesome_icon.dart';
+import 'package:questpdf_companion/shared/font_awesome_icons.dart';
 import 'package:window_manager/window_manager.dart';
 
 class ApplicationTitlebarCloseButton extends ConsumerWidget {

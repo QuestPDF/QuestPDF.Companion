@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../shared/font_awesome_icon.dart';
+import '../../../shared/font_awesome_icons.dart';
 import '../state/application_state_provider.dart';
 import 'application_titlebar_card.dart';
 
@@ -16,7 +16,7 @@ class ApplicationTitlebarHotReloadWarning extends ConsumerWidget {
 
     return ApplicationTitlebarCard(
       isVisible: isDocumentHotReloaded,
-      icon: FontAwesomeIcons.sync,
+      icon: FontAwesomeIcons.codeNavigation,
       emphasized: true,
       emphasisColor: Colors.orange,
       title: "Code-navigation Degraded",

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/state/document_layout_error_provider.dart';
 
-import '../../../shared/font_awesome_icon.dart';
+import '../../../shared/font_awesome_icons.dart';
 
 class DocumentHierarchyLayoutErrorNotification extends ConsumerWidget {
   const DocumentHierarchyLayoutErrorNotification({super.key});
@@ -17,9 +17,9 @@ class DocumentHierarchyLayoutErrorNotification extends ConsumerWidget {
 
     return Card(
         color: Theme.of(context).colorScheme.errorContainer,
-        margin: const EdgeInsets.all(0),
+        margin: EdgeInsets.only(top: 12),
         child: Padding(
-          padding: const EdgeInsets.only(left: 16, top: 8, right: 8, bottom: 8),
+          padding: const EdgeInsets.only(left: 12, top: 4, right: 4, bottom: 4),
           child: Row(children: [
             Text(
                 "Layout error ${layoutErrorProvider.currentlySelectedLayoutErrorIndex + 1} / ${layoutErrorProvider.numberOfLayoutErrors}",

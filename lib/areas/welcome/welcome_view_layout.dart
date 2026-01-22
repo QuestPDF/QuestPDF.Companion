@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_button.dart';
-
-import '../../shared/font_awesome_icon.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_header.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../shared/font_awesome_icons.dart';
 import '../application/state/application_state_provider.dart';
 
 class WelcomeViewLayout extends StatelessWidget {
