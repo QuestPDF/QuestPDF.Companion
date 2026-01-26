@@ -33,12 +33,9 @@ class _DocumentHierarchySearchState extends ConsumerState<DocumentHierarchySearc
   Widget build(BuildContext context) {
     final searchProvider = ref.watch(documentHierarchySearchStateProvider);
 
-    return Card(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        margin: EdgeInsets.only(top: 12),
-        child: Padding(
-            padding: const EdgeInsets.only(left: 12, top: 4, right: 4, bottom: 4),
-            child: buildPositionCardHeader(Theme.of(context), searchProvider)));
+    return Padding(
+        padding: const EdgeInsets.only(left: 12, top: 4, right: 4, bottom: 4),
+        child: buildPositionCardHeader(Theme.of(context), searchProvider));
   }
 
   Widget buildPositionCardHeader(ThemeData theme, DocumentHierarchySearchState searchState) {
@@ -50,6 +47,8 @@ class _DocumentHierarchySearchState extends ConsumerState<DocumentHierarchySearc
     final enablePositionButtons = searchState.searchResults.isNotEmpty;
 
     return Row(children: [
+      Icon(FontAwesomeIcons.search, color: textColor, size: 16),
+      const SizedBox(width: 12),
       Flexible(
           child: TextField(
         focusNode: _focusNode,

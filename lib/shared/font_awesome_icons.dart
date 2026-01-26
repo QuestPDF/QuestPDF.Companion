@@ -21,6 +21,8 @@ class FontAwesomeIcons {
   // Panels
   static final IconData sidebarLeft = icon(0xf013);
   static final IconData sidebarRight = icon(0xf013);
+  static final IconData search = icon(0xf002);
+  static final IconData error = icon(0xf321);
 
   // General icons
   static final IconData speed = icon(0xf628);

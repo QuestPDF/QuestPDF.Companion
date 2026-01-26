@@ -70,19 +70,23 @@ class DocumentHierarchyLayout extends ConsumerWidget {
       children: [
         Visibility(
           visible: showSearch,
-          child: const Padding(
-            padding: EdgeInsets.only(left: 12.0, right: 4, bottom: 12),
-            child: DocumentHierarchySearch(),
-          ),
+          child: DocumentHierarchySearch(),
         ),
         Visibility(
           visible: layoutErrorState.containsLayoutError,
-          child: const Padding(
-            padding: EdgeInsets.only(left: 12.0, right: 4, bottom: 12),
-            child: DocumentHierarchyLayoutErrorNotification(),
+          child: DocumentHierarchyLayoutErrorNotification(),
+        ),
+        if (showSearch || layoutErrorState.containsLayoutError)
+          Divider(
+            height: 1,
+            color: Theme.of(context).dividerColor.withAlpha(64),
+          ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsetsGeometry.only(right: 4),
+            child: buildTreeView(),
           ),
         ),
-        Expanded(child: buildTreeView()),
       ],
     );
   }
