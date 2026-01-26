@@ -22,19 +22,29 @@ class DocumentPreviewWithHierarchyView extends ConsumerWidget {
       return DocumentPreviewLayout(key: documentPreviewKey);
     }
 
-    return MultiSplitView(
-      key: documentHierarchyKey,
-      initialAreas: [
-        Area(
-          size: 300,
-          min: 250,
-          max: 600,
-          builder: (context, area) => const DocumentHierarchyLayout(),
+    return MultiSplitViewTheme(
+      data: MultiSplitViewThemeData(dividerThickness: 1, dividerHandleBuffer: 4),
+      child: MultiSplitView(
+        key: documentHierarchyKey,
+        dividerBuilder:
+            (Axis axis, int index, bool resizable, bool dragging, bool highlighted, MultiSplitViewThemeData themeData) =>
+                VerticalDivider(
+          color: Theme.of(context).dividerColor.withAlpha(64),
+          width: 1,
+          thickness: 1,
         ),
-        Area(
-          builder: (context, area) => DocumentPreviewLayout(key: documentPreviewKey),
-        )
-      ],
+        initialAreas: [
+          Area(
+            size: 300,
+            min: 250,
+            max: 600,
+            builder: (context, area) => const DocumentHierarchyLayout(),
+          ),
+          Area(
+            builder: (context, area) => DocumentPreviewLayout(key: documentPreviewKey),
+          )
+        ],
+      ),
     );
   }
 }
