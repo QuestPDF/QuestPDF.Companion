@@ -14,9 +14,7 @@ class ApplicationTitlebarCloseButton extends ConsumerWidget {
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         ),
-        iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
-        backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) =>
-            states.contains(WidgetState.hovered) ? Theme.of(context).colorScheme.surfaceContainerHighest : null));
+        iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant));
 
     final closeButtonStyle = buttonStyle.copyWith(
       animationDuration: Duration.zero,

@@ -84,16 +84,9 @@ class ApplicationTitlebarCard extends ConsumerWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           ),
           iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
-          backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) {
-            if (emphasized) return emphasisColor;
-
-            if (states.contains(WidgetState.hovered)) return Theme.of(context).colorScheme.surfaceContainerHighest;
-
-            return null;
-          }));
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) => emphasized ? emphasisColor : null));
 
       final iconColor = emphasized ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
-      final style = emphasized ? IconButton.styleFrom(backgroundColor: emphasisColor) : IconButton.styleFrom();
 
       return Padding(
         padding: EdgeInsets.only(left: emphasized ? 16 : 8, right: emphasized ? 2 : 0),

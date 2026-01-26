@@ -40,7 +40,7 @@ class ApplicationLayout extends ConsumerWidget {
         surfaceTintColor: Colors.transparent,
         foregroundColor: Colors.transparent,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor: Theme.of(context).shadowColor.withAlpha(128),
+        shadowColor: Colors.transparent,
         elevation: 0,
         shape: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withAlpha(64), width: 1)));
 
