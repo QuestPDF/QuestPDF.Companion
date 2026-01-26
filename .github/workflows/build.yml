@@ -18,12 +18,12 @@ jobs:
           runs-on: windows-latest
         - name: linux
           runs-on: ubuntu-latest
-          container: ubuntu:20.04
+          container: ubuntu:22.04
         # - name: macos (run locally)
         #   runs-on: macos-latest-xlarge
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v5
 
     - name: Set timezone configuration to non-interactive
       if: matrix.runtime.name == 'linux'
@@ -68,7 +68,7 @@ jobs:
       run: flutter_distributor package --platform=macos --targets=dmg     
 
     - name: Archive production artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v5
       with:
         name: questpdf-companion-build
         path: dist
