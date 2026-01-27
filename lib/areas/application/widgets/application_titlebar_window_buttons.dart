@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:questpdf_companion/shared/font_awesome_icons.dart';
 import 'package:window_manager/window_manager.dart';
 
-class ApplicationTitlebarCloseButton extends ConsumerWidget {
-  const ApplicationTitlebarCloseButton({super.key});
+class ApplicationTitlebarWindowButtons extends ConsumerWidget {
+  const ApplicationTitlebarWindowButtons({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

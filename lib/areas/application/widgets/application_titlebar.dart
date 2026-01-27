@@ -5,12 +5,12 @@ import 'package:questpdf_companion/areas/application/widgets/application_titleba
 import 'package:questpdf_companion/areas/application/widgets/application_titlebar_layout_error.dart';
 
 import '../state/application_state_provider.dart';
-import 'application_titlebar_close_button.dart';
 import 'application_titlebar_hot_reload_warning.dart';
 import 'application_titlebar_license.dart';
 import 'application_titlebar_logo.dart';
 import 'application_titlebar_settings.dart';
 import 'application_titlebar_update_available.dart';
+import 'application_titlebar_window_buttons.dart';
 
 class ApplicationTitlebar extends ConsumerWidget {
   const ApplicationTitlebar({super.key});
@@ -32,7 +32,7 @@ class ApplicationTitlebar extends ConsumerWidget {
             height: 24,
             child: VerticalDivider(width: 32),
           ),
-          const ApplicationTitlebarCloseButton(),
+          const ApplicationTitlebarWindowButtons(),
           const SizedBox(width: 6)
         ];
       }
@@ -52,7 +52,7 @@ class ApplicationTitlebar extends ConsumerWidget {
           height: 24,
           child: VerticalDivider(width: 32),
         ),
-        const ApplicationTitlebarCloseButton(),
+        const ApplicationTitlebarWindowButtons(),
         const SizedBox(width: 6)
       ];
     }
