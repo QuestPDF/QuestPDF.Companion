@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:questpdf_companion/areas/application/widgets/application_communication_error.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../../shared/keyboard_shortcuts.dart';
@@ -23,8 +22,6 @@ class ApplicationLayout extends ConsumerWidget {
       if (currentMode == ApplicationMode.documentPreview) return const DocumentPreviewWithHierarchyView();
 
       if (currentMode == ApplicationMode.genericException) return const GenericExceptionViewLayout();
-
-      if (currentMode == ApplicationMode.communicationError) return const ApplicationCommunicationError();
 
       return const WelcomeViewLayout();
     }

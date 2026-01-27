@@ -33,12 +33,15 @@ class CommunicationService {
     try {
       await startServer(port);
     } catch (e) {
-      applicationStateProviderInstance.changeMode(ApplicationMode.communicationError);
+      applicationStateProviderInstance.changeCommunicationStatus(CommunicationStatus.error);
     }
   }
 
   Future startServer(int port) async {
+    await Future.delayed(Duration(seconds: 1));
+
     server = await HttpServer.bind(InternetAddress.loopbackIPv4, port);
+    applicationStateProviderInstance.changeCommunicationStatus(CommunicationStatus.active);
 
     await for (HttpRequest request in server!) {
       if (request.uri.path == '/ping' && request.method == 'GET') _handlePingRequest(request);

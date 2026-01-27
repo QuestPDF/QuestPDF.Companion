@@ -15,14 +15,13 @@ class WelcomeViewButton extends StatelessWidget {
         child: InkWell(
             onTap: onClick,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(icon, size: 24, color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  const SizedBox(width: 16),
-                  Flexible(
-                    child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
-                  ),
+                  Icon(icon, size: 16, color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  const SizedBox(width: 10),
+                  Text(title, style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ),
             )));

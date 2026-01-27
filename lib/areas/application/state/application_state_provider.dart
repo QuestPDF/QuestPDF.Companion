@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final applicationStateProviderInstance = ApplicationStateProvider();
 final applicationStateProvider = ChangeNotifierProvider((ref) => applicationStateProviderInstance);
 
-enum ApplicationMode { welcomeScreen, documentPreview, genericException, communicationError }
+enum ApplicationMode { welcomeScreen, documentPreview, genericException }
+
+enum CommunicationStatus { starting, active, error }
 
 enum CodeEditor { rider, visualCode, visualStudio }
 
@@ -25,6 +27,7 @@ class ApplicationStateProvider extends ChangeNotifier {
   bool showDocumentHierarchy = true;
   int communicationPort = communicationServiceDefaultPort;
   LicenseType? currentLicense;
+  CommunicationStatus communicationStatus = CommunicationStatus.starting;
   bool isComplexDocument = false;
   bool isDocumentHotReloaded = false;
 
@@ -65,16 +68,24 @@ class ApplicationStateProvider extends ChangeNotifier {
   }
 
   Future changeCommunicationPort(String portText) async {
-    final newPort = int.tryParse(portText)?.clamp(1024, 65535) ?? communicationServiceDefaultPort;
+    final newPort = int.tryParse(portText)?.clamp(0, 65535) ?? communicationServiceDefaultPort;
 
     if (communicationPort == newPort) return;
 
     communicationPort = newPort;
+    communicationStatus = CommunicationStatus.starting;
     _prefs?.setInt('communicationPort', communicationPort);
 
     await communicationServiceInstance.stopServer();
     communicationServiceInstance.tryToStartTheServer(communicationPort);
 
+    notifyListeners();
+  }
+
+  void changeCommunicationStatus(CommunicationStatus status) {
+    if (communicationStatus == status) return;
+
+    communicationStatus = status;
     notifyListeners();
   }
 

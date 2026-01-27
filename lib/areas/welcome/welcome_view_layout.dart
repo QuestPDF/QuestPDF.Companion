@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_button.dart';
-import 'package:questpdf_companion/areas/welcome/welcome_view_header.dart';
+import 'package:questpdf_companion/areas/welcome/welcome_view_port_card.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,24 +16,28 @@ class WelcomeViewLayout extends StatelessWidget {
         child: Center(
           child: Container(
             margin: const EdgeInsets.all(24),
-            constraints: const BoxConstraints(maxWidth: 275),
+            constraints: const BoxConstraints(maxWidth: 500),
             child: Column(children: [
-              const WelcomeViewHeader(),
-              const SizedBox(height: 32),
-              WelcomeViewButton(
-                  title: "Introduction",
-                  icon: FontAwesomeIcons.rocket,
-                  onClick: () => openUrl("https://www.questpdf.com/companion/usage.html")),
-              const SizedBox(height: 8),
-              WelcomeViewButton(
-                  title: "Application Features",
-                  icon: FontAwesomeIcons.book,
-                  onClick: () => openUrl("https://www.questpdf.com/companion/features.html")),
-              const SizedBox(height: 8),
-              WelcomeViewButton(
-                  title: "Software License",
-                  icon: FontAwesomeIcons.certificate,
-                  onClick: () => openUrl("https://www.questpdf.com/license/")),
+              const WelcomeViewPortCard(),
+              const SizedBox(height: 24),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  WelcomeViewButton(
+                      title: "Introduction",
+                      icon: FontAwesomeIcons.rocket,
+                      onClick: () => openUrl("https://www.questpdf.com/companion/usage.html")),
+                  WelcomeViewButton(
+                      title: "Features",
+                      icon: FontAwesomeIcons.book,
+                      onClick: () => openUrl("https://www.questpdf.com/companion/features.html")),
+                  WelcomeViewButton(
+                      title: "License",
+                      icon: FontAwesomeIcons.certificate,
+                      onClick: () => openUrl("https://www.questpdf.com/license/")),
+                ],
+              ),
               const SizedBox(height: 16),
               const WelcomeViewVersion()
             ]),
