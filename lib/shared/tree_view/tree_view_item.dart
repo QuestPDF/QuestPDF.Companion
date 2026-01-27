@@ -151,11 +151,13 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     final hintEmphasis = isHovered || node.isSelected;
     final hintColor = theme.colorScheme.onSurface.withAlpha(hintEmphasis ? highEmphasisOpacity : lowEmphasisOpacity);
 
+    final labelFontWeight = node.isSelected ? FontWeightOptimizedForOperatingSystem.bold : null;
+
     final showHint = node.hint != null && (node.isHintImportant || isHovered || node.isSelected);
 
     return RichText(
         text: TextSpan(children: [
-          TextSpan(text: node.label, style: targetLabelStyle.copyWith(color: labelColor)),
+          TextSpan(text: node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight)),
           const WidgetSpan(child: SizedBox(width: 16)),
           if (showHint) TextSpan(text: node.hint, style: hintStyle.copyWith(color: hintColor))
         ]),

@@ -38,4 +38,9 @@ class FontAwesomeIcons {
   static final IconData moon = icon(0xf186);
   static final IconData rocket = icon(0xf135);
   static final IconData gear = icon(0xf013);
+
+  // Element details
+  static final IconData elementPage = icon(0xf15b);
+  static final IconData elementPosition = icon(0xf05b);
+  static final IconData elementSize = icon(0xf065);
 }

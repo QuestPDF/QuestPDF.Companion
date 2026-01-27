@@ -59,19 +59,28 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     final layoutErrorSection = buildLayoutErrorMeasurementSection(theme, layoutError, selectedElement);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Wrap(
         direction: Axis.horizontal,
         crossAxisAlignment: WrapCrossAlignment.center,
-        spacing: 64,
-        runSpacing: 8,
+        spacing: 48,
+        runSpacing: 16,
         children: [navigationSection, ...(hasLayoutErrors ? layoutErrorSection : layoutSection)],
       ),
     );
   }
 
-  Widget buildDetailsSection(String tooltip, String value) {
-    return Tooltip(message: tooltip, child: Text(value));
+  Widget buildDetailsSection(IconData icon, String value, String tooltip) {
+    return Tooltip(
+        message: tooltip,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16),
+            const SizedBox(width: 12),
+            Text(value),
+          ],
+        ));
   }
 
   List<Widget> buildLayoutSection(
@@ -88,21 +97,22 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
       final min = pages.reduce((a, b) => a < b ? a : b);
       final max = pages.reduce((a, b) => a > b ? a : b);
 
-      return "C: $current\nR: $min-$max";
+      return "$current ($min-$max)";
     }
 
     String formatSize() {
-      return "W: ${location.width.toStringAsFixed(1)}\nH: ${location.height.toStringAsFixed(1)}";
+      return "${location.width.toStringAsFixed(1)} x ${location.height.toStringAsFixed(1)}";
     }
 
     String formatPosition() {
-      return "X: ${location.left.toStringAsFixed(1)}\nY: ${location.top.toStringAsFixed(1)}";
+      return "${location.left.toStringAsFixed(1)} / ${location.top.toStringAsFixed(1)}";
     }
 
     return [
-      buildDetailsSection("Element page visibility:\nC = current page\nR = page range", formatPages()),
-      buildDetailsSection("Element position", formatPosition()),
-      buildDetailsSection("Element size:\nW = width\nH = height", formatSize()),
+      buildDetailsSection(
+          FontAwesomeIcons.elementPage, formatPages(), "Selected element page visibility:\ncurrent page (min-max)"),
+      buildDetailsSection(FontAwesomeIcons.elementPosition, formatPosition(), "Selected element position"),
+      buildDetailsSection(FontAwesomeIcons.elementSize, formatSize(), "Selected element size"),
     ];
   }
 
@@ -164,11 +174,19 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
   Widget buildNavigationSection(BuildContext context, DocumentHierarchyElement selectedElement) {
     final enablePositionButtons = selectedElement.pageLocations.length != 1;
-    final theme = Theme.of(context);
+    final showElementName = !ref.watch(applicationStateProvider.select((x) => x.showDocumentHierarchy));
 
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
+        MouseRegion(
+          onEnter: (_) => setState(() => showSourceCodePreview = true),
+          onExit: (_) => setState(() => showSourceCodePreview = false),
+          child: IconButton(
+              icon: Icon(FontAwesomeIcons.terminal, size: 16),
+              visualDensity: VisualDensity.compact,
+              onPressed: () => tryToOpenInCodeEditor(context)),
+        ),
         IconButton(
             icon: Icon(FontAwesomeIcons.arrowUp, size: 16),
             visualDensity: VisualDensity.compact,
@@ -183,16 +201,10 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
             onPressed: enablePositionButtons
                 ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
                 : null),
-        MouseRegion(
-          onEnter: (_) => setState(() => showSourceCodePreview = true),
-          onExit: (_) => setState(() => showSourceCodePreview = false),
-          child: IconButton(
-              icon: Icon(FontAwesomeIcons.terminal, size: 16),
-              visualDensity: VisualDensity.compact,
-              onPressed: () => tryToOpenInCodeEditor(context)),
-        ),
-        const SizedBox(width: 24),
-        Text(selectedElement.elementType, style: theme.textTheme.titleSmall),
+        if (showElementName) ...[
+          const SizedBox(width: 12),
+          Text(selectedElement.elementType, style: Theme.of(context).textTheme.titleSmall)
+        ]
       ],
     );
   }
@@ -274,14 +286,16 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     Widget? buildAvailableSpace() {
       if (measurement == null) return null;
 
-      return buildDetailsSection("Available space:\nW = width\nH = height", formatSize(measurement.availableSpace));
+      return buildDetailsSection(
+          FontAwesomeIcons.desktop, formatSize(measurement.availableSpace), "Available space for selected element");
     }
 
     Widget? buildRequestedSpace() {
       if (measurement == null) return null;
       if (measurement.spacePlanType == SpacePlanType.wrap) return null;
 
-      return buildDetailsSection("Requested space:\nW = width\nH = height", formatSize(measurement.measurementSize));
+      return buildDetailsSection(
+          FontAwesomeIcons.desktop, formatSize(measurement.measurementSize), "Requested space for selected element");
     }
 
     return [buildAvailableSpace(), buildRequestedSpace(), buildMeasurementStatus()].whereNotNull();
