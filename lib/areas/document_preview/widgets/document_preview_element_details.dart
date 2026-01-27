@@ -238,7 +238,7 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     String formatSize(ElementSize? size) {
       if (size == null) return "-";
-      return "W: ${size.width.toStringAsFixed(1)}\nH: ${size.height.toStringAsFixed(1)}";
+      return "${size.width.toStringAsFixed(1)} x ${size.height.toStringAsFixed(1)}";
     }
 
     String formatSpacePlanType() {
@@ -258,6 +258,7 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
       return Container(
         width: indicatorSize,
         height: indicatorSize,
+        margin: EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
           color: measurement.getAnnotationColor(),
           borderRadius: const BorderRadius.all(Radius.circular(indicatorSize)),
@@ -267,6 +268,9 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     }
 
     Widget buildMeasurementStatus() {
+      final hasWrapReason = measurement?.wrapReason != null && measurement!.wrapReason!.isNotEmpty;
+      final spacePlanTypeStyle = hasWrapReason ? theme.textTheme.bodySmall : null;
+
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -275,8 +279,8 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(formatSpacePlanType(), style: theme.textTheme.bodySmall),
-              if (measurement?.wrapReason != null) Text(measurement?.wrapReason ?? "", style: theme.textTheme.bodySmall),
+              Text(formatSpacePlanType(), style: spacePlanTypeStyle),
+              if (hasWrapReason) Text(measurement?.wrapReason ?? "", style: theme.textTheme.bodySmall),
             ],
           ),
         ],
@@ -286,16 +290,16 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     Widget? buildAvailableSpace() {
       if (measurement == null) return null;
 
-      return buildDetailsSection(
-          FontAwesomeIcons.desktop, formatSize(measurement.availableSpace), "Available space for selected element");
+      return buildDetailsSection(FontAwesomeIcons.elementAvailableSpace, formatSize(measurement.availableSpace),
+          "Available space for selected element");
     }
 
     Widget? buildRequestedSpace() {
       if (measurement == null) return null;
       if (measurement.spacePlanType == SpacePlanType.wrap) return null;
 
-      return buildDetailsSection(
-          FontAwesomeIcons.desktop, formatSize(measurement.measurementSize), "Requested space for selected element");
+      return buildDetailsSection(FontAwesomeIcons.elementRequiredSpace, formatSize(measurement.measurementSize),
+          "Requested space for selected element");
     }
 
     return [buildAvailableSpace(), buildRequestedSpace(), buildMeasurementStatus()].whereNotNull();

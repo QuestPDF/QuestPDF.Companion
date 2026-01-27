@@ -43,4 +43,6 @@ class FontAwesomeIcons {
   static final IconData elementPage = icon(0xf15b);
   static final IconData elementPosition = icon(0xf05b);
   static final IconData elementSize = icon(0xf065);
+  static final IconData elementAvailableSpace = icon(0xf065);
+  static final IconData elementRequiredSpace = icon(0xf31d);
 }
