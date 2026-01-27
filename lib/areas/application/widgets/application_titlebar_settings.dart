@@ -33,17 +33,15 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
     }
 
     Widget buildRadioOption<T>(T value, String label) {
-      return SizedBox(
-          height: 32,
-          child: RadioListTile<T>(
-            value: value,
-            title: Text(label, style: labelTextStyle),
-            dense: true,
-            visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-            contentPadding: EdgeInsets.zero,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ));
+      return RadioListTile<T>(
+        value: value,
+        title: Text(label, style: labelTextStyle),
+        dense: true,
+        visualDensity: const VisualDensity(vertical: -4),
+        contentPadding: EdgeInsets.zero,
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      );
     }
 
     Widget buildThemeModeSection() {
@@ -58,6 +56,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
             child: Transform.translate(
               offset: Offset(-6, 0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   buildRadioOption(ThemeMode.system, 'System'),
                   buildRadioOption(ThemeMode.light, 'Light'),
@@ -83,6 +82,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
             child: Transform.translate(
               offset: Offset(-6, 0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: CodeEditor.values.map((x) => buildRadioOption(x, getEditorName(x))).toList(),
               ),
             ),
