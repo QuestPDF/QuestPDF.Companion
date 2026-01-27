@@ -46,7 +46,7 @@ class ApplicationTitlebarCard extends ConsumerWidget {
         child: Card(
           elevation: 8,
           child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,15 +55,15 @@ class ApplicationTitlebarCard extends ConsumerWidget {
                   const SizedBox(height: 8),
                   ...content.flatMap((x) => [
                         Text(x, style: contentStyle),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                       ]),
                   if (actions.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: actions.map((action) {
                         return Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                          padding: const EdgeInsets.only(left: 12),
                           child:
                               OutlinedButton(onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
                         );

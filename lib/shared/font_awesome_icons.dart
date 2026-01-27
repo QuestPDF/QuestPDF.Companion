@@ -25,6 +25,7 @@ class FontAwesomeIcons {
   static final IconData error = icon(0xf321);
 
   // General icons
+  static final IconData sidePanel = icon(0xe24e);
   static final IconData speed = icon(0xf628);
   static final IconData book = icon(0xf02d);
   static final IconData feedback = icon(0xf4aa);
