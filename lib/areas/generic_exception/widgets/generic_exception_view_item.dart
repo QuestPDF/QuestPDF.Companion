@@ -30,7 +30,7 @@ class GenericExceptionViewItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(type, style: descriptionTextStyle),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Text(message, style: titleTextStyle),
             ],
           ),
