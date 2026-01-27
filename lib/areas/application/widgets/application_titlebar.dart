@@ -20,9 +20,7 @@ class ApplicationTitlebar extends ConsumerWidget {
     final currentMode = ref.watch(applicationStateProvider.select((x) => x.currentMode));
 
     List<Widget> build() {
-      if (currentMode == ApplicationMode.welcomeScreen ||
-          currentMode == ApplicationMode.communicationError ||
-          currentMode == ApplicationMode.settings) {
+      if (currentMode == ApplicationMode.welcomeScreen || currentMode == ApplicationMode.communicationError) {
         return [
           const SizedBox(width: 12),
           const ApplicationTitlebarLogo(),

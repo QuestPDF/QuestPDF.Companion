@@ -5,7 +5,6 @@ import 'package:questpdf_companion/areas/welcome/welcome_view_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../shared/font_awesome_icons.dart';
-import '../application/state/application_state_provider.dart';
 
 class WelcomeViewLayout extends StatelessWidget {
   const WelcomeViewLayout({super.key});
@@ -35,11 +34,6 @@ class WelcomeViewLayout extends StatelessWidget {
                   title: "Software License",
                   icon: FontAwesomeIcons.certificate,
                   onClick: () => openUrl("https://www.questpdf.com/license/")),
-              const SizedBox(height: 8),
-              WelcomeViewButton(
-                  title: "Settings",
-                  icon: FontAwesomeIcons.gear,
-                  onClick: () => applicationStateProviderInstance.changeMode(ApplicationMode.settings)),
               const SizedBox(height: 16),
               const WelcomeViewVersion()
             ]),

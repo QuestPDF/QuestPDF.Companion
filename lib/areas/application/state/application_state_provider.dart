@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final applicationStateProviderInstance = ApplicationStateProvider();
 final applicationStateProvider = ChangeNotifierProvider((ref) => applicationStateProviderInstance);
 
-enum ApplicationMode { welcomeScreen, settings, documentPreview, genericException, communicationError }
+enum ApplicationMode { welcomeScreen, documentPreview, genericException, communicationError }
 
 enum CodeEditor { rider, visualCode, visualStudio }
 

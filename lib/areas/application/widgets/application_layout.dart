@@ -6,7 +6,6 @@ import 'package:window_manager/window_manager.dart';
 import '../../../shared/keyboard_shortcuts.dart';
 import '../../document_preview_with_hierarchy_view.dart';
 import '../../generic_exception/widgets/generic_exception_view_layout.dart';
-import '../../settings/settings_view_layout.dart';
 import '../../welcome/welcome_view_layout.dart';
 import '../state/application_state_provider.dart';
 import 'application_titlebar.dart';
@@ -21,8 +20,6 @@ class ApplicationLayout extends ConsumerWidget {
     final currentMode = ref.watch(applicationStateProvider.select((x) => x.currentMode));
 
     Widget getCurrentView() {
-      if (currentMode == ApplicationMode.settings) return const SettingsViewLayout();
-
       if (currentMode == ApplicationMode.documentPreview) return const DocumentPreviewWithHierarchyView();
 
       if (currentMode == ApplicationMode.genericException) return const GenericExceptionViewLayout();
