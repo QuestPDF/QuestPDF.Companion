@@ -746,7 +746,12 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.drawRect(measurementPoint.relatedRect, relatedRectangleBorderPaint);
 
     // build text
-    final paragraphStyle = ParagraphStyle(textAlign: TextAlign.start, fontSize: 14, maxLines: 10, height: 1.5);
+    final paragraphStyle = ParagraphStyle(
+        textAlign: TextAlign.start,
+        fontSize: 14,
+        maxLines: 10,
+        height: 1.75,
+        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false));
 
     final labelStyle = ui.TextStyle(color: Colors.white.withAlpha(196));
     final valueStyle = ui.TextStyle(color: Colors.white);
@@ -774,7 +779,16 @@ class DocumentPreviewPainter extends CustomPainter {
     paragraph.layout(const ui.ParagraphConstraints(width: 300));
 
     final paragraphSize = Rect.fromLTWH(0, 0, paragraph.maxIntrinsicWidth, paragraph.height);
-    final textArea = paragraphSize.inflate(5);
+
+    const paddingVertical = 8;
+    const paddingHorizontal = 12;
+
+    final tooltipArea = Rect.fromLTRB(
+      paragraphSize.left - paddingHorizontal,
+      paragraphSize.top - paddingVertical,
+      paragraphSize.right + paddingHorizontal,
+      paragraphSize.bottom + paddingVertical,
+    );
 
     // draw label
     final labelPaint = Paint()
@@ -786,9 +800,8 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.save();
     canvas.translate(center.dx, center.dy);
     canvas.scale(1 / scale);
-    canvas.translate(-paragraphSize.width / 2, -paragraph.height / 2);
-    canvas.translate(60, 0);
-    canvas.drawRRect(ui.RRect.fromRectAndRadius(textArea, const ui.Radius.circular(4)), labelPaint);
+    canvas.translate(paddingHorizontal * 3, -tooltipArea.height / 2);
+    canvas.drawRRect(ui.RRect.fromRectAndRadius(tooltipArea, const ui.Radius.circular(6)), labelPaint);
     canvas.drawParagraph(paragraph, const ui.Offset(0, 0));
     canvas.restore();
   }
@@ -873,7 +886,16 @@ class DocumentPreviewPainter extends CustomPainter {
     paragraph.layout(const ui.ParagraphConstraints(width: 100));
 
     final paragraphSize = Rect.fromLTWH(0, 0, paragraph.maxIntrinsicWidth, paragraph.height);
-    final labelRect = paragraphSize.inflate(5);
+
+    const paddingVertical = 8;
+    const paddingHorizontal = 12;
+
+    final tooltipArea = Rect.fromLTRB(
+      paragraphSize.left - paddingHorizontal,
+      paragraphSize.top - paddingVertical,
+      paragraphSize.right + paddingHorizontal,
+      paragraphSize.bottom + paddingVertical,
+    );
 
     // offset label when measurement line is small compared to label
     const labelOffsetAxis = 10;
@@ -883,12 +905,12 @@ class DocumentPreviewPainter extends CustomPainter {
 
     if (isVertical) {
       labelPosition = Offset(axis.begin.dx, pointerLocation!.y);
-      labelOffset = Offset(-labelRect.width / 2 - labelOffsetAxis, 0);
+      labelOffset = Offset(-tooltipArea.width / 2 - labelOffsetAxis, 0);
     }
 
     if (!isVertical) {
       labelPosition = Offset(pointerLocation!.x, axis.begin.dy);
-      labelOffset = Offset(0, -labelRect.height / 2 - labelOffsetAxis);
+      labelOffset = Offset(0, -tooltipArea.height / 2 - labelOffsetAxis);
     }
 
     // draw label
@@ -901,7 +923,7 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.scale(1 / scale);
     canvas.translate(-paragraphSize.width / 2, -paragraph.height / 2);
     canvas.translate(labelOffset.dx, labelOffset.dy);
-    canvas.drawRRect(ui.RRect.fromRectAndRadius(labelRect, const ui.Radius.circular(4)), labelPaint);
+    canvas.drawRRect(ui.RRect.fromRectAndRadius(tooltipArea, const ui.Radius.circular(6)), labelPaint);
     canvas.drawParagraph(paragraph, const ui.Offset(0, 0));
     canvas.restore();
   }
