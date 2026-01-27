@@ -55,7 +55,7 @@ class ApplicationLayout extends ConsumerWidget {
     return Stack(
       children: [
         const KeyboardShortcuts(),
-        Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor, appBar: appBar, body: getCurrentView()),
+        Scaffold(backgroundColor: Theme.of(context).colorScheme.surfaceContainer, appBar: appBar, body: getCurrentView()),
         windowMoveableArea
       ],
     );

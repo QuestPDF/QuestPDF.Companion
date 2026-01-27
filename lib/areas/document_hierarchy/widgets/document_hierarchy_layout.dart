@@ -66,28 +66,31 @@ class DocumentHierarchyLayout extends ConsumerWidget {
           selectedElementContent: hierarchy.selectedElement);
     }
 
-    return Column(
-      children: [
-        Visibility(
-          visible: showSearch,
-          child: DocumentHierarchySearch(),
-        ),
-        Visibility(
-          visible: layoutErrorState.containsLayoutError,
-          child: DocumentHierarchyLayoutErrorNotification(),
-        ),
-        if (showSearch || layoutErrorState.containsLayoutError)
-          Divider(
-            height: 1,
-            color: Theme.of(context).dividerColor.withAlpha(64),
+    return Container(
+      color: Theme.of(context).cardColor,
+      child: Column(
+        children: [
+          Visibility(
+            visible: showSearch,
+            child: DocumentHierarchySearch(),
           ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsetsGeometry.only(right: 4),
-            child: buildTreeView(),
+          Visibility(
+            visible: layoutErrorState.containsLayoutError,
+            child: DocumentHierarchyLayoutErrorNotification(),
           ),
-        ),
-      ],
+          if (showSearch || layoutErrorState.containsLayoutError)
+            Divider(
+              height: 1,
+              color: Theme.of(context).dividerColor.withAlpha(64),
+            ),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsetsGeometry.only(right: 4),
+              child: buildTreeView(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

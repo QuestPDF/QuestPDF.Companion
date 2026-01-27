@@ -44,6 +44,7 @@ class ApplicationTitlebarCard extends ConsumerWidget {
       return Container(
         constraints: const BoxConstraints(maxWidth: 300),
         child: Card(
+          color: Theme.of(context).cardColor,
           elevation: 8,
           child: Padding(
               padding: const EdgeInsets.all(20),

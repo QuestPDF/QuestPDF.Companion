@@ -124,6 +124,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
       return Container(
         constraints: const BoxConstraints(maxWidth: 350),
         child: Card(
+          color: Theme.of(context).cardColor,
           elevation: 8,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

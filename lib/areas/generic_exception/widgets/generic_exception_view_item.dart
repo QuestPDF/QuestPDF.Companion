@@ -20,8 +20,7 @@ class GenericExceptionViewItem extends StatelessWidget {
           Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer);
 
       final descriptionTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Theme.of(context).colorScheme.onErrorContainer,
-          fontWeight: FontWeightOptimizedForOperatingSystem.normal);
+          color: Theme.of(context).colorScheme.onErrorContainer, fontWeight: FontWeightOptimizedForOperatingSystem.normal);
 
       return Container(
         color: Theme.of(context).colorScheme.errorContainer,
@@ -42,6 +41,7 @@ class GenericExceptionViewItem extends StatelessWidget {
     final firstFrameWithSourceCode = stackTrace.where((x) => x.fileName != null && x.lineNumber != null).firstOrNull;
 
     return Card(
+      color: Theme.of(context).cardColor,
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

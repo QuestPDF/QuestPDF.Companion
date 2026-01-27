@@ -96,6 +96,7 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
           child: Column(children: [
             Row(children: [
               Expanded(child: buildStackFrameDescription()),
+              const SizedBox(width: 20),
               buildSourceCodeVisibilityButton(),
             ]),
             buildFileVisualization(),

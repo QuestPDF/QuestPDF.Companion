@@ -11,6 +11,7 @@ class WelcomeViewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         clipBehavior: Clip.hardEdge,
+        color: Theme.of(context).cardColor,
         child: InkWell(
             onTap: onClick,
             child: Padding(
