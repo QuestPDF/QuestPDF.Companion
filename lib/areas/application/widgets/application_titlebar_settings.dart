@@ -122,7 +122,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
 
     Widget buildTooltipContent() {
       return Container(
-        constraints: const BoxConstraints(maxWidth: 300),
+        constraints: const BoxConstraints(maxWidth: 350),
         child: Card(
           elevation: 8,
           shape: RoundedRectangleBorder(
