@@ -46,7 +46,7 @@ Future tryOpenSourceCodePathInEditor(BuildContext context, CodeEditor editor, St
 String getEditorName(CodeEditor editor) {
   if (editor == CodeEditor.rider) return 'Rider';
 
-  if (editor == CodeEditor.visualCode) return 'Visual Code';
+  if (editor == CodeEditor.visualCode) return 'VS Code';
 
   if (editor == CodeEditor.visualStudio) return 'Visual Studio';
 
