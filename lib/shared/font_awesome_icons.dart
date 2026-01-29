@@ -18,25 +18,15 @@ class FontAwesomeIcons {
   static final IconData chevronUp = icon(0xf077);
   static final IconData chevronDown = icon(0xf078);
 
-  // Panels
-  static final IconData sidebarLeft = icon(0xf013);
-  static final IconData sidebarRight = icon(0xf013);
-  static final IconData search = icon(0xf002);
-  static final IconData error = icon(0xf321);
-
   // General icons
-  static final IconData sidePanel = icon(0xe24e);
+  static final IconData search = icon(0xf002);
   static final IconData speed = icon(0xf628);
   static final IconData book = icon(0xf02d);
-  static final IconData feedback = icon(0xf4aa);
   static final IconData codeNavigation = icon(0xf121);
   static final IconData layoutError = icon(0xe290);
-  static final IconData certificate = icon(0xf007);
+  static final IconData license = icon(0xf007);
   static final IconData cloudArrowUp = icon(0xf0ee);
   static final IconData terminal = icon(0xe212);
-  static final IconData desktop = icon(0xf108);
-  static final IconData sun = icon(0xf185);
-  static final IconData moon = icon(0xf186);
   static final IconData rocket = icon(0xf135);
   static final IconData gear = icon(0xf013);
 

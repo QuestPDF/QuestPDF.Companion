@@ -20,7 +20,7 @@ class ApplicationTitlebarLicense extends ConsumerWidget {
 
     return ApplicationTitlebarCard(
       isVisible: true,
-      icon: FontAwesomeIcons.certificate,
+      icon: FontAwesomeIcons.license,
       emphasized: true,
       emphasisColor: licenseDetails.indicatorColor,
       title: "Your License: ${licenseDetails.title}",

@@ -67,9 +67,11 @@ class ApplicationStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future changeCommunicationPort(String portText) async {
-    final newPort = int.tryParse(portText)?.clamp(0, 65535) ?? communicationServiceDefaultPort;
+  static int sanitizePortNumber(String portText) {
+    return int.tryParse(portText)?.clamp(0, 65535) ?? communicationServiceDefaultPort;
+  }
 
+  Future changeCommunicationPort(int newPort) async {
     if (communicationPort == newPort) return;
 
     communicationPort = newPort;

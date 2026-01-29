@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_button.dart';
-import 'package:questpdf_companion/areas/welcome/welcome_view_port_card.dart';
 import 'package:questpdf_companion/areas/welcome/welcome_view_version.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,39 +10,46 @@ class WelcomeViewLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Center(
-      child: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.all(24),
-            constraints: const BoxConstraints(maxWidth: 500),
-            child: Column(children: [
-              const WelcomeViewPortCard(),
+      child: SizedBox(
+        width: 235,
+        child: IntrinsicHeight(
+          child: Column(
+            children: [
+              Text("Companion App", style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: 24),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: [
-                  WelcomeViewButton(
-                      title: "Introduction",
-                      icon: FontAwesomeIcons.rocket,
-                      onClick: () => openUrl("https://www.questpdf.com/companion/usage.html")),
-                  WelcomeViewButton(
-                      title: "Features",
-                      icon: FontAwesomeIcons.book,
-                      onClick: () => openUrl("https://www.questpdf.com/companion/features.html")),
-                  WelcomeViewButton(
-                      title: "License",
-                      icon: FontAwesomeIcons.certificate,
-                      onClick: () => openUrl("https://www.questpdf.com/license/")),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const WelcomeViewVersion()
-            ]),
+              _buildResourcesSection(theme),
+              const SizedBox(height: 32),
+              const WelcomeViewVersion(),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildResourcesSection(ThemeData theme) {
+    return Column(
+      spacing: 8,
+      children: [
+        WelcomeViewButton(
+          label: "Quick Start",
+          icon: FontAwesomeIcons.rocket,
+          onClick: () => openUrl("https://www.questpdf.com/companion/usage.html"),
+        ),
+        WelcomeViewButton(
+          label: "App features",
+          icon: FontAwesomeIcons.book,
+          onClick: () => openUrl("https://www.questpdf.com/companion/features.html"),
+        ),
+        WelcomeViewButton(
+          label: "License",
+          icon: FontAwesomeIcons.license,
+          onClick: () => openUrl("https://www.questpdf.com/license/"),
+        ),
+      ],
     );
   }
 
