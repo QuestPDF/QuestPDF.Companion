@@ -98,8 +98,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
     Widget buildDocumentHierarchySection() {
       return Row(
         children: [
-          Text("Show document hierarchy", style: categoryTextStyle),
-          const SizedBox(width: 12),
+          Expanded(child: Text("Show document hierarchy", style: categoryTextStyle)),
           SizedBox(
             height: 24,
             child: FittedBox(
@@ -205,16 +204,62 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
     provider.changeCommunicationPort(finalPort);
   }
 
+  Color _getStatusColor(CommunicationStatus status) {
+    switch (status) {
+      case CommunicationStatus.starting:
+        return Colors.grey;
+      case CommunicationStatus.active:
+        return Colors.green;
+      case CommunicationStatus.error:
+        return Colors.red;
+    }
+  }
+
+  String _getStatusTooltip(CommunicationStatus status) {
+    switch (status) {
+      case CommunicationStatus.starting:
+        return 'Changing port';
+      case CommunicationStatus.active:
+        return 'Active and listening';
+      case CommunicationStatus.error:
+        return 'The port may already be in use. Please try a different one';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final canBeEdited = ref.watch(
-      applicationStateProvider.select((x) => x.currentMode == ApplicationMode.welcomeScreen),
-    );
+
+    final canBeEdited = ref.watch(applicationStateProvider.select((x) => x.currentMode == ApplicationMode.welcomeScreen));
+    final communicationStatus = ref.watch(applicationStateProvider.select((x) => x.communicationStatus));
 
     return Row(
       children: [
-        Text("Connection port", style: theme.textTheme.titleSmall),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Connection port", style: theme.textTheme.titleSmall),
+            Row(
+              children: [
+                Container(
+                  width: 8,
+                  height: 8,
+                  margin: const EdgeInsets.only(top: 1, left: 1),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _getStatusColor(communicationStatus),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                SizedBox(
+                  width: 200,
+                  child: Text(_getStatusTooltip(communicationStatus),
+                      style: theme.textTheme.bodySmall?.copyWith(color: _getStatusColor(communicationStatus))),
+                ),
+              ],
+            ),
+          ],
+        ),
         const Spacer(),
         SizedBox(
           width: 65,
