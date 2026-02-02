@@ -8,6 +8,10 @@ releases:
         package:
           platform: linux
           target: deb
+      - name: linux-rpm
+        package:
+          platform: linux
+          target: rpm
       - name: macos-dmg
         package:
           platform: macos
@@ -15,4 +19,4 @@ releases:
       - name: windows-msix
         package:
           platform: windows
-          target: exe
+          target: msix
