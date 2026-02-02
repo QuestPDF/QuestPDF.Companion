@@ -215,7 +215,9 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
     }
   }
 
-  String _getStatusTooltip(CommunicationStatus status) {
+  String _getStatusTooltip(bool isConnected, CommunicationStatus status) {
+    if (isConnected) return 'Connected';
+
     switch (status) {
       case CommunicationStatus.starting:
         return 'Changing port';
@@ -230,7 +232,7 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final canBeEdited = ref.watch(applicationStateProvider.select((x) => x.currentMode == ApplicationMode.welcomeScreen));
+    final isConnected = ref.watch(applicationStateProvider.select((x) => x.currentMode != ApplicationMode.welcomeScreen));
     final communicationStatus = ref.watch(applicationStateProvider.select((x) => x.communicationStatus));
 
     return Row(
@@ -253,7 +255,7 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
                 const SizedBox(width: 6),
                 SizedBox(
                   width: 200,
-                  child: Text(_getStatusTooltip(communicationStatus),
+                  child: Text(_getStatusTooltip(isConnected, communicationStatus),
                       style: theme.textTheme.bodySmall?.copyWith(color: _getStatusColor(communicationStatus))),
                 ),
               ],
@@ -265,7 +267,7 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
           width: 65,
           child: TextField(
             controller: _controller,
-            enabled: canBeEdited,
+            enabled: !isConnected,
             style: theme.textTheme.bodyMedium?.copyWith(height: 1),
             keyboardType: TextInputType.number,
             textAlign: TextAlign.end,
