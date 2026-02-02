@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:questpdf_companion/shared/tree_view/tree_view_model.dart';
 
 import '../../typography.dart';
@@ -15,15 +14,15 @@ class TreeViewItem<TContent> extends StatefulWidget {
 }
 
 class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
-  static const double indentationSize = 22;
-  static const double iconSize = 18;
+  static const double indentationSize = 24;
+  static const double iconSize = 16;
   static const double iconSpacing = indentationSize - iconSize;
   static const double annotationSize = 8;
   static const double annotationSpacing = indentationSize - annotationSize;
 
-  static const IconData folderClosedIcon = Symbols.folder_rounded;
-  static const IconData folderOpenIcon = Symbols.folder_open_rounded;
-  static const IconData folderItemIcon = Symbols.keyboard_arrow_right_rounded;
+  static const IconData folderClosedIcon = IconData(0xf07b, fontFamily: "FontAwesome Light");
+  static const IconData folderOpenIcon = IconData(0xf07c, fontFamily: "FontAwesome Light");
+  static const IconData folderItemIcon = IconData(0xf105, fontFamily: "FontAwesome Light");
 
   static TextStyle labelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.normal);
   static TextStyle highlightedLabelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
@@ -78,20 +77,18 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
   Widget buildContentRow() {
     final row = Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [if (node.annotationColor != null) buildAnnotation(), ...buildTree(), Expanded(child: buildLabel())]);
 
     if (!isHovered && !node.isSelected) return row;
 
     return Stack(
       clipBehavior: Clip.none,
-      children: [buildHighlight(), row],
+      children: [buildHighlight(), Center(child: row)],
     );
   }
 
   Widget buildHighlight() {
-    const verticalSpacing = -1.0;
+    const verticalSpacing = 0.0;
     const horizontalSpacing = -6.0;
 
     return Positioned(
@@ -100,8 +97,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
       left: horizontalSpacing,
       right: horizontalSpacing,
       child: Container(
-          decoration:
-              BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8)))),
+          decoration: BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8)))),
     );
   }
 
@@ -129,11 +125,10 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
     return [
       SizedBox(width: indentationLevel * indentationSize),
-      if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 18, color: iconColor),
+      if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 16, color: iconColor),
       if (node.parent?.isFolder ?? false) const SizedBox(width: iconSpacing),
       if (node.isFolder) Icon(folderIcon, size: iconSize, color: iconColor),
-      if (node.isFolder) const SizedBox(width: iconSpacing),
-      buildIcon(iconColor)
+      if (node.isFolder) const SizedBox(width: iconSpacing)
     ];
   }
 
@@ -147,14 +142,6 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
             borderRadius: const BorderRadius.all(Radius.circular(annotationSize))));
   }
 
-  Widget buildIcon(Color color) {
-    if (node.icon == null) {
-      return Container();
-    }
-
-    return Container(margin: const EdgeInsets.only(right: iconSpacing), child: Icon(node.icon, size: 18, color: color));
-  }
-
   Widget buildLabel() {
     final theme = Theme.of(context);
 
@@ -164,11 +151,13 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     final hintEmphasis = isHovered || node.isSelected;
     final hintColor = theme.colorScheme.onSurface.withAlpha(hintEmphasis ? highEmphasisOpacity : lowEmphasisOpacity);
 
+    final labelFontWeight = node.isSelected ? FontWeightOptimizedForOperatingSystem.bold : null;
+
     final showHint = node.hint != null && (node.isHintImportant || isHovered || node.isSelected);
 
     return RichText(
         text: TextSpan(children: [
-          TextSpan(text: node.label, style: targetLabelStyle.copyWith(color: labelColor)),
+          TextSpan(text: node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight)),
           const WidgetSpan(child: SizedBox(width: 16)),
           if (showHint) TextSpan(text: node.hint, style: hintStyle.copyWith(color: hintColor))
         ]),

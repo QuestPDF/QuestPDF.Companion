@@ -14,8 +14,7 @@ PageLocation _$PageLocationFromJson(Map<String, dynamic> json) => PageLocation(
       bottom: (json['bottom'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$PageLocationToJson(PageLocation instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$PageLocationToJson(PageLocation instance) => <String, dynamic>{
       'pageNumber': instance.pageNumber,
       'left': instance.left,
       'top': instance.top,

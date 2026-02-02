@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../shared/font_awesome_icons.dart';
 import '../state/application_state_provider.dart';
 import 'application_titlebar_card.dart';
 
@@ -11,14 +11,12 @@ class ApplicationTitlebarComplexDocumentWarning extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isComplexDocument =
-        ref.watch(applicationStateProvider.select((x) => x.isComplexDocument));
-    const detailsUrl =
-        "https://www.questpdf.com/companion/warnings.html#complex-document";
+    final isComplexDocument = ref.watch(applicationStateProvider.select((x) => x.isComplexDocument));
+    const detailsUrl = "https://www.questpdf.com/companion/warnings.html#complex-document";
 
     return ApplicationTitlebarCard(
       isVisible: isComplexDocument,
-      icon: Symbols.speed_rounded,
+      icon: FontAwesomeIcons.speed,
       emphasized: true,
       emphasisColor: Colors.orange,
       title: "Performance Degraded",

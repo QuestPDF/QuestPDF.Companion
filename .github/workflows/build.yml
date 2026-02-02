@@ -19,8 +19,8 @@ jobs:
         - name: linux
           runs-on: ubuntu-latest
           container: ubuntu:22.04
-        - name: macos
-          runs-on: macos-latest-xlarge
+        # - name: macos (run locally)
+        #   runs-on: macos-latest-xlarge
     
     steps:
     - uses: actions/checkout@v5

@@ -38,18 +38,16 @@ class ApplicationTitlebarCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final titleTextStyle = Theme.of(context).textTheme.titleMedium;
-    final contentStyle = Theme.of(context)
-        .textTheme
-        .bodyMedium
-        ?.copyWith(color: Theme.of(context).colorScheme.outline);
+    final contentStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.outline);
 
     Widget buildTooltipContent() {
       return Container(
         constraints: const BoxConstraints(maxWidth: 300),
         child: Card(
+          color: Theme.of(context).cardColor,
           elevation: 8,
           child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,18 +56,17 @@ class ApplicationTitlebarCard extends ConsumerWidget {
                   const SizedBox(height: 8),
                   ...content.flatMap((x) => [
                         Text(x, style: contentStyle),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                       ]),
                   if (actions.isNotEmpty) ...[
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: actions.map((action) {
                         return Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: OutlinedButton(
-                              onPressed: () => launchUrl(Uri.parse(action.url)),
-                              child: Text(action.label)),
+                          padding: const EdgeInsets.only(left: 12),
+                          child:
+                              OutlinedButton(onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
                         );
                       }).toList(),
                     ),
@@ -81,25 +78,24 @@ class ApplicationTitlebarCard extends ConsumerWidget {
     }
 
     Widget buildIndicatorIcon() {
-      final iconColor = emphasized
-          ? Colors.white
-          : Theme.of(context).colorScheme.onSurfaceVariant;
-      final style = emphasized
-          ? IconButton.styleFrom(backgroundColor: emphasisColor)
-          : IconButton.styleFrom();
+      final buttonStyle = ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          padding: WidgetStateProperty.all(EdgeInsets.zero),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          ),
+          iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) => emphasized ? emphasisColor : null));
+
+      final iconColor = emphasized ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
 
       return Padding(
-        padding: emphasized
-            ? const EdgeInsets.symmetric(horizontal: 4)
-            : EdgeInsets.zero,
+        padding: EdgeInsets.only(left: emphasized ? 16 : 8, right: emphasized ? 2 : 0),
         child: IconButton(
-            icon: Icon(icon, color: iconColor),
-            visualDensity:
-                emphasized ? VisualDensity.compact : VisualDensity.standard,
-            padding: emphasized
-                ? const EdgeInsets.symmetric(vertical: 4, horizontal: 8)
-                : const EdgeInsets.all(0),
-            style: style,
+            icon: Icon(icon, color: iconColor, size: 20),
+            visualDensity: VisualDensity.standard,
+            padding: EdgeInsets.all(4),
+            style: buttonStyle,
             onPressed: onClicked),
       );
     }
@@ -107,8 +103,7 @@ class ApplicationTitlebarCard extends ConsumerWidget {
     return Visibility(
       visible: isVisible,
       child: Tooltip(
-        richMessage:
-            WidgetSpan(child: IntrinsicWidth(child: buildTooltipContent())),
+        richMessage: WidgetSpan(child: IntrinsicWidth(child: buildTooltipContent())),
         padding: EdgeInsets.zero,
         enableTapToDismiss: false,
         decoration: const BoxDecoration(),

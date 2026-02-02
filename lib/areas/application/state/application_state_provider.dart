@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final applicationStateProviderInstance = ApplicationStateProvider();
 final applicationStateProvider = ChangeNotifierProvider((ref) => applicationStateProviderInstance);
 
-enum ApplicationMode { welcomeScreen, settings, documentPreview, genericException, communicationError }
+enum ApplicationMode { welcomeScreen, documentPreview, genericException }
+
+enum CommunicationStatus { starting, active, error }
 
 enum CodeEditor { rider, visualCode, visualStudio }
 
@@ -25,6 +27,7 @@ class ApplicationStateProvider extends ChangeNotifier {
   bool showDocumentHierarchy = true;
   int communicationPort = communicationServiceDefaultPort;
   LicenseType? currentLicense;
+  CommunicationStatus communicationStatus = CommunicationStatus.starting;
   bool isComplexDocument = false;
   bool isDocumentHotReloaded = false;
 
@@ -64,17 +67,27 @@ class ApplicationStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future changeCommunicationPort(String portText) async {
-    final newPort = int.tryParse(portText)?.clamp(1024, 65535) ?? communicationServiceDefaultPort;
+  static int sanitizePortNumber(String portText) {
+    return int.tryParse(portText)?.clamp(0, 65535) ?? communicationServiceDefaultPort;
+  }
 
+  Future changeCommunicationPort(int newPort) async {
     if (communicationPort == newPort) return;
 
     communicationPort = newPort;
+    communicationStatus = CommunicationStatus.starting;
     _prefs?.setInt('communicationPort', communicationPort);
 
     await communicationServiceInstance.stopServer();
     communicationServiceInstance.tryToStartTheServer(communicationPort);
 
+    notifyListeners();
+  }
+
+  void changeCommunicationStatus(CommunicationStatus status) {
+    if (communicationStatus == status) return;
+
+    communicationStatus = status;
     notifyListeners();
   }
 
@@ -89,7 +102,7 @@ class ApplicationStateProvider extends ChangeNotifier {
   }
 
   void checkIfDisplayComplexDocumentWarningBasedOnJsonLength(int size) {
-    isComplexDocument = size > 1000 * 1000;
+    isComplexDocument = size > 5 * 1000 * 1000;
     notifyListeners();
   }
 }

@@ -11,8 +11,7 @@ ElementSize _$ElementSizeFromJson(Map<String, dynamic> json) => ElementSize(
       height: (json['height'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$ElementSizeToJson(ElementSize instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ElementSizeToJson(ElementSize instance) => <String, dynamic>{
       'width': instance.width,
       'height': instance.height,
     };

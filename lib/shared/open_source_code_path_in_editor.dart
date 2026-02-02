@@ -16,8 +16,7 @@ Future openSourceCodePathInEditor(CodeEditor editor, String filePath, int lineNu
 
   if (codeEditor == CodeEditor.visualCode) await shell.run('code -g $filePath:$lineNumber');
 
-  if (codeEditor == CodeEditor.visualStudio)
-    await shell.run('start devenv /Command "Edit.Goto $lineNumber" $filePath');
+  if (codeEditor == CodeEditor.visualStudio) await shell.run('start devenv /Command "Edit.Goto $lineNumber" $filePath');
 }
 
 Future tryOpenSourceCodePathInEditor(BuildContext context, CodeEditor editor, String filePath, int lineNumber) async {
@@ -47,7 +46,7 @@ Future tryOpenSourceCodePathInEditor(BuildContext context, CodeEditor editor, St
 String getEditorName(CodeEditor editor) {
   if (editor == CodeEditor.rider) return 'Rider';
 
-  if (editor == CodeEditor.visualCode) return 'Visual Code';
+  if (editor == CodeEditor.visualCode) return 'VS Code';
 
   if (editor == CodeEditor.visualStudio) return 'Visual Studio';
 

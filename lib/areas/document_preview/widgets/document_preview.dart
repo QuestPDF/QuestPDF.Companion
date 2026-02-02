@@ -284,8 +284,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     if (isControlPressed) {
       Future(() {
-        final location = documentHierarchyProviderInstance
-            .findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
+        final location =
+            documentHierarchyProviderInstance.findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
 
         if (location == null) return;
 
@@ -346,9 +346,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     final currentZoomLevel = calculateZoomLevelFromScale(scale, isHighResolution);
 
-    final neededImages = getVisiblePages(visibleBoxBufferFactor: 1)
-        .map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel))
-        .toList();
+    final neededImages =
+        getVisiblePages(visibleBoxBufferFactor: 1).map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel)).toList();
 
     documentPreviewImageCacheStateInstance.updateNeededImages(neededImages);
   }
@@ -421,8 +420,6 @@ class DocumentPreviewState extends State<DocumentPreview> {
               key: previewKey,
               painter: DocumentPreviewPainter(
                   backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  roundCorners: applicationStateProviderInstance.showDocumentHierarchy ||
-                      documentHierarchySearchStateInstance.searchPhrase != null,
                   translate: translate,
                   scale: scale,
                   visiblePages: getVisiblePages(),
@@ -455,9 +452,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final scrollbarStart = -translate.dy * ratio;
     final scrollbarHeight = renderBox.size.height * ratio + minScrollbarHeight;
 
-    final scrollbarColor = (scrollbarHover || scrollbarMove)
-        ? Theme.of(context).colorScheme.primary
-        : Theme.of(context).colorScheme.outline;
+    final scrollbarColor =
+        (scrollbarHover || scrollbarMove) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline;
 
     return Positioned(
         right: 0,
@@ -483,8 +479,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
               child: Container(
                 width: 8,
                 height: scrollbarHeight,
-                decoration:
-                    BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
+                decoration: BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
               ),
             ),
           ),
@@ -521,7 +516,6 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
 class DocumentPreviewPainter extends CustomPainter {
   final Color backgroundColor;
-  final bool roundCorners;
   final Offset translate;
   final double scale;
   final List<PageDrawingPlan> visiblePages;
@@ -535,7 +529,6 @@ class DocumentPreviewPainter extends CustomPainter {
 
   DocumentPreviewPainter(
       {required this.backgroundColor,
-      required this.roundCorners,
       required this.translate,
       required this.scale,
       required this.visiblePages,
@@ -566,14 +559,12 @@ class DocumentPreviewPainter extends CustomPainter {
     final drawingRect = Rect.fromLTWH(0, 0, drawingAreaSize.width, drawingAreaSize.height);
     final drawingClip = RRect.fromRectAndCorners(drawingRect, topLeft: const Radius.circular(12));
 
-    if (roundCorners) canvas.clipRRect(drawingClip);
-
     canvas.drawRect(drawingRect, backgroundPaint);
   }
 
   void drawMagnification(Canvas canvas, Size drawingAreaSize) {
     const magnificationFactor = 3.0;
-    const magnifierSize = 250.0;
+    const magnifierSize = 300.0;
 
     if (interactionType != PointerHoverInteraction.zoom) return;
 
@@ -682,7 +673,7 @@ class DocumentPreviewPainter extends CustomPainter {
     }
 
     void drawImageWithHighlightBlur() {
-      final blurSigma = 4 + 4 * sqrt(scale);
+      final blurSigma = 4 * sqrt(scale);
 
       final blurPaint = getHighQualityPaint()..imageFilter = ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma);
 
@@ -755,7 +746,12 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.drawRect(measurementPoint.relatedRect, relatedRectangleBorderPaint);
 
     // build text
-    final paragraphStyle = ParagraphStyle(textAlign: TextAlign.start, fontSize: 14, maxLines: 10, height: 1.5);
+    final paragraphStyle = ParagraphStyle(
+        textAlign: TextAlign.start,
+        fontSize: 14,
+        maxLines: 10,
+        height: 1.75,
+        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false));
 
     final labelStyle = ui.TextStyle(color: Colors.white.withAlpha(196));
     final valueStyle = ui.TextStyle(color: Colors.white);
@@ -783,7 +779,16 @@ class DocumentPreviewPainter extends CustomPainter {
     paragraph.layout(const ui.ParagraphConstraints(width: 300));
 
     final paragraphSize = Rect.fromLTWH(0, 0, paragraph.maxIntrinsicWidth, paragraph.height);
-    final textArea = paragraphSize.inflate(5);
+
+    const paddingVertical = 8;
+    const paddingHorizontal = 12;
+
+    final tooltipArea = Rect.fromLTRB(
+      paragraphSize.left - paddingHorizontal,
+      paragraphSize.top - paddingVertical,
+      paragraphSize.right + paddingHorizontal,
+      paragraphSize.bottom + paddingVertical,
+    );
 
     // draw label
     final labelPaint = Paint()
@@ -795,9 +800,8 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.save();
     canvas.translate(center.dx, center.dy);
     canvas.scale(1 / scale);
-    canvas.translate(-paragraphSize.width / 2, -paragraph.height / 2);
-    canvas.translate(60, 0);
-    canvas.drawRRect(ui.RRect.fromRectAndRadius(textArea, const ui.Radius.circular(4)), labelPaint);
+    canvas.translate(paddingHorizontal * 3, -tooltipArea.height / 2);
+    canvas.drawRRect(ui.RRect.fromRectAndRadius(tooltipArea, const ui.Radius.circular(6)), labelPaint);
     canvas.drawParagraph(paragraph, const ui.Offset(0, 0));
     canvas.restore();
   }
@@ -882,7 +886,16 @@ class DocumentPreviewPainter extends CustomPainter {
     paragraph.layout(const ui.ParagraphConstraints(width: 100));
 
     final paragraphSize = Rect.fromLTWH(0, 0, paragraph.maxIntrinsicWidth, paragraph.height);
-    final labelRect = paragraphSize.inflate(5);
+
+    const paddingVertical = 8;
+    const paddingHorizontal = 12;
+
+    final tooltipArea = Rect.fromLTRB(
+      paragraphSize.left - paddingHorizontal,
+      paragraphSize.top - paddingVertical,
+      paragraphSize.right + paddingHorizontal,
+      paragraphSize.bottom + paddingVertical,
+    );
 
     // offset label when measurement line is small compared to label
     const labelOffsetAxis = 10;
@@ -892,12 +905,12 @@ class DocumentPreviewPainter extends CustomPainter {
 
     if (isVertical) {
       labelPosition = Offset(axis.begin.dx, pointerLocation!.y);
-      labelOffset = Offset(-labelRect.width / 2 - labelOffsetAxis, 0);
+      labelOffset = Offset(-tooltipArea.width / 2 - labelOffsetAxis, 0);
     }
 
     if (!isVertical) {
       labelPosition = Offset(pointerLocation!.x, axis.begin.dy);
-      labelOffset = Offset(0, -labelRect.height / 2 - labelOffsetAxis);
+      labelOffset = Offset(0, -tooltipArea.height / 2 - labelOffsetAxis);
     }
 
     // draw label
@@ -910,7 +923,7 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.scale(1 / scale);
     canvas.translate(-paragraphSize.width / 2, -paragraph.height / 2);
     canvas.translate(labelOffset.dx, labelOffset.dy);
-    canvas.drawRRect(ui.RRect.fromRectAndRadius(labelRect, const ui.Radius.circular(4)), labelPaint);
+    canvas.drawRRect(ui.RRect.fromRectAndRadius(tooltipArea, const ui.Radius.circular(6)), labelPaint);
     canvas.drawParagraph(paragraph, const ui.Offset(0, 0));
     canvas.restore();
   }

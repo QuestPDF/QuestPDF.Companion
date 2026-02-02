@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../shared/font_awesome_icons.dart';
 import 'application_titlebar_card.dart';
 
 class ApplicationTitlebarFeatures extends ConsumerWidget {
@@ -14,7 +14,7 @@ class ApplicationTitlebarFeatures extends ConsumerWidget {
 
     return ApplicationTitlebarCard(
       isVisible: true,
-      icon: Symbols.menu_book_rounded,
+      icon: FontAwesomeIcons.book,
       emphasized: false,
       emphasisColor: Colors.transparent,
       title: "Application Features",
