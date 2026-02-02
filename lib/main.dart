@@ -12,11 +12,11 @@ void main() async {
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: false);
   await windowManager.setMinimumSize(const Size(600, 500));
 
-  applicationStateProviderInstance.loadDefaultSettings();
+  Future.microtask(() async {
+    await applicationStateProviderInstance.loadDefaultSettings();
 
-  Future(() {
     final communicationPort = applicationStateProviderInstance.communicationPort;
-    communicationServiceInstance.tryToStartTheServer(communicationPort);
+    await communicationServiceInstance.tryToStartTheServer(communicationPort);
   });
 
   runApp(const ProviderScope(child: QuestPdfCompanionApp()));
