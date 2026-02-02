@@ -70,5 +70,16 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v5
       with:
-        name: questpdf-companion-build
+        name: questpdf-companion-build-${{ matrix.runtime.name }}
         path: dist
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: main
+    steps:
+      - name: Merge native libraries
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: questpdf-companion-build
+          pattern: questpdf-companion-build-*
+          delete-merged: true
