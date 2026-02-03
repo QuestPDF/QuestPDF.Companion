@@ -1,0 +1,19 @@
+icon: assets/questpdf-logo.png
+summary: QuestPDF Companion
+vendor: QuestPDF
+license: MIT
+url: https://www.questpdf.com
+
+display_name: QuestPDF Companion
+
+keywords:
+  - quest
+  - pdf
+  - companion
+
+generic_name: QuestPDF Companion
+
+categories:
+  - Development
+
+startup_notify: true
