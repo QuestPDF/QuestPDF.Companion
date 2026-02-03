@@ -3,37 +3,35 @@ import 'package:flutter/material.dart';
 class FontAwesomeIcons {
   FontAwesomeIcons._();
 
-  static IconData icon(int character) {
-    return IconData(character, fontFamily: "FontAwesome Light");
-  }
+  static const faLight = 'FontAwesome Light';
 
   // Window controls
-  static final IconData minimize = icon(0xf068);
-  static final IconData maximize = icon(0xf2d0);
-  static final IconData close = icon(0xf00d);
+  static const IconData minimize = IconData(0xf068, fontFamily: faLight);
+  static const IconData maximize = IconData(0xf2d0, fontFamily: faLight);
+  static const IconData close = IconData(0xf00d, fontFamily: faLight);
 
   // Navigation arrows
-  static final IconData arrowUp = icon(0xf062);
-  static final IconData arrowDown = icon(0xf063);
-  static final IconData chevronUp = icon(0xf077);
-  static final IconData chevronDown = icon(0xf078);
+  static const IconData arrowUp = IconData(0xf062, fontFamily: faLight);
+  static const IconData arrowDown = IconData(0xf063, fontFamily: faLight);
+  static const IconData chevronUp = IconData(0xf077, fontFamily: faLight);
+  static const IconData chevronDown = IconData(0xf078, fontFamily: faLight);
 
   // General icons
-  static final IconData search = icon(0xf002);
-  static final IconData speed = icon(0xf628);
-  static final IconData book = icon(0xf02d);
-  static final IconData codeNavigation = icon(0xf121);
-  static final IconData layoutError = icon(0xe290);
-  static final IconData license = icon(0xf007);
-  static final IconData cloudArrowUp = icon(0xf0ee);
-  static final IconData terminal = icon(0xe212);
-  static final IconData rocket = icon(0xf135);
-  static final IconData gear = icon(0xf013);
+  static const IconData search = IconData(0xf002, fontFamily: faLight);
+  static const IconData speed = IconData(0xf628, fontFamily: faLight);
+  static const IconData book = IconData(0xf02d, fontFamily: faLight);
+  static const IconData codeNavigation = IconData(0xf121, fontFamily: faLight);
+  static const IconData layoutError = IconData(0xe290, fontFamily: faLight);
+  static const IconData license = IconData(0xf007, fontFamily: faLight);
+  static const IconData cloudArrowUp = IconData(0xf0ee, fontFamily: faLight);
+  static const IconData terminal = IconData(0xe212, fontFamily: faLight);
+  static const IconData rocket = IconData(0xf135, fontFamily: faLight);
+  static const IconData gear = IconData(0xf013, fontFamily: faLight);
 
   // Element details
-  static final IconData elementPage = icon(0xf15b);
-  static final IconData elementPosition = icon(0xf05b);
-  static final IconData elementSize = icon(0xf065);
-  static final IconData elementAvailableSpace = icon(0xf065);
-  static final IconData elementRequiredSpace = icon(0xf31d);
+  static const IconData elementPage = IconData(0xf15b, fontFamily: faLight);
+  static const IconData elementPosition = IconData(0xf05b, fontFamily: faLight);
+  static const IconData elementSize = IconData(0xf065, fontFamily: faLight);
+  static const IconData elementAvailableSpace = IconData(0xf065, fontFamily: faLight);
+  static const IconData elementRequiredSpace = IconData(0xf31d, fontFamily: faLight);
 }
