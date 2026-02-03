@@ -33,7 +33,7 @@ jobs:
 
     - name: Install linux dependencies
       if: matrix.runtime.name == 'linux'
-      run: apt-get update && apt-get install -y jq curl xz-utils git ninja-build libgtk-3-dev cmake clang
+      run: apt-get update && apt-get install -y jq curl xz-utils git ninja-build libgtk-3-dev cmake clang rpm patchelf
 
     - name: Install appdmg
       if: matrix.runtime.name == 'macos'
@@ -53,19 +53,23 @@ jobs:
       run: flutter pub get
 
     - name: Activate Packaging Tool
-      run: dart pub global activate flutter_distributor
+      run: dart pub global activate fastforge
       
-    - name: Make windows/exe
+    - name: Make windows/msix
       if: matrix.runtime.name == 'windows'
-      run: flutter_distributor package --platform=windows --targets=exe
+      run: fastforge package --platform=windows --targets=msix
 
     - name: Make linux/deb
       if: matrix.runtime.name == 'linux'
-      run: flutter_distributor package --platform=linux --targets=deb
+      run: fastforge package --platform=linux --targets=deb
+
+    - name: Make linux/rpm
+      if: matrix.runtime.name == 'linux'
+      run: fastforge package --platform=linux --targets=rpm
 
     - name: Make macos-arm64/dmg
       if: matrix.runtime.name == 'macos'
-      run: flutter_distributor package --platform=macos --targets=dmg     
+      run: fastforge package --platform=macos --targets=dmg     
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v5
