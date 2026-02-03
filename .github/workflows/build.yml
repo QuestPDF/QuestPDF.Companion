@@ -1,14 +1,18 @@
 name: QuestPDF Companion Build
 
+permissions: {}
+
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
-  
 
 jobs:
   main:
     name: ${{ matrix.runtime.name }}
     runs-on: ${{ matrix.runtime.runs-on }}
     container: ${{ matrix.runtime.container }}
+    timeout-minutes: 20
   
     strategy:
       fail-fast: false
