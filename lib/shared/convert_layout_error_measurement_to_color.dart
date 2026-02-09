@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/document_hierarchy_element_layout_error_measurement.dart';
 
 extension DocumentHierarchyElementExtensions on DocumentHierarchyElementLayoutErrorMeasurement? {
-  Color getAnnotationColor() {
-    if (this == null) return Colors.grey;
+  Color? getAnnotationColor() {
+    if (this == null) return null;
 
     if (this!.isLayoutErrorRootCause) return Colors.red;
 
@@ -15,6 +15,6 @@ extension DocumentHierarchyElementExtensions on DocumentHierarchyElementLayoutEr
 
     if (this!.spacePlanType == SpacePlanType.empty) return Colors.cyan;
 
-    return Colors.grey;
+    return null;
   }
 }

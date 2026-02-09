@@ -17,8 +17,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   static const double indentationSize = 24;
   static const double iconSize = 16;
   static const double iconSpacing = indentationSize - iconSize;
-  static const double annotationSize = 8;
-  static const double annotationSpacing = indentationSize - annotationSize;
+  static const double annotationSize = 10;
 
   static const IconData folderClosedIcon = IconData(0xf07b, fontFamily: "FontAwesome Light");
   static const IconData folderOpenIcon = IconData(0xf07c, fontFamily: "FontAwesome Light");
@@ -76,8 +75,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildContentRow() {
-    final row = Row(
-        children: [if (node.annotationColor != null) buildAnnotation(), ...buildTree(), Expanded(child: buildLabel())]);
+    final row = Row(children: [...buildTree(), buildLabel()]);
 
     if (!isHovered && !node.isSelected) return row;
 
@@ -133,13 +131,15 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildAnnotation() {
+    if (node.annotationColor == null) return const SizedBox();
+
     return Container(
         width: annotationSize,
         height: annotationSize,
-        margin: const EdgeInsets.only(right: annotationSpacing),
+        margin: const EdgeInsets.only(left: 8),
         decoration: BoxDecoration(
             color: node.annotationColor?.withAlpha(isDimmed ? lowEmphasisOpacity : highEmphasisOpacity),
-            borderRadius: const BorderRadius.all(Radius.circular(annotationSize))));
+            borderRadius: BorderRadius.all(Radius.circular(annotationSize))));
   }
 
   Widget buildLabel() {
@@ -155,13 +155,21 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
     final showHint = node.hint != null && (node.isHintImportant || isHovered || node.isSelected);
 
-    return RichText(
-        text: TextSpan(children: [
-          TextSpan(text: node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight)),
-          const WidgetSpan(child: SizedBox(width: 16)),
-          if (showHint) TextSpan(text: node.hint, style: hintStyle.copyWith(color: hintColor))
-        ]),
-        maxLines: 1,
-        softWrap: false);
+    return ClipRect(
+      clipBehavior: Clip.hardEdge,
+      child: Row(children: [
+        Text(node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight)),
+        buildAnnotation(),
+        if (showHint)
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: Text(node.hint!,
+                style: hintStyle.copyWith(color: hintColor),
+                softWrap: false,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis),
+          )
+      ]),
+    );
   }
 }
