@@ -75,7 +75,15 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildContentRow() {
-    final row = Row(children: [...buildTree(), buildLabel()]);
+    final row = ClipRect(
+      clipBehavior: Clip.hardEdge,
+      child: Row(children: [
+        ...buildTree(),
+        buildLabel(),
+        buildAnnotation(),
+        buildHint(),
+      ]),
+    );
 
     if (!isHovered && !node.isSelected) return row;
 
@@ -143,33 +151,31 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildLabel() {
-    final theme = Theme.of(context);
-
     final targetLabelStyle = node.isHighlighted ? highlightedLabelStyle : labelStyle;
     final labelColor = getContentColor();
 
+    final labelFontWeight = node.isSelected ? FontWeightOptimizedForOperatingSystem.bold : null;
+
+    return Text(node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight));
+  }
+
+  Widget buildHint() {
+    final showHint = node.hint != null && (node.isHintImportant || isHovered || node.isSelected);
+
+    if (!showHint) return const SizedBox();
+
+    final theme = Theme.of(context);
     final hintEmphasis = isHovered || node.isSelected;
     final hintColor = theme.colorScheme.onSurface.withAlpha(hintEmphasis ? highEmphasisOpacity : lowEmphasisOpacity);
 
-    final labelFontWeight = node.isSelected ? FontWeightOptimizedForOperatingSystem.bold : null;
-
-    final showHint = node.hint != null && (node.isHintImportant || isHovered || node.isSelected);
-
-    return ClipRect(
-      clipBehavior: Clip.hardEdge,
-      child: Row(children: [
-        Text(node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight)),
-        buildAnnotation(),
-        if (showHint)
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Text(node.hint!,
-                style: hintStyle.copyWith(color: hintColor),
-                softWrap: false,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis),
-          )
-      ]),
-    );
+    return Padding(
+        padding: const EdgeInsets.only(left: 16),
+        child: Text(
+          node.hint!,
+          style: hintStyle.copyWith(color: hintColor),
+          softWrap: false,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ));
   }
 }
