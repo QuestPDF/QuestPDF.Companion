@@ -168,14 +168,17 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     final hintEmphasis = isHovered || node.isSelected;
     final hintColor = theme.colorScheme.onSurface.withAlpha(hintEmphasis ? highEmphasisOpacity : lowEmphasisOpacity);
 
-    return Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: Text(
-          node.hint!,
-          style: hintStyle.copyWith(color: hintColor),
-          softWrap: false,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ));
+    return Flexible(
+      flex: 1,
+      child: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(
+            node.hint!,
+            style: hintStyle.copyWith(color: hintColor),
+            softWrap: false,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+          )),
+    );
   }
 }
