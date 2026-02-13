@@ -13,7 +13,7 @@ extension DocumentHierarchyElementExtensions on DocumentHierarchyElementLayoutEr
 
     if (this!.spacePlanType == SpacePlanType.fullRender) return Colors.green;
 
-    if (this!.spacePlanType == SpacePlanType.empty) return Colors.cyan;
+    if (this!.spacePlanType == SpacePlanType.empty) return Colors.green;
 
     return null;
   }
