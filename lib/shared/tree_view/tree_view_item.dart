@@ -78,9 +78,9 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     final row = ClipRect(
       clipBehavior: Clip.hardEdge,
       child: Row(children: [
+        buildAnnotation(),
         ...buildTree(),
         buildLabel(),
-        buildAnnotation(),
         buildHint(),
       ]),
     );
@@ -139,12 +139,12 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildAnnotation() {
-    if (node.annotationColor == null) return const SizedBox();
+    if (node.annotationColor == null) return const SizedBox(width: annotationSize + 8);
 
     return Container(
         width: annotationSize,
         height: annotationSize,
-        margin: const EdgeInsets.only(left: 8),
+        margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
             color: node.annotationColor?.withAlpha(isDimmed ? lowEmphasisOpacity : highEmphasisOpacity),
             borderRadius: BorderRadius.all(Radius.circular(annotationSize))));
