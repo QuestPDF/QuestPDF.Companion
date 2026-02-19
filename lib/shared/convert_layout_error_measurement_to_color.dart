@@ -3,7 +3,7 @@ import 'package:questpdf_companion/areas/document_hierarchy/models/document_hier
 
 extension DocumentHierarchyElementExtensions on DocumentHierarchyElementLayoutErrorMeasurement? {
   Color? getAnnotationColor() {
-    if (this == null) return null;
+    if (this == null) return Colors.transparent;
 
     if (this!.isLayoutErrorRootCause) return Colors.red;
 
@@ -15,6 +15,6 @@ extension DocumentHierarchyElementExtensions on DocumentHierarchyElementLayoutEr
 
     if (this!.spacePlanType == SpacePlanType.empty) return Colors.green;
 
-    return null;
+    return Colors.transparent;
   }
 }

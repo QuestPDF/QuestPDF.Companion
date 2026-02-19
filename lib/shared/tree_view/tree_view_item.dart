@@ -139,7 +139,9 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   }
 
   Widget buildAnnotation() {
-    if (node.annotationColor == null) return const SizedBox(width: annotationSize + 8);
+    if (node.annotationColor == null) return const SizedBox();
+
+    if (node.annotationColor == Colors.transparent) return const SizedBox(width: annotationSize + 8);
 
     return Container(
         width: annotationSize,
