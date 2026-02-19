@@ -12,7 +12,7 @@ certutil -repairstore -user My A62CA27B2664393FE05F13238467FEB6822617FD
 
 ```sh
 npm install --global create-dmg
-create-dmg "QuestPDF Companion 2026.2.0.app" --overwrite 
+create-dmg "QuestPDF Companion 2026.2.1.app" --overwrite 
 ```
 
 ## Notarize MacOS installer:
@@ -29,6 +29,6 @@ xcrun notarytool store-credentials "QuestPDF Companion Profile" \
 For each new build:
 
 ```sh
-xcrun notarytool submit "QuestPDF Companion 2026.2.0.dmg" --keychain-profile "QuestPDF Companion Profile" --wait
-xcrun stapler staple "QuestPDF Companion 2026.2.0.dmg"
+xcrun notarytool submit "QuestPDF Companion 2026.2.1.dmg" --keychain-profile "QuestPDF Companion Profile" --wait
+xcrun stapler staple "QuestPDF Companion 2026.2.1.dmg"
 ```
