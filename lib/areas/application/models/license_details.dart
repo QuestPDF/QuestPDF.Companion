@@ -12,24 +12,35 @@ class LicenseDetails {
 const pricingUrl = "https://www.questpdf.com/license/";
 const licenseSelectionGuideUrl = "https://www.questpdf.com/license/guide.html";
 
+const evaluationLicense = LicenseDetails(
+  title: "Evaluation Mode",
+  description:
+      "Intended only for product evaluation before choosing an appropriate license; not suitable for production use.",
+  indicatorColor: Colors.red,
+);
+
 const communityLicense = LicenseDetails(
-    title: "Community MIT",
-    description: "Applicable only for companies and individuals with less than 1M USD annual gross revenue.",
-    indicatorColor: Colors.orange);
+  title: "Community MIT",
+  description: "Applicable only for companies and individuals with less than 1M USD annual gross revenue.",
+  indicatorColor: Colors.orange,
+);
 
 const professionalLicense = LicenseDetails(
-    title: "Professional",
-    description:
-        "Applicable for individuals and companies with more than 1M USD annual gross revenue and with at most 10 software developers working on software dependent on QuestPDF.",
-    indicatorColor: Colors.green);
+  title: "Professional",
+  description:
+      "Applicable for individuals and companies with more than 1M USD annual gross revenue and with at most 10 software developers working on software dependent on QuestPDF.",
+  indicatorColor: Colors.green,
+);
 
 const enterpriseLicense = LicenseDetails(
-    title: "Enterprise",
-    description:
-        "Applicable for individuals and companies with more than 1M USD annual gross revenue and any number of software developers.",
-    indicatorColor: Colors.green);
+  title: "Enterprise",
+  description:
+      "Applicable for individuals and companies with more than 1M USD annual gross revenue and any number of software developers.",
+  indicatorColor: Colors.green,
+);
 
 LicenseDetails getLicenseDetails(LicenseType license) {
+  if (license == LicenseType.evaluation) return evaluationLicense;
   if (license == LicenseType.community) return communityLicense;
   if (license == LicenseType.professional) return professionalLicense;
   if (license == LicenseType.enterprise) return enterpriseLicense;
