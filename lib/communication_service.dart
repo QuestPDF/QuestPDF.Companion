@@ -48,17 +48,22 @@ class CommunicationService {
 
       if (request.uri.path == '/version' && request.method == 'GET') _handleVersionRequest(request);
 
-      if (request.uri.path == '/v2/notify' && request.method == 'POST') _handleNotifyRequest(request);
+      // API versions 2 and 3 are nearly identical: version 3 introduced new license type (evaluation),
+      // this change requires new API version to avoid breaking changes in newer library versions,
+      // but implementation can be backwards compatible, so both versions are handled in the same way.
+      for (var i in [2, 3]) {
+        if (request.uri.path == '/v$i/notify' && request.method == 'POST') _handleNotifyRequest(request);
 
-      if (request.uri.path == '/v2/documentPreview/update' && request.method == 'POST') _handlePreviewUpdate(request);
+        if (request.uri.path == '/v$i/documentPreview/update' && request.method == 'POST') _handlePreviewUpdate(request);
 
-      if (request.uri.path == '/v2/documentPreview/getRenderingRequests' && request.method == 'GET')
-        _handleGetRenderingRequests(request);
+        if (request.uri.path == '/v$i/documentPreview/getRenderingRequests' && request.method == 'GET')
+          _handleGetRenderingRequests(request);
 
-      if (request.uri.path == '/v2/documentPreview/provideRenderedImages' && request.method == 'POST')
-        _handleProvideRenderedImages(request);
+        if (request.uri.path == '/v$i/documentPreview/provideRenderedImages' && request.method == 'POST')
+          _handleProvideRenderedImages(request);
 
-      if (request.uri.path == '/v2/genericException/show' && request.method == 'POST') _handleGenericException(request);
+        if (request.uri.path == '/v$i/genericException/show' && request.method == 'POST') _handleGenericException(request);
+      }
     }
   }
 
@@ -96,7 +101,7 @@ class CommunicationService {
   }
 
   void _handleVersionRequest(HttpRequest request) {
-    final response = ApplicationSupportedApiResponse([2]);
+    final response = ApplicationSupportedApiResponse([2, 3]);
 
     request.response
       ..headers.contentType = ContentType.text
