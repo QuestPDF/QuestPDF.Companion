@@ -24,7 +24,7 @@ jobs:
           runs-on: windows-latest-xlarge-arm64
         - name: linux
           runs-on: ubuntu-latest
-          container: ubuntu:24.04
+          container: ubuntu:20.04
         # - name: macos (run locally)
         #   runs-on: macos-latest-xlarge
     
