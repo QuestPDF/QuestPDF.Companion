@@ -18,11 +18,13 @@ jobs:
       fail-fast: false
       matrix:
         runtime: 
-        - name: windows
-          runs-on: windows-latest
+        - name: windows-winx64
+          runs-on: windows-latest-xlarge
+        - name: windows-arm64
+          runs-on: windows-latest-xlarge-arm64
         - name: linux
           runs-on: ubuntu-latest
-          container: ubuntu:22.04
+          container: ubuntu:24.04
         # - name: macos (run locally)
         #   runs-on: macos-latest-xlarge
     
@@ -60,7 +62,7 @@ jobs:
       run: dart pub global activate fastforge
       
     - name: Make windows/msix
-      if: matrix.runtime.name == 'windows'
+      if: startsWith(matrix.runtime.name, 'windows')
       run: fastforge package --platform=windows --targets=msix
 
     - name: Make linux/deb
@@ -85,7 +87,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: main
     steps:
-      - name: Merge native libraries
+      - name: Merge packages
         uses: actions/upload-artifact/merge@v4
         with:
           name: questpdf-companion-build
