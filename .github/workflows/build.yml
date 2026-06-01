@@ -20,8 +20,6 @@ jobs:
         runtime: 
         - name: windows-x64
           runs-on: windows-latest-xlarge
-        - name: windows-arm64
-          runs-on: windows-latest-xlarge-arm64
         - name: linux
           runs-on: ubuntu-latest
           container: ubuntu:20.04
@@ -48,7 +46,7 @@ jobs:
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.x'
+        flutter-version: '3.41.x'
         channel: 'stable'
 
     - name: Fix Flutter on Linux
@@ -62,7 +60,7 @@ jobs:
       run: dart pub global activate fastforge
       
     - name: Make windows/msix
-      if: startsWith(matrix.runtime.name, 'windows')
+      if: matrix.runtime.name == 'windows'
       run: fastforge package --platform=windows --targets=msix
 
     - name: Make linux/deb
