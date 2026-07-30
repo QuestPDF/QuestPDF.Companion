@@ -108,6 +108,11 @@ class KeyboardShortcutsState extends State<KeyboardShortcuts> {
           return true;
         }
 
+        if (event.logicalKey == LogicalKeyboardKey.enter) {
+          documentHierarchySearchStateInstance.accept();
+          return true;
+        }
+
         return false;
       }
 

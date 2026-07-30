@@ -53,6 +53,16 @@ class DocumentHierarchySearchState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void accept() {
+    searchableElementsForCurrentPhrase = null;
+
+    searchPhrase = null;
+    searchResultIndex = 0;
+    searchResults = [];
+
+    notifyListeners();
+  }
+
   List<SearchCacheItem> getSearchableElements() {
     if (documentHierarchyProviderInstance.state == null) return [];
 
