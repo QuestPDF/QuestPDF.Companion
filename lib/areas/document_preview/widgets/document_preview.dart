@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../shared/keyboard_shortcuts.dart';
 import '../../../shared/open_source_code_path_in_editor.dart';
 import '../../application/state/application_state_provider.dart';
 import '../../document_hierarchy/models/document_hierarchy_element.dart';
@@ -16,7 +17,6 @@ import '../../document_hierarchy/models/page_location.dart';
 import '../../document_hierarchy/models/page_snapshot_index.dart';
 import '../../document_hierarchy/state/document_hierarchy_manual_measurement.dart';
 import '../../document_hierarchy/state/document_hierarchy_provider.dart';
-import '../../document_hierarchy/state/document_hierarchy_search_state.dart';
 import '../state/document_preview_pointer_location_state.dart';
 import '../state/document_preview_visible_content_state.dart';
 import '../state/document_viewer_state_provider.dart';
@@ -63,6 +63,9 @@ class DocumentPreviewState extends State<DocumentPreview> {
   static const scrollZoomSensitivity = 0.25;
   static const scrollPanSensitivity = 75.0;
   static const mouseMoveZoomSensitivity = 0.01;
+  static const keyboardPanSensitivity = 25.0;
+  static const keyboardPanShiftSensitivity = 250.0;
+  static const keyboardZoomSensitivity = 1.2;
 
   List<DocumentStructurePageSize> get pages => widget.pages;
 
@@ -86,21 +89,57 @@ class DocumentPreviewState extends State<DocumentPreview> {
   }
 
   bool handleKeyInteraction(KeyEvent event) {
-    // check if preview should react to keyboard events
-    bool shouldHandleEvent() {
-      final isSearchActive = documentHierarchySearchStateInstance.searchPhrase != null;
-      return !isSearchActive;
-    }
-
-    if (!shouldHandleEvent()) return false;
-
     // shortcut: zoom on page
     final isControlPressed =
         HardwareKeyboard.instance.isControlPressed || (Platform.isMacOS && HardwareKeyboard.instance.isMetaPressed);
 
-    if (event is KeyDownEvent && isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyE) {
+    if (isCanvasNavigationByKeyboardShortcutsAvailable() && event is KeyDownEvent && isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyE) {
       zoomOnPage();
       return true;
+    }
+
+    // shortcut: zoom in and out
+    if (isCanvasNavigationByKeyboardShortcutsAvailable() && event is! KeyUpEvent && isControlPressed) {
+      const zoomInKeys = [PhysicalKeyboardKey.equal, PhysicalKeyboardKey.numpadAdd];
+      const zoomOutKeys = [PhysicalKeyboardKey.minus, PhysicalKeyboardKey.numpadSubtract];
+
+      if (zoomInKeys.contains(event.physicalKey)) {
+        zoomBy(keyboardZoomSensitivity, viewportCenter);
+        return true;
+      }
+
+      if (zoomOutKeys.contains(event.physicalKey)) {
+        zoomBy(1 / keyboardZoomSensitivity, viewportCenter);
+        return true;
+      }
+    }
+
+    // shortcut: pan with arrow keys
+    Offset? findKeyboardPanDirection(LogicalKeyboardKey key) {
+      if (!isCanvasNavigationByKeyboardShortcutsAvailable()) return null;
+
+      if (key == LogicalKeyboardKey.arrowLeft) return const Offset(1, 0);
+
+      if (key == LogicalKeyboardKey.arrowRight) return const Offset(-1, 0);
+
+      if (key == LogicalKeyboardKey.arrowUp) return const Offset(0, 1);
+
+      if (key == LogicalKeyboardKey.arrowDown) return const Offset(0, -1);
+
+      return null;
+    }
+
+    if (isCanvasNavigationByKeyboardShortcutsAvailable() && event is! KeyUpEvent && !isControlPressed) {
+      final panDirection = findKeyboardPanDirection(event.logicalKey);
+
+      final modifier = HardwareKeyboard.instance.isShiftPressed
+          ? keyboardPanShiftSensitivity
+          : keyboardPanSensitivity;
+
+      if (panDirection != null) {
+        panBy(panDirection * modifier);
+        return true;
+      }
     }
 
     // shortcut: pointer interactions
@@ -120,14 +159,16 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     final bestInteraction = findBestInteraction();
 
-    if (bestInteraction == null) return false;
+    if (areCanvasKeyboardToolInteractionsAvailable() && bestInteraction != null) {
+      if (pointerHoverInteraction != bestInteraction) {
+        pointerHoverInteraction = bestInteraction;
+        setState(() {});
+      }
 
-    if (pointerHoverInteraction != bestInteraction) {
-      pointerHoverInteraction = bestInteraction;
-      setState(() {});
+      return true;
     }
 
-    return true;
+    return false;
   }
 
   void initNewDocument() {
@@ -143,27 +184,19 @@ class DocumentPreviewState extends State<DocumentPreview> {
   }
 
   void handleMouseScrollEvent(PointerSignalEvent event) {
+    if (event is! PointerScrollEvent) return;
+
     documentHierarchyProviderInstance.setSelectedElement(null);
 
-    setState(() {
-      if (event is PointerScrollEvent) {
-        final scrollDelta = event.scrollDelta.dy / scrollPointsPerWheelTick;
+    final scrollDelta = event.scrollDelta.dy / scrollPointsPerWheelTick;
 
-        if (HardwareKeyboard.instance.isControlPressed) {
-          final factor = 1 / exp(scrollDelta * scrollZoomSensitivity);
-          handleZoom(factor, event.localPosition);
-        } else if (HardwareKeyboard.instance.isShiftPressed) {
-          translate -= Offset(scrollDelta * scrollPanSensitivity, 0);
-        } else {
-          translate -= Offset(0, scrollDelta * scrollPanSensitivity);
-        }
-
-        handleTranslateLimits();
-        updateNeededImages();
-        updateCursorLocation();
-        handleManualMeasurement();
-      }
-    });
+    if (HardwareKeyboard.instance.isControlPressed) {
+      zoomBy(1 / exp(scrollDelta * scrollZoomSensitivity), event.localPosition);
+    } else if (HardwareKeyboard.instance.isShiftPressed) {
+      panBy(Offset(-scrollDelta * scrollPanSensitivity, 0));
+    } else {
+      panBy(Offset(0, -scrollDelta * scrollPanSensitivity));
+    }
   }
 
   static const pageSpacing = 32.0;
@@ -233,19 +266,35 @@ class DocumentPreviewState extends State<DocumentPreview> {
         idealHeightScale > scale ? (renderBox.size.height - totalDocumentHeight * scale) / 2 : translate.dy);
   }
 
-  void handleZoom(double zoomFactor, Offset pivot) {
-    final oldScale = scale;
-    scale *= zoomFactor;
-    handleScaleLimits();
+  Offset get viewportCenter => renderBox.size.center(Offset.zero);
 
-    // zoom to point
-    final viewportOrigin = Offset(renderBox.size.width / 2, 0);
-    final cursorPosition = Offset(pivot.dx, pivot.dy) - viewportOrigin;
+  void panBy(Offset delta) {
+    setState(() {
+      translate += delta;
+      applyViewportChange();
+    });
+  }
 
-    zoomFactor = scale / oldScale;
-    translate += (cursorPosition - translate) * (1 - zoomFactor);
+  void zoomBy(double zoomFactor, Offset pivot, {Offset panDelta = Offset.zero}) {
+    setState(() {
+      final oldScale = scale;
+      scale *= zoomFactor;
+      handleScaleLimits();
 
+      // keep the pivot stationary, based on the scale change that survived the limits
+      final viewportOrigin = Offset(renderBox.size.width / 2, 0);
+      final pivotInViewportCoordinates = pivot - viewportOrigin;
+
+      translate += (pivotInViewportCoordinates - translate) * (1 - scale / oldScale);
+      translate += panDelta;
+
+      applyViewportChange();
+    });
+  }
+
+  void applyViewportChange() {
     handleTranslateLimits();
+    updateNeededImages();
     updateCursorLocation();
     handleManualMeasurement();
   }
@@ -406,9 +455,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
         onDoubleTap: onDoubleTap,
         onScaleStart: (details) => scaleOnGestureStart = 1,
         onScaleUpdate: (details) {
-          handleZoom(details.scale / scaleOnGestureStart, details.localFocalPoint);
-          translate += details.focalPointDelta;
-          handleTranslateLimits();
+          zoomBy(details.scale / scaleOnGestureStart, details.localFocalPoint, panDelta: details.focalPointDelta);
           scaleOnGestureStart = details.scale;
         },
         onScaleEnd: (details) => scaleOnGestureStart = 1,
@@ -466,11 +513,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
             onPointerMove: (event) {
               if (event.buttons == 0) return;
 
-              setState(() {
-                translate -= ui.Offset(0, event.localDelta.dy) / ratio;
-                handleTranslateLimits();
-                updateNeededImages();
-              });
+              panBy(-ui.Offset(0, event.localDelta.dy) / ratio);
             },
             child: MouseRegion(
               cursor: (scrollbarHover || scrollbarMove) ? SystemMouseCursors.click : SystemMouseCursors.basic,
@@ -557,7 +600,6 @@ class DocumentPreviewPainter extends CustomPainter {
   void drawBackground(Canvas canvas, Size drawingAreaSize) {
     final backgroundPaint = Paint()..color = backgroundColor;
     final drawingRect = Rect.fromLTWH(0, 0, drawingAreaSize.width, drawingAreaSize.height);
-    final drawingClip = RRect.fromRectAndCorners(drawingRect, topLeft: const Radius.circular(12));
 
     canvas.drawRect(drawingRect, backgroundPaint);
   }

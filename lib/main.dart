@@ -25,6 +25,9 @@ void main() async {
 class QuestPdfCompanionApp extends ConsumerWidget {
   const QuestPdfCompanionApp({super.key});
 
+  static final shortcuts = Map<ShortcutActivator, Intent>.of(WidgetsApp.defaultShortcuts)
+    ..removeWhere((activator, intent) => intent is DirectionalFocusIntent);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(applicationStateProvider.select((x) => x.themeMode));
@@ -49,6 +52,7 @@ class QuestPdfCompanionApp extends ConsumerWidget {
             visualDensity: VisualDensity.compact,
             iconButtonTheme: iconButtonTheme),
         themeMode: themeMode,
+        shortcuts: shortcuts,
         home: const ApplicationLayout(),
         showPerformanceOverlay: false,
         debugShowCheckedModeBanner: false);

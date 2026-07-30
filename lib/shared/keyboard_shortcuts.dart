@@ -9,6 +9,34 @@ import '../areas/document_hierarchy/state/document_hierarchy_provider.dart';
 import '../areas/document_hierarchy/state/document_hierarchy_search_state.dart';
 import '../areas/document_hierarchy/state/document_layout_error_provider.dart';
 
+bool isTextInputActive() {
+  final focusContext = FocusManager.instance.primaryFocus?.context;
+
+  if (focusContext == null) return false;
+
+  return focusContext.findAncestorWidgetOfExactType<EditableText>() != null;
+}
+
+bool isCanvasNavigationByKeyboardShortcutsAvailable() {
+  if (isTextInputActive()) return false;
+
+  if (documentHierarchySearchStateInstance.searchPhrase != null) return false;
+
+  if (documentLayoutErrorProviderInstance.containsLayoutError) return false;
+
+  if (documentHierarchyProviderInstance.selectedElement != null) return false;
+
+  return true;
+}
+
+bool areCanvasKeyboardToolInteractionsAvailable() {
+  if (isTextInputActive()) return false;
+
+  if (documentHierarchySearchStateInstance.searchPhrase != null) return false;
+
+  return true;
+}
+
 class KeyboardShortcuts extends StatefulWidget {
   const KeyboardShortcuts({super.key});
 
