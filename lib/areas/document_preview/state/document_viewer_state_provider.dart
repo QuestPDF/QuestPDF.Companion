@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../../document_hierarchy/models/document_structure_page_size.dart';
 import '../../document_hierarchy/models/page_snapshot_index.dart';

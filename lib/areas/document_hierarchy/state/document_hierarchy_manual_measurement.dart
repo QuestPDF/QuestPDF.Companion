@@ -1,6 +1,6 @@
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/document_structure_page_size.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/page_location.dart';
 

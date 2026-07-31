@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/document_hierarchy_element.dart';
 
 import '../models/document_hierarchy_element_layout_error_measurement.dart';

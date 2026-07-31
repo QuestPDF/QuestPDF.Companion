@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../models/document_hierarchy_element.dart';
 import 'document_hierarchy_provider.dart';
