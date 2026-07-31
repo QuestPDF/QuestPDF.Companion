@@ -86,15 +86,9 @@ class KeyboardShortcutsState extends State<KeyboardShortcuts> {
       final isElementSelected = documentHierarchyProviderInstance.selectedElement != null;
       final documentHasLayoutErrors = documentLayoutErrorProviderInstance.containsLayoutError;
 
-      if (!isSearchActive && isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyF) {
-        documentHierarchySearchStateInstance.update(null);
-        Future(() => documentHierarchySearchStateInstance.update(""));
-        return true;
-      }
-
       if (isSearchActive) {
         if (event.logicalKey == LogicalKeyboardKey.escape) {
-          documentHierarchySearchStateInstance.update(null);
+          documentHierarchySearchStateInstance.reset();
           return true;
         }
 
@@ -114,6 +108,14 @@ class KeyboardShortcutsState extends State<KeyboardShortcuts> {
         }
 
         return false;
+      }
+
+      if (isTextInputActive()) return false;
+
+      if (isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyF) {
+        documentHierarchySearchStateInstance.update(null);
+        Future(() => documentHierarchySearchStateInstance.update(""));
+        return true;
       }
 
       if (isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyW) {
