@@ -19,7 +19,7 @@ jobs:
       matrix:
         runtime: 
         - name: windows-x64
-          runs-on: windows-latest-xlarge
+          runs-on: windows-latest
         - name: linux
           runs-on: ubuntu-latest
           container: ubuntu:20.04
