@@ -42,7 +42,6 @@ class DocumentPreview extends StatefulWidget {
 
 class DocumentPreviewState extends State<DocumentPreview> {
   final GlobalKey previewKey = GlobalKey();
-  final FocusNode focusNode = FocusNode();
 
   Offset translate = Offset.zero;
   double scale = 1;
