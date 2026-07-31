@@ -44,8 +44,9 @@ class DocumentHierarchyState extends ChangeNotifier {
   void _expandDocumentContentHelper() {
     if (state == null) return;
 
-    final documentContent =
-        state!.children.firstOrNullWhere((x) => x.properties.where((y) => y.value == "Content").isNotEmpty);
+    final documentContent = state!.children.firstOrNullWhere(
+      (x) => x.properties.where((y) => y.value == "Content").isNotEmpty,
+    );
 
     if (documentContent != null) _expandChildrenSmartHelper(documentContent);
   }
@@ -162,9 +163,11 @@ class DocumentHierarchyState extends ChangeNotifier {
 
     // find smallest element
     final el = candidates
-        .flatMap((element) => element.pageLocations
-            .mapIndexed((index, pageLocation) => (element: element, pageLocation: pageLocation, index: index))
-            .where((x) => x.pageLocation.intersects(clickedPosition)))
+        .flatMap(
+          (element) => element.pageLocations
+              .mapIndexed((index, pageLocation) => (element: element, pageLocation: pageLocation, index: index))
+              .where((x) => x.pageLocation.intersects(clickedPosition)),
+        )
         .toList();
 
     final smallestElement = el.minBy((x) => x.pageLocation.area)!;
@@ -205,7 +208,10 @@ class DocumentHierarchyState extends ChangeNotifier {
 
       if (sourceCodePath != null) {
         return SourceCodeLocation(
-            isAccurate: true, filePath: sourceCodePath.filePath, lineNumber: sourceCodePath.lineNumber);
+          isAccurate: true,
+          filePath: sourceCodePath.filePath,
+          lineNumber: sourceCodePath.lineNumber,
+        );
       }
 
       if (element.elementType == "SourceCodePointer") {

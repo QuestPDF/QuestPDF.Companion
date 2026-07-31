@@ -9,12 +9,11 @@ class ApplicationTitlebarWindowButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final buttonStyle = ButtonStyle(
-        visualDensity: VisualDensity.compact,
-        padding: WidgetStateProperty.all(EdgeInsets.zero),
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        ),
-        iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant));
+      visualDensity: VisualDensity.compact,
+      padding: WidgetStateProperty.all(EdgeInsets.zero),
+      shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
+      iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
+    );
 
     final closeButtonStyle = buttonStyle.copyWith(
       animationDuration: Duration.zero,
@@ -32,9 +31,11 @@ class ApplicationTitlebarWindowButtons extends ConsumerWidget {
       }),
     );
 
-    return Row(spacing: 8, children: [
-      IconButton(icon: Icon(FontAwesomeIcons.minimize, size: 20), style: buttonStyle, onPressed: windowManager.minimize),
-      IconButton(
+    return Row(
+      spacing: 8,
+      children: [
+        IconButton(icon: Icon(FontAwesomeIcons.minimize, size: 20), style: buttonStyle, onPressed: windowManager.minimize),
+        IconButton(
           icon: Icon(FontAwesomeIcons.maximize, size: 20),
           style: buttonStyle,
           onPressed: () async {
@@ -43,8 +44,10 @@ class ApplicationTitlebarWindowButtons extends ConsumerWidget {
             } else {
               await windowManager.maximize();
             }
-          }),
-      IconButton(icon: Icon(FontAwesomeIcons.close, size: 20), style: closeButtonStyle, onPressed: windowManager.close)
-    ]);
+          },
+        ),
+        IconButton(icon: Icon(FontAwesomeIcons.close, size: 20), style: closeButtonStyle, onPressed: windowManager.close),
+      ],
+    );
   }
 }

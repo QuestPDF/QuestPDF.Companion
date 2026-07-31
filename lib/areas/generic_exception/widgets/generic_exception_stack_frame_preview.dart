@@ -33,23 +33,29 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
     Widget buildStackFrameDescription() {
       final primaryStyle = Theme.of(context).textTheme.bodyMedium;
       final secondaryTextStyle = primaryStyle?.copyWith(
-          color: primaryStyle.color?.withAlpha(160), fontWeight: FontWeightOptimizedForOperatingSystem.normal);
+        color: primaryStyle.color?.withAlpha(160),
+        fontWeight: FontWeightOptimizedForOperatingSystem.normal,
+      );
 
       final regex = RegExp(
-          r'^(?<namespace>(?:\w+\.)+)(?<className>[\w\[\]\<\>\$\|]+)\.(?<methodName>[\w\[\]\<\>\$\|]+)(?<arguments>(\(.*)\))$');
+        r'^(?<namespace>(?:\w+\.)+)(?<className>[\w\[\]\<\>\$\|]+)\.(?<methodName>[\w\[\]\<\>\$\|]+)(?<arguments>(\(.*)\))$',
+      );
 
       final match = regex.firstMatch(stackFrame.codeLocation);
 
       if (match == null) return Text(stackFrame.codeLocation, style: secondaryTextStyle);
 
       return RichText(
-          text: TextSpan(children: [
-        TextSpan(text: match.namedGroup('namespace'), style: secondaryTextStyle),
-        TextSpan(text: match.namedGroup('className'), style: primaryStyle),
-        TextSpan(text: '.', style: secondaryTextStyle),
-        TextSpan(text: match.namedGroup('methodName'), style: primaryStyle),
-        TextSpan(text: match.namedGroup('arguments'), style: secondaryTextStyle),
-      ]));
+        text: TextSpan(
+          children: [
+            TextSpan(text: match.namedGroup('namespace'), style: secondaryTextStyle),
+            TextSpan(text: match.namedGroup('className'), style: primaryStyle),
+            TextSpan(text: '.', style: secondaryTextStyle),
+            TextSpan(text: match.namedGroup('methodName'), style: primaryStyle),
+            TextSpan(text: match.namedGroup('arguments'), style: secondaryTextStyle),
+          ],
+        ),
+      );
     }
 
     Widget buildFileVisualization() {
@@ -60,11 +66,12 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
       return Padding(
         padding: const EdgeInsets.only(top: 12),
         child: SourceCodeVisualization(
-            filePath: stackFrame.fileName!,
-            highlightLineNumber: stackFrame.lineNumber!,
-            showLinesBuffer: 9,
-            backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
-            highlightColor: Theme.of(context).colorScheme.surfaceContainerLow),
+          filePath: stackFrame.fileName!,
+          highlightLineNumber: stackFrame.lineNumber!,
+          showLinesBuffer: 9,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerHigh,
+          highlightColor: Theme.of(context).colorScheme.surfaceContainerLow,
+        ),
       );
     }
 
@@ -73,12 +80,13 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
       if (stackFrame.lineNumber == null) return const SizedBox();
 
       return IconButton(
-          icon: isExpanded! ? Icon(FontAwesomeIcons.chevronUp, size: 16) : Icon(FontAwesomeIcons.chevronDown, size: 16),
-          color: Theme.of(context).colorScheme.primary,
-          tooltip: 'Show source-code snippet',
-          onPressed: () => setState(() {
-                isExpanded = !isExpanded!;
-              }));
+        icon: isExpanded! ? Icon(FontAwesomeIcons.chevronUp, size: 16) : Icon(FontAwesomeIcons.chevronDown, size: 16),
+        color: Theme.of(context).colorScheme.primary,
+        tooltip: 'Show source-code snippet',
+        onPressed: () => setState(() {
+          isExpanded = !isExpanded!;
+        }),
+      );
     }
 
     final separatorColor = Theme.of(context).colorScheme.outlineVariant;
@@ -86,21 +94,32 @@ class GenericExceptionStackFramePreviewState extends State<GenericExceptionStack
     final onTapHandler = (stackFrame.fileName == null)
         ? null
         : () => tryOpenSourceCodePathInEditor(
-            context, applicationStateProviderInstance.defaultCodeEditor, stackFrame.fileName!, stackFrame.lineNumber!);
+            context,
+            applicationStateProviderInstance.defaultCodeEditor,
+            stackFrame.fileName!,
+            stackFrame.lineNumber!,
+          );
 
     return InkWell(
-        onTap: onTapHandler,
-        child: Container(
-          decoration: BoxDecoration(border: Border(top: BorderSide(width: 1, color: separatorColor))),
-          padding: const EdgeInsets.all(contentPadding),
-          child: Column(children: [
-            Row(children: [
-              Expanded(child: buildStackFrameDescription()),
-              const SizedBox(width: 20),
-              buildSourceCodeVisibilityButton(),
-            ]),
+      onTap: onTapHandler,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(width: 1, color: separatorColor)),
+        ),
+        padding: const EdgeInsets.all(contentPadding),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(child: buildStackFrameDescription()),
+                const SizedBox(width: 20),
+                buildSourceCodeVisibilityButton(),
+              ],
+            ),
             buildFileVisualization(),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

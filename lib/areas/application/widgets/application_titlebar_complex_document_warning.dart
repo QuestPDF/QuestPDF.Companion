@@ -23,9 +23,7 @@ class ApplicationTitlebarComplexDocumentWarning extends ConsumerWidget {
       content: const [
         "Your document contains complex content. The hot-reload performance may be impacted. Please consider developing with a simpler document.",
       ],
-      actions: const [
-        ApplicationTitlebarCardAction(label: "Learn More", url: detailsUrl),
-      ],
+      actions: const [ApplicationTitlebarCardAction(label: "Learn More", url: detailsUrl)],
       onClicked: () => launchUrl(Uri.parse(detailsUrl)),
     );
   }

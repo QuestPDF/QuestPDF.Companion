@@ -23,22 +23,19 @@ class GenericExceptionViewLayout extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final exception = ref.watch(genericExceptionViewStateProvider).state;
 
-    final exceptionWidgets = flatten(exception)
-        .map((x) => GenericExceptionViewItem(type: x.type, message: x.message, stackTrace: x.stackTrace))
-        .toList();
+    final exceptionWidgets = flatten(
+      exception,
+    ).map((x) => GenericExceptionViewItem(type: x.type, message: x.message, stackTrace: x.stackTrace)).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0),
       child: SingleChildScrollView(
         child: Center(
           child: Container(
-              margin: const EdgeInsets.all(48),
-              constraints: const BoxConstraints(maxWidth: 700),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                spacing: 24,
-                children: exceptionWidgets,
-              )),
+            margin: const EdgeInsets.all(48),
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, spacing: 24, children: exceptionWidgets),
+          ),
         ),
       ),
     );

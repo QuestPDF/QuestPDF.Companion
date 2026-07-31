@@ -25,8 +25,10 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
   static TextStyle labelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.normal);
   static TextStyle highlightedLabelStyle = TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.semibold);
-  static TextStyle hintStyle =
-      TextStyle(fontWeight: FontWeightOptimizedForOperatingSystem.thin, fontStyle: FontStyle.italic);
+  static TextStyle hintStyle = TextStyle(
+    fontWeight: FontWeightOptimizedForOperatingSystem.thin,
+    fontStyle: FontStyle.italic,
+  );
 
   static const highEmphasisOpacity = 255;
   static const lowEmphasisOpacity = 128;
@@ -69,27 +71,26 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-        onEnter: (_) => setState(() => isHovered = true),
-        onExit: (_) => setState(() => isHovered = false),
-        child: buildContentRow());
+      onEnter: (_) => setState(() => isHovered = true),
+      onExit: (_) => setState(() => isHovered = false),
+      child: buildContentRow(),
+    );
   }
 
   Widget buildContentRow() {
     final row = ClipRect(
       clipBehavior: Clip.hardEdge,
-      child: Row(children: [
-        buildAnnotation(),
-        ...buildTree(),
-        buildLabel(),
-        buildHint(),
-      ]),
+      child: Row(children: [buildAnnotation(), ...buildTree(), buildLabel(), buildHint()]),
     );
 
     if (!isHovered && !node.isSelected) return row;
 
     return Stack(
       clipBehavior: Clip.none,
-      children: [buildHighlight(), Center(child: row)],
+      children: [
+        buildHighlight(),
+        Center(child: row),
+      ],
     );
   }
 
@@ -103,7 +104,8 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
       left: horizontalSpacing,
       right: horizontalSpacing,
       child: Container(
-          decoration: BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8)))),
+        decoration: BoxDecoration(color: getHighlightColor(), borderRadius: const BorderRadius.all(Radius.circular(8))),
+      ),
     );
   }
 
@@ -134,7 +136,7 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
       if (node.parent?.isFolder ?? false) Icon(folderItemIcon, size: 16, color: iconColor),
       if (node.parent?.isFolder ?? false) const SizedBox(width: iconSpacing),
       if (node.isFolder) Icon(folderIcon, size: iconSize, color: iconColor),
-      if (node.isFolder) const SizedBox(width: iconSpacing)
+      if (node.isFolder) const SizedBox(width: iconSpacing),
     ];
   }
 
@@ -144,12 +146,14 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     if (node.annotationColor == Colors.transparent) return const SizedBox(width: annotationSize + 8);
 
     return Container(
-        width: annotationSize,
-        height: annotationSize,
-        margin: const EdgeInsets.only(right: 8),
-        decoration: BoxDecoration(
-            color: node.annotationColor?.withAlpha(isDimmed ? lowEmphasisOpacity : highEmphasisOpacity),
-            borderRadius: BorderRadius.all(Radius.circular(annotationSize))));
+      width: annotationSize,
+      height: annotationSize,
+      margin: const EdgeInsets.only(right: 8),
+      decoration: BoxDecoration(
+        color: node.annotationColor?.withAlpha(isDimmed ? lowEmphasisOpacity : highEmphasisOpacity),
+        borderRadius: BorderRadius.all(Radius.circular(annotationSize)),
+      ),
+    );
   }
 
   Widget buildLabel() {
@@ -158,7 +162,10 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
 
     final labelFontWeight = node.isSelected ? FontWeightOptimizedForOperatingSystem.bold : null;
 
-    return Text(node.label, style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight));
+    return Text(
+      node.label,
+      style: targetLabelStyle.copyWith(color: labelColor, fontWeight: labelFontWeight),
+    );
   }
 
   Widget buildHint() {
@@ -173,14 +180,15 @@ class TreeViewItemState<TContent> extends State<TreeViewItem<TContent>> {
     return Flexible(
       flex: 1,
       child: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Text(
-            node.hint!,
-            style: hintStyle.copyWith(color: hintColor),
-            softWrap: false,
-            maxLines: 1,
-            overflow: TextOverflow.fade,
-          )),
+        padding: const EdgeInsets.only(left: 16),
+        child: Text(
+          node.hint!,
+          style: hintStyle.copyWith(color: hintColor),
+          softWrap: false,
+          maxLines: 1,
+          overflow: TextOverflow.fade,
+        ),
+      ),
     );
   }
 }

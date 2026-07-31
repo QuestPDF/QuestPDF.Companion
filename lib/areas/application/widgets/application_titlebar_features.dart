@@ -21,9 +21,7 @@ class ApplicationTitlebarFeatures extends ConsumerWidget {
       content: const [
         "This application provides a wide range of features to help you create and manage your PDF documents.",
       ],
-      actions: const [
-        ApplicationTitlebarCardAction(label: "Learn more", url: learnMoreUrl),
-      ],
+      actions: const [ApplicationTitlebarCardAction(label: "Learn more", url: learnMoreUrl)],
       onClicked: () => launchUrl(Uri.parse(learnMoreUrl)),
     );
   }

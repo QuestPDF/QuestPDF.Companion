@@ -11,8 +11,9 @@ class HierarchyViewItem {
 }
 
 final documentHierarchyHoveredElementProviderInstance = DocumentHierarchyHoveredElementProvider();
-final documentHierarchyHoveredElementProvider =
-    ChangeNotifierProvider((ref) => documentHierarchyHoveredElementProviderInstance);
+final documentHierarchyHoveredElementProvider = ChangeNotifierProvider(
+  (ref) => documentHierarchyHoveredElementProviderInstance,
+);
 
 class DocumentHierarchyHoveredElementProvider extends ChangeNotifier {
   DocumentHierarchyElement? hoveredElement;

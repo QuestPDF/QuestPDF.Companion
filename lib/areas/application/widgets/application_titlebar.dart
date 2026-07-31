@@ -28,12 +28,9 @@ class ApplicationTitlebar extends ConsumerWidget {
           const ApplicationTitlebarUpdateAvailable(),
           const ApplicationTitlebarFeatures(),
           const ApplicationTitlebarSettings(),
-          SizedBox(
-            height: 24,
-            child: VerticalDivider(width: 32),
-          ),
+          SizedBox(height: 24, child: VerticalDivider(width: 32)),
           const ApplicationTitlebarWindowButtons(),
-          const SizedBox(width: 6)
+          const SizedBox(width: 6),
         ];
       }
 
@@ -48,12 +45,9 @@ class ApplicationTitlebar extends ConsumerWidget {
         const ApplicationTitlebarUpdateAvailable(),
         const ApplicationTitlebarFeatures(),
         const ApplicationTitlebarSettings(),
-        SizedBox(
-          height: 24,
-          child: VerticalDivider(width: 32),
-        ),
+        SizedBox(height: 24, child: VerticalDivider(width: 32)),
         const ApplicationTitlebarWindowButtons(),
-        const SizedBox(width: 6)
+        const SizedBox(width: 6),
       ];
     }
 

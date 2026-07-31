@@ -12,8 +12,13 @@ class PageLocation {
   final double right;
   final double bottom;
 
-  PageLocation(
-      {required this.pageNumber, required this.left, required this.top, required this.right, required this.bottom});
+  PageLocation({
+    required this.pageNumber,
+    required this.left,
+    required this.top,
+    required this.right,
+    required this.bottom,
+  });
 
   const PageLocation.fromPLTRB(this.pageNumber, this.left, this.top, this.right, this.bottom);
 

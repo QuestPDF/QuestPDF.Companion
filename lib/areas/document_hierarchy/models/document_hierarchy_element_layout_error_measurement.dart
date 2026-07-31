@@ -18,8 +18,14 @@ class DocumentHierarchyElementLayoutErrorMeasurement {
   @JsonKey(includeFromJson: false)
   DocumentHierarchyElementLayoutErrorMeasurement? parent;
 
-  DocumentHierarchyElementLayoutErrorMeasurement(this.pageNumber, this.availableSpace, this.measurementSize,
-      this.spacePlanType, this.wrapReason, this.isLayoutErrorRootCause);
+  DocumentHierarchyElementLayoutErrorMeasurement(
+    this.pageNumber,
+    this.availableSpace,
+    this.measurementSize,
+    this.spacePlanType,
+    this.wrapReason,
+    this.isLayoutErrorRootCause,
+  );
 
   factory DocumentHierarchyElementLayoutErrorMeasurement.fromJson(Map<String, dynamic> json) =>
       _$DocumentHierarchyElementLayoutErrorMeasurementFromJson(json);

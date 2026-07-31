@@ -47,56 +47,56 @@ class ApplicationTitlebarCard extends ConsumerWidget {
           color: Theme.of(context).cardColor,
           elevation: 8,
           child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: titleTextStyle),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: titleTextStyle),
+                const SizedBox(height: 8),
+                ...content.flatMap((x) => [Text(x, style: contentStyle), const SizedBox(height: 12)]),
+                if (actions.isNotEmpty) ...[
                   const SizedBox(height: 8),
-                  ...content.flatMap((x) => [
-                        Text(x, style: contentStyle),
-                        const SizedBox(height: 12),
-                      ]),
-                  if (actions.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: actions.map((action) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 12),
-                          child:
-                              OutlinedButton(onPressed: () => launchUrl(Uri.parse(action.url)), child: Text(action.label)),
-                        );
-                      }).toList(),
-                    ),
-                  ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: actions.map((action) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: OutlinedButton(
+                          onPressed: () => launchUrl(Uri.parse(action.url)),
+                          child: Text(action.label),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ],
-              )),
+              ],
+            ),
+          ),
         ),
       );
     }
 
     Widget buildIndicatorIcon() {
       final buttonStyle = ButtonStyle(
-          visualDensity: VisualDensity.compact,
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          ),
-          iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
-          backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) => emphasized ? emphasisColor : null));
+        visualDensity: VisualDensity.compact,
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
+        iconColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onSurfaceVariant),
+        backgroundColor: WidgetStateProperty.resolveWith<Color?>((states) => emphasized ? emphasisColor : null),
+      );
 
       final iconColor = emphasized ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant;
 
       return Padding(
         padding: EdgeInsets.only(left: emphasized ? 16 : 8, right: emphasized ? 2 : 0),
         child: IconButton(
-            icon: Icon(icon, color: iconColor, size: 20),
-            visualDensity: VisualDensity.standard,
-            padding: EdgeInsets.all(4),
-            style: buttonStyle,
-            onPressed: onClicked),
+          icon: Icon(icon, color: iconColor, size: 20),
+          visualDensity: VisualDensity.standard,
+          padding: EdgeInsets.all(4),
+          style: buttonStyle,
+          onPressed: onClicked,
+        ),
       );
     }
 

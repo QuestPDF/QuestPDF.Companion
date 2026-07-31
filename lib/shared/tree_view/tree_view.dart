@@ -42,15 +42,16 @@ class TreeView<TContent> extends ConsumerWidget {
     });
 
     return ListView.builder(
-        controller: scrollController,
-        itemCount: visibleItems.length,
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        prototypeItem: const SizedBox(height: itemHeight),
-        itemBuilder: (context, index) {
-          return buildItem(visibleItems[index]);
-        });
+      controller: scrollController,
+      itemCount: visibleItems.length,
+      physics: const ClampingScrollPhysics(),
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      prototypeItem: const SizedBox(height: itemHeight),
+      itemBuilder: (context, index) {
+        return buildItem(visibleItems[index]);
+      },
+    );
   }
 
   Widget buildItem(TreeViewVisibleItem<TContent> activeItem) {

@@ -23,7 +23,7 @@ class ApplicationTitlebarLayoutError extends ConsumerWidget {
       title: "Layout error detected",
       content: const [
         "The provided document content contains conflicting size constraints.",
-        "Please use the layout debugger to identify the issue."
+        "Please use the layout debugger to identify the issue.",
       ],
       actions: const [ApplicationTitlebarCardAction(label: "Learn more", url: learnMoreUrl)],
       onClicked: () => launchUrl(Uri.parse(learnMoreUrl)),

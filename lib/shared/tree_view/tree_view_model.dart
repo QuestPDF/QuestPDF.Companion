@@ -27,20 +27,21 @@ class TreeViewModel<TContent> {
   final ChangeNotifier? notifier;
   final VoidCallback? onClick;
 
-  TreeViewModel(
-      {required this.label,
-      this.annotationColor,
-      this.hint,
-      required this.isHintImportant,
-      required this.isHighlighted,
-      required this.isDimmed,
-      required this.isSelected,
-      required this.isExpanded,
-      required this.isSingleChildContainer,
-      required this.children,
-      required this.content,
-      required this.notifier,
-      this.onClick});
+  TreeViewModel({
+    required this.label,
+    this.annotationColor,
+    this.hint,
+    required this.isHintImportant,
+    required this.isHighlighted,
+    required this.isDimmed,
+    required this.isSelected,
+    required this.isExpanded,
+    required this.isSingleChildContainer,
+    required this.children,
+    required this.content,
+    required this.notifier,
+    this.onClick,
+  });
 
   void updateHierarchy() {
     for (final child in children) {

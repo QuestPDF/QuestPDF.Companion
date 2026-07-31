@@ -40,8 +40,9 @@ class DocumentPreviewImageCacheState extends ChangeNotifier {
   List<PageSnapshotIndex> getNeededImages() {
     if (neededImages.isEmpty) return [];
 
-    final imagesToRequest =
-        neededImages.where((element) => isImagesCacheInvalidated || !images.keys.contains(element)).toList();
+    final imagesToRequest = neededImages
+        .where((element) => isImagesCacheInvalidated || !images.keys.contains(element))
+        .toList();
     imagesToRequest.forEach(requestedImages.add);
     neededImages.clear();
 
@@ -75,7 +76,7 @@ class DocumentPreviewImageCacheState extends ChangeNotifier {
     final zoomLevelPriority = [
       index.zoomLevel,
       ...List.generate(10, (x) => index.zoomLevel + x),
-      ...List.generate(10, (x) => index.zoomLevel - x)
+      ...List.generate(10, (x) => index.zoomLevel - x),
     ];
 
     return zoomLevelPriority

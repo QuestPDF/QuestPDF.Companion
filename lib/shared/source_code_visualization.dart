@@ -12,13 +12,14 @@ class SourceCodeVisualization extends StatefulWidget {
   final Color backgroundColor;
   final Color highlightColor;
 
-  const SourceCodeVisualization(
-      {super.key,
-      required this.filePath,
-      required this.highlightLineNumber,
-      required this.showLinesBuffer,
-      required this.backgroundColor,
-      required this.highlightColor});
+  const SourceCodeVisualization({
+    super.key,
+    required this.filePath,
+    required this.highlightLineNumber,
+    required this.showLinesBuffer,
+    required this.backgroundColor,
+    required this.highlightColor,
+  });
 
   @override
   State<SourceCodeVisualization> createState() => SourceCodeVisualizationState();
@@ -86,38 +87,39 @@ class SourceCodeVisualizationState extends State<SourceCodeVisualization> {
       return Container(
         color: isHighlighted ? widget.highlightColor : Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Row(children: [
-          SizedBox(
-              width: 30, child: Text(lineNumber.toString(), style: codeStyle.copyWith(color: theme["root"]!.color))),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: sourceCode == null ? 600 : null,
-            child: HighlightView(
-              lines[lineNumber - 1],
-              language: 'cs',
-              theme: theme,
-              textStyle: codeStyle,
+        child: Row(
+          children: [
+            SizedBox(
+              width: 30,
+              child: Text(lineNumber.toString(), style: codeStyle.copyWith(color: theme["root"]!.color)),
             ),
-          )
-        ]),
+            const SizedBox(width: 8),
+            SizedBox(
+              width: sourceCode == null ? 600 : null,
+              child: HighlightView(lines[lineNumber - 1], language: 'cs', theme: theme, textStyle: codeStyle),
+            ),
+          ],
+        ),
       );
     }
 
-    final codeLines = List.generate(lineNumberEnd - lineNumberBegin + 1, (index) => lineNumberBegin + index)
-        .map(generateCodeLine)
-        .toList();
+    final codeLines = List.generate(
+      lineNumberEnd - lineNumberBegin + 1,
+      (index) => lineNumberBegin + index,
+    ).map(generateCodeLine).toList();
 
     // it is okay to observer overflow here
     return Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(8)),
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          physics: const ClampingScrollPhysics(),
-          child: IntrinsicWidth(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.max, children: codeLines)),
-        ));
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(color: widget.backgroundColor, borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        physics: const ClampingScrollPhysics(),
+        child: IntrinsicWidth(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.max, children: codeLines),
+        ),
+      ),
+    );
   }
 }

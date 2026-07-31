@@ -16,11 +16,14 @@ class GenericExceptionViewItem extends StatelessWidget {
     const contentPadding = 16.0;
 
     Widget buildExceptionHeader() {
-      final titleTextStyle =
-          Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer);
+      final titleTextStyle = Theme.of(
+        context,
+      ).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.onErrorContainer);
 
       final descriptionTextStyle = Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color: Theme.of(context).colorScheme.onErrorContainer, fontWeight: FontWeightOptimizedForOperatingSystem.normal);
+        color: Theme.of(context).colorScheme.onErrorContainer,
+        fontWeight: FontWeightOptimizedForOperatingSystem.normal,
+      );
 
       return Container(
         color: Theme.of(context).colorScheme.errorContainer,
@@ -47,8 +50,9 @@ class GenericExceptionViewItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildExceptionHeader(),
-          ...stackTrace
-              .map((x) => GenericExceptionStackFramePreview(stackFrame: x, isExpanded: x == firstFrameWithSourceCode)),
+          ...stackTrace.map(
+            (x) => GenericExceptionStackFramePreview(stackFrame: x, isExpanded: x == firstFrameWithSourceCode),
+          ),
         ],
       ),
     );

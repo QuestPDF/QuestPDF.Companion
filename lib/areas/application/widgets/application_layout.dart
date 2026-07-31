@@ -27,16 +27,17 @@ class ApplicationLayout extends ConsumerWidget {
     }
 
     final appBar = AppBar(
-        title: const ApplicationTitlebar(),
-        titleSpacing: 0,
-        toolbarHeight: toolbarHeight,
-        centerTitle: false,
-        surfaceTintColor: Colors.transparent,
-        foregroundColor: Colors.transparent,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor: Colors.transparent,
-        elevation: 0,
-        shape: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withAlpha(64), width: 1)));
+      title: const ApplicationTitlebar(),
+      titleSpacing: 0,
+      toolbarHeight: toolbarHeight,
+      centerTitle: false,
+      surfaceTintColor: Colors.transparent,
+      foregroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shadowColor: Colors.transparent,
+      elevation: 0,
+      shape: Border(bottom: BorderSide(color: Theme.of(context).dividerColor.withAlpha(64), width: 1)),
+    );
 
     final windowMoveableArea = GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -50,7 +51,7 @@ class ApplicationLayout extends ConsumerWidget {
       children: [
         const KeyboardShortcuts(),
         Scaffold(backgroundColor: Theme.of(context).colorScheme.surfaceContainer, appBar: appBar, body: getCurrentView()),
-        windowMoveableArea
+        windowMoveableArea,
       ],
     );
   }

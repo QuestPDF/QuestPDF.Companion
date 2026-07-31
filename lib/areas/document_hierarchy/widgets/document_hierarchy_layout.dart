@@ -40,19 +40,20 @@ class DocumentHierarchyLayout extends ConsumerWidget {
       TreeViewModel<DocumentHierarchyElement> buildTreeContent() {
         TreeViewModel<DocumentHierarchyElement> buildTreeContentFromElement(DocumentHierarchyElement element) {
           return TreeViewModel<DocumentHierarchyElement>(
-              label: getDefaultTreeViewLabel(element.elementType, element.properties) ?? "",
-              hint: element.hint,
-              isHintImportant: element.elementType == "TextBlock",
-              annotationColor: getAnnotationColor(element),
-              isHighlighted: getDefaultTreeViewHighlighting(element.elementType, element.properties),
-              isExpanded: element.isExpanded,
-              isSelected: hierarchy.selectedElement == element,
-              isDimmed: (x) => !x.isVisibleOn(documentPreviewVisibleContentStateInstance.visiblePageLocations),
-              isSingleChildContainer: element.isSingleChildContainer,
-              children: element.children.map(buildTreeContentFromElement).toList(),
-              notifier: documentPreviewVisibleContentStateInstance,
-              onClick: () => hierarchy.setSelectedElement(element),
-              content: element);
+            label: getDefaultTreeViewLabel(element.elementType, element.properties) ?? "",
+            hint: element.hint,
+            isHintImportant: element.elementType == "TextBlock",
+            annotationColor: getAnnotationColor(element),
+            isHighlighted: getDefaultTreeViewHighlighting(element.elementType, element.properties),
+            isExpanded: element.isExpanded,
+            isSelected: hierarchy.selectedElement == element,
+            isDimmed: (x) => !x.isVisibleOn(documentPreviewVisibleContentStateInstance.visiblePageLocations),
+            isSingleChildContainer: element.isSingleChildContainer,
+            children: element.children.map(buildTreeContentFromElement).toList(),
+            notifier: documentPreviewVisibleContentStateInstance,
+            onClick: () => hierarchy.setSelectedElement(element),
+            content: element,
+          );
         }
 
         final result = buildTreeContentFromElement(hierarchy.state!);
@@ -61,33 +62,22 @@ class DocumentHierarchyLayout extends ConsumerWidget {
       }
 
       return TreeView(
-          onHover: (hoveredElement) => hoverState.setHoveredElement(hoveredElement),
-          rootNode: buildTreeContent(),
-          selectedElementContent: hierarchy.selectedElement);
+        onHover: (hoveredElement) => hoverState.setHoveredElement(hoveredElement),
+        rootNode: buildTreeContent(),
+        selectedElementContent: hierarchy.selectedElement,
+      );
     }
 
     return Container(
       color: Theme.of(context).cardColor,
       child: Column(
         children: [
-          Visibility(
-            visible: showSearch,
-            child: DocumentHierarchySearch(),
-          ),
-          Visibility(
-            visible: layoutErrorState.containsLayoutError,
-            child: DocumentHierarchyLayoutErrorNotification(),
-          ),
+          Visibility(visible: showSearch, child: DocumentHierarchySearch()),
+          Visibility(visible: layoutErrorState.containsLayoutError, child: DocumentHierarchyLayoutErrorNotification()),
           if (showSearch || layoutErrorState.containsLayoutError)
-            Divider(
-              height: 1,
-              color: Theme.of(context).dividerColor.withAlpha(64),
-            ),
+            Divider(height: 1, color: Theme.of(context).dividerColor.withAlpha(64)),
           Expanded(
-            child: Padding(
-              padding: EdgeInsetsGeometry.only(right: 4),
-              child: buildTreeView(),
-            ),
+            child: Padding(padding: EdgeInsetsGeometry.only(right: 4), child: buildTreeView()),
           ),
         ],
       ),

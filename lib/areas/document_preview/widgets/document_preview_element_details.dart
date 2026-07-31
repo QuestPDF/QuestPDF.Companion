@@ -72,15 +72,9 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
   Widget buildDetailsSection(IconData icon, String value, String tooltip) {
     return Tooltip(
-        message: tooltip,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 16),
-            const SizedBox(width: 12),
-            Text(value),
-          ],
-        ));
+      message: tooltip,
+      child: Row(mainAxisSize: MainAxisSize.min, children: [Icon(icon, size: 16), const SizedBox(width: 12), Text(value)]),
+    );
   }
 
   List<Widget> buildLayoutSection(
@@ -110,7 +104,10 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     return [
       buildDetailsSection(
-          FontAwesomeIcons.elementPage, formatPages(), "Selected element page visibility:\ncurrent page (min-max)"),
+        FontAwesomeIcons.elementPage,
+        formatPages(),
+        "Selected element page visibility:\ncurrent page (min-max)",
+      ),
       buildDetailsSection(FontAwesomeIcons.elementPosition, formatPosition(), "Selected element position"),
       buildDetailsSection(FontAwesomeIcons.elementSize, formatSize(), "Selected element size"),
     ];
@@ -183,28 +180,31 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
           onEnter: (_) => setState(() => showSourceCodePreview = true),
           onExit: (_) => setState(() => showSourceCodePreview = false),
           child: IconButton(
-              icon: Icon(FontAwesomeIcons.terminal, size: 16),
-              visualDensity: VisualDensity.compact,
-              onPressed: () => tryToOpenInCodeEditor(context)),
+            icon: Icon(FontAwesomeIcons.terminal, size: 16),
+            visualDensity: VisualDensity.compact,
+            onPressed: () => tryToOpenInCodeEditor(context),
+          ),
         ),
         IconButton(
-            icon: Icon(FontAwesomeIcons.arrowUp, size: 16),
-            visualDensity: VisualDensity.compact,
-            tooltip: "Previous occurrence",
-            onPressed: enablePositionButtons
-                ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(-1)
-                : null),
+          icon: Icon(FontAwesomeIcons.arrowUp, size: 16),
+          visualDensity: VisualDensity.compact,
+          tooltip: "Previous occurrence",
+          onPressed: enablePositionButtons
+              ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(-1)
+              : null,
+        ),
         IconButton(
-            icon: Icon(FontAwesomeIcons.arrowDown, size: 16),
-            visualDensity: VisualDensity.compact,
-            tooltip: "Next occurrence",
-            onPressed: enablePositionButtons
-                ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
-                : null),
+          icon: Icon(FontAwesomeIcons.arrowDown, size: 16),
+          visualDensity: VisualDensity.compact,
+          tooltip: "Next occurrence",
+          onPressed: enablePositionButtons
+              ? () => documentHierarchyProviderInstance.changeSelectedElementPageNumberVisibility(1)
+              : null,
+        ),
         if (showElementName) ...[
           const SizedBox(width: 12),
-          Text(selectedElement.elementType, style: Theme.of(context).textTheme.titleSmall)
-        ]
+          Text(selectedElement.elementType, style: Theme.of(context).textTheme.titleSmall),
+        ],
       ],
     );
   }
@@ -233,8 +233,9 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
 
     final currentLayoutErrorPageNumber = layoutErrorState.currentlySelectedLayoutError.measurement.pageNumber;
 
-    final measurement =
-        element.layoutErrorMeasurements.where((x) => x.pageNumber == currentLayoutErrorPageNumber).firstOrNull;
+    final measurement = element.layoutErrorMeasurements
+        .where((x) => x.pageNumber == currentLayoutErrorPageNumber)
+        .firstOrNull;
 
     String formatSize(ElementSize? size) {
       if (size == null) return "-";
@@ -290,16 +291,22 @@ class DocumentPreviewElementDetailsState extends ConsumerState<DocumentPreviewEl
     Widget? buildAvailableSpace() {
       if (measurement == null) return null;
 
-      return buildDetailsSection(FontAwesomeIcons.elementAvailableSpace, formatSize(measurement.availableSpace),
-          "Available space for selected element");
+      return buildDetailsSection(
+        FontAwesomeIcons.elementAvailableSpace,
+        formatSize(measurement.availableSpace),
+        "Available space for selected element",
+      );
     }
 
     Widget? buildRequestedSpace() {
       if (measurement == null) return null;
       if (measurement.spacePlanType == SpacePlanType.wrap) return null;
 
-      return buildDetailsSection(FontAwesomeIcons.elementRequiredSpace, formatSize(measurement.measurementSize),
-          "Requested space for selected element");
+      return buildDetailsSection(
+        FontAwesomeIcons.elementRequiredSpace,
+        formatSize(measurement.measurementSize),
+        "Requested space for selected element",
+      );
     }
 
     return [buildAvailableSpace(), buildRequestedSpace(), buildMeasurementStatus()].whereNotNull();

@@ -34,27 +34,29 @@ class QuestPdfCompanionApp extends ConsumerWidget {
 
     final iconButtonTheme = IconButtonThemeData(
       style: ButtonStyle(
-          visualDensity: VisualDensity.compact,
-          padding: WidgetStateProperty.all(EdgeInsets.zero),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          )),
+        visualDensity: VisualDensity.compact,
+        padding: WidgetStateProperty.all(EdgeInsets.zero),
+        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
+      ),
     );
 
     return MaterialApp(
-        title: 'QuestPDF Companion',
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0e6bfb)),
-            visualDensity: VisualDensity.compact,
-            iconButtonTheme: iconButtonTheme),
-        darkTheme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0e6bfb), brightness: Brightness.dark),
-            visualDensity: VisualDensity.compact,
-            iconButtonTheme: iconButtonTheme),
-        themeMode: themeMode,
-        shortcuts: shortcuts,
-        home: const ApplicationLayout(),
-        showPerformanceOverlay: false,
-        debugShowCheckedModeBanner: false);
+      title: 'QuestPDF Companion',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0e6bfb)),
+        visualDensity: VisualDensity.compact,
+        iconButtonTheme: iconButtonTheme,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0e6bfb), brightness: Brightness.dark),
+        visualDensity: VisualDensity.compact,
+        iconButtonTheme: iconButtonTheme,
+      ),
+      themeMode: themeMode,
+      shortcuts: shortcuts,
+      home: const ApplicationLayout(),
+      showPerformanceOverlay: false,
+      debugShowCheckedModeBanner: false,
+    );
   }
 }

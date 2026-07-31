@@ -18,20 +18,25 @@ class DocumentHierarchyLayoutErrorNotification extends ConsumerWidget {
     return Container(
       color: Theme.of(context).colorScheme.errorContainer,
       padding: const EdgeInsets.only(left: 12, top: 4, right: 4, bottom: 4),
-      child: Row(children: [
-        Text(
+      child: Row(
+        children: [
+          Text(
             "Layout error ${layoutErrorProvider.currentlySelectedLayoutErrorIndex + 1} / ${layoutErrorProvider.numberOfLayoutErrors}",
-            style: titleTextStyle),
-        const Spacer(),
-        IconButton(
+            style: titleTextStyle,
+          ),
+          const Spacer(),
+          IconButton(
             icon: Icon(FontAwesomeIcons.arrowUp, color: textColor, size: 16),
             visualDensity: VisualDensity.compact,
-            onPressed: () => layoutErrorProvider.changeSelectedErrorLayoutPage(-1)),
-        IconButton(
+            onPressed: () => layoutErrorProvider.changeSelectedErrorLayoutPage(-1),
+          ),
+          IconButton(
             icon: Icon(FontAwesomeIcons.arrowDown, color: textColor, size: 16),
             visualDensity: VisualDensity.compact,
-            onPressed: () => layoutErrorProvider.changeSelectedErrorLayoutPage(1))
-      ]),
+            onPressed: () => layoutErrorProvider.changeSelectedErrorLayoutPage(1),
+          ),
+        ],
+      ),
     );
   }
 }

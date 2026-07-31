@@ -10,8 +10,7 @@ class ShowGenericExceptionCommand {
 
   ShowGenericExceptionCommand(this.exception);
 
-  factory ShowGenericExceptionCommand.fromJson(Map<String, dynamic> json) =>
-      _$ShowGenericExceptionCommandFromJson(json);
+  factory ShowGenericExceptionCommand.fromJson(Map<String, dynamic> json) => _$ShowGenericExceptionCommandFromJson(json);
 
   Map<String, dynamic> toJson() => _$ShowGenericExceptionCommandToJson(this);
 }

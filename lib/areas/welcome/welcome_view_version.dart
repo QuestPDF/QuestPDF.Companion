@@ -9,7 +9,9 @@ class WelcomeViewVersion extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final applicationVersion = ref.watch(applicationVersionProvider.select((x) => x.currentApplicationVersion));
 
-    return Text(applicationVersion?.text ?? "-",
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant));
+    return Text(
+      applicationVersion?.text ?? "-",
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+    );
   }
 }

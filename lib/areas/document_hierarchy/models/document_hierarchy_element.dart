@@ -25,8 +25,17 @@ class DocumentHierarchyElement {
   @JsonKey(includeFromJson: false)
   bool isExpanded = false;
 
-  DocumentHierarchyElement(this.elementType, this.hint, this.searchableContent, this.isSingleChildContainer,
-      this.pageLocations, this.layoutErrorMeasurements, this.properties, this.sourceCodeDeclarationPath, this.children);
+  DocumentHierarchyElement(
+    this.elementType,
+    this.hint,
+    this.searchableContent,
+    this.isSingleChildContainer,
+    this.pageLocations,
+    this.layoutErrorMeasurements,
+    this.properties,
+    this.sourceCodeDeclarationPath,
+    this.children,
+  );
 
   factory DocumentHierarchyElement.fromJson(Map<String, dynamic> json) => _$DocumentHierarchyElementFromJson(json);
 
@@ -40,8 +49,9 @@ extension PageLocationExtensions on DocumentHierarchyElement {
 
   bool isVisibleOn(List<PageLocation> visibleLocations) {
     for (final visibleLocation in visibleLocations) {
-      final elementLocationsOnPage =
-          pageLocations.where((element) => element.pageNumber == visibleLocation.pageNumber).toList();
+      final elementLocationsOnPage = pageLocations
+          .where((element) => element.pageNumber == visibleLocation.pageNumber)
+          .toList();
 
       if (elementLocationsOnPage.any((location) => location.intersects(visibleLocation))) return true;
     }

@@ -15,8 +15,9 @@ class DocumentPreviewLayout extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final structure = ref.watch(documentPreviewImageCacheStateProvider);
     final selectedElement = ref.watch(documentHierarchyProvider.select((x) => x.selectedElement));
-    final selectedElementPageLocationIndex =
-        ref.watch(documentHierarchyProvider.select((x) => x.selectedElementPageLocationIndex));
+    final selectedElementPageLocationIndex = ref.watch(
+      documentHierarchyProvider.select((x) => x.selectedElementPageLocationIndex),
+    );
     final hoveredElement = ref.watch(documentHierarchyHoveredElementProvider);
     final documentHierarchyManualMeasurement = ref.watch(documentHierarchyManualMeasurementProvider);
 
@@ -24,12 +25,13 @@ class DocumentPreviewLayout extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         DocumentPreview(
-            pages: structure.pages,
-            hoveredElement: hoveredElement.hoveredElement,
-            selectedElement: selectedElement,
-            selectedElementLocationIndex: selectedElementPageLocationIndex,
-            manualMeasurementResult: documentHierarchyManualMeasurement.manualMeasurementResult),
-        const Positioned.fill(bottom: null, child: DocumentPreviewElementDetails())
+          pages: structure.pages,
+          hoveredElement: hoveredElement.hoveredElement,
+          selectedElement: selectedElement,
+          selectedElementLocationIndex: selectedElementPageLocationIndex,
+          manualMeasurementResult: documentHierarchyManualMeasurement.manualMeasurementResult,
+        ),
+        const Positioned.fill(bottom: null, child: DocumentPreviewElementDetails()),
       ],
     );
   }

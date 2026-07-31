@@ -27,11 +27,15 @@ Future tryOpenSourceCodePathInEditor(BuildContext context, CodeEditor editor, St
     final textColor = Theme.of(context).colorScheme.onError;
     final textStyle = Theme.of(context).textTheme.bodySmall?.copyWith(color: textColor);
 
-    final message = "Unable to open the source code in ${getEditorName(editor)}. "
+    final message =
+        "Unable to open the source code in ${getEditorName(editor)}. "
         "Please ensure that the editor is installed correctly and can be launched from the command line (it is added to the PATH environment variable). "
         "Alternatively, you can change the default editor in the application settings.";
 
-    final snackBar = SnackBar(backgroundColor: backgroundColor, content: Text(message, style: textStyle));
+    final snackBar = SnackBar(
+      backgroundColor: backgroundColor,
+      content: Text(message, style: textStyle),
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }

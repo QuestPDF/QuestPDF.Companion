@@ -28,13 +28,14 @@ class DocumentPreview extends StatefulWidget {
   final int? selectedElementLocationIndex;
   final DocumentManualMeasurementResult? manualMeasurementResult;
 
-  const DocumentPreview(
-      {super.key,
-      required this.pages,
-      required this.hoveredElement,
-      required this.selectedElement,
-      required this.selectedElementLocationIndex,
-      required this.manualMeasurementResult});
+  const DocumentPreview({
+    super.key,
+    required this.pages,
+    required this.hoveredElement,
+    required this.selectedElement,
+    required this.selectedElementLocationIndex,
+    required this.manualMeasurementResult,
+  });
 
   @override
   State<DocumentPreview> createState() => DocumentPreviewState();
@@ -92,7 +93,10 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final isControlPressed =
         HardwareKeyboard.instance.isControlPressed || (Platform.isMacOS && HardwareKeyboard.instance.isMetaPressed);
 
-    if (isCanvasNavigationByKeyboardShortcutsAvailable() && event is KeyDownEvent && isControlPressed && event.physicalKey == PhysicalKeyboardKey.keyE) {
+    if (isCanvasNavigationByKeyboardShortcutsAvailable() &&
+        event is KeyDownEvent &&
+        isControlPressed &&
+        event.physicalKey == PhysicalKeyboardKey.keyE) {
       zoomOnPage();
       return true;
     }
@@ -131,9 +135,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
     if (isCanvasNavigationByKeyboardShortcutsAvailable() && event is! KeyUpEvent && !isControlPressed) {
       final panDirection = findKeyboardPanDirection(event.logicalKey);
 
-      final modifier = HardwareKeyboard.instance.isShiftPressed
-          ? keyboardPanShiftSensitivity
-          : keyboardPanSensitivity;
+      final modifier = HardwareKeyboard.instance.isShiftPressed ? keyboardPanShiftSensitivity : keyboardPanSensitivity;
 
       if (panDirection != null) {
         panBy(panDirection * modifier);
@@ -239,12 +241,15 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final visiblePages = pagePositions
         .map((x) => (page: x, intersection: x.position.intersect(visibleBox).shift(-x.position.topLeft)))
         .where((x) => !x.intersection.isEmpty)
-        .map((x) => PageLocation(
+        .map(
+          (x) => PageLocation(
             pageNumber: x.page.pageIndex + 1,
             left: x.intersection.left,
             top: x.intersection.top,
             right: x.intersection.right,
-            bottom: x.intersection.bottom))
+            bottom: x.intersection.bottom,
+          ),
+        )
         .toList();
 
     return visiblePages;
@@ -254,15 +259,19 @@ class DocumentPreviewState extends State<DocumentPreview> {
     var minVerticalTranslate = -totalDocumentHeight * scale + renderBox.size.height;
     final maxHorizontalOffset = (renderBox.size.width / 2 - totalDocumentWidth / 2 * scale).abs();
 
-    translate = Offset(translate.dx.clamp(-maxHorizontalOffset, maxHorizontalOffset),
-        translate.dy.clamp(min(0, minVerticalTranslate), 0));
+    translate = Offset(
+      translate.dx.clamp(-maxHorizontalOffset, maxHorizontalOffset),
+      translate.dy.clamp(min(0, minVerticalTranslate), 0),
+    );
 
     // scale where entire document width is visible should be centered
     final idealWidthScale = renderBox.size.width / totalDocumentWidth;
     final idealHeightScale = renderBox.size.height / totalDocumentHeight;
 
-    translate = Offset(idealWidthScale > scale ? 0 : translate.dx,
-        idealHeightScale > scale ? (renderBox.size.height - totalDocumentHeight * scale) / 2 : translate.dy);
+    translate = Offset(
+      idealWidthScale > scale ? 0 : translate.dx,
+      idealHeightScale > scale ? (renderBox.size.height - totalDocumentHeight * scale) / 2 : translate.dy,
+    );
   }
 
   Offset get viewportCenter => renderBox.size.center(Offset.zero);
@@ -318,11 +327,17 @@ class DocumentPreviewState extends State<DocumentPreview> {
     if (pointerLocation == null) return;
 
     documentHierarchyProviderInstance.findPreviewClickedElement(
-        pointerLocation.pageNumber, pointerLocation.x, pointerLocation.y);
+      pointerLocation.pageNumber,
+      pointerLocation.x,
+      pointerLocation.y,
+    );
 
     if (HardwareKeyboard.instance.isAltPressed) {
       final clickableLink = documentHierarchyProviderInstance.findClickableLink(
-          pointerLocation.pageNumber, pointerLocation.x, pointerLocation.y);
+        pointerLocation.pageNumber,
+        pointerLocation.x,
+        pointerLocation.y,
+      );
 
       if (clickableLink != null) documentHierarchyProviderInstance.openClickableLink(clickableLink);
     }
@@ -332,13 +347,18 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     if (isControlPressed) {
       Future(() {
-        final location =
-            documentHierarchyProviderInstance.findSourceCodeLocationOf(documentHierarchyProviderInstance.selectedElement);
+        final location = documentHierarchyProviderInstance.findSourceCodeLocationOf(
+          documentHierarchyProviderInstance.selectedElement,
+        );
 
         if (location == null) return;
 
         tryOpenSourceCodePathInEditor(
-            context, applicationStateProviderInstance.defaultCodeEditor, location.filePath, location.lineNumber);
+          context,
+          applicationStateProviderInstance.defaultCodeEditor,
+          location.filePath,
+          location.lineNumber,
+        );
       });
     }
   }
@@ -365,8 +385,10 @@ class DocumentPreviewState extends State<DocumentPreview> {
     setState(() {
       scale = min(renderBox.size.width / location.width, renderBox.size.height / location.height) / zoomScalePadding;
       scale = min(scale, maxZoom);
-      translate = Offset(-(pagePosition.position.left + location.left + location.width / 2) * scale,
-          renderBox.size.height / 2 - (pagePosition.position.top + location.top + location.height / 2) * scale);
+      translate = Offset(
+        -(pagePosition.position.left + location.left + location.width / 2) * scale,
+        renderBox.size.height / 2 - (pagePosition.position.top + location.top + location.height / 2) * scale,
+      );
 
       handleScaleLimits();
       handleTranslateLimits();
@@ -394,8 +416,9 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
     final currentZoomLevel = calculateZoomLevelFromScale(scale, isHighResolution);
 
-    final neededImages =
-        getVisiblePages(visibleBoxBufferFactor: 1).map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel)).toList();
+    final neededImages = getVisiblePages(
+      visibleBoxBufferFactor: 1,
+    ).map((x) => PageSnapshotIndex(x.pageIndex, currentZoomLevel)).toList();
 
     documentPreviewImageCacheStateInstance.updateNeededImages(neededImages);
   }
@@ -416,8 +439,11 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final page = pagePositions[currentPageIndex];
     final currentPagePosition = cursorPositionInDocumentCoordinates - page.position.topLeft;
 
-    final position =
-        PointerLocation(pageNumber: currentPageIndex + 1, x: currentPagePosition.dx, y: currentPagePosition.dy);
+    final position = PointerLocation(
+      pageNumber: currentPageIndex + 1,
+      x: currentPagePosition.dx,
+      y: currentPagePosition.dy,
+    );
     Future(() => documentPreviewPointerLocationStateInstance.update(position));
   }
 
@@ -435,7 +461,10 @@ class DocumentPreviewState extends State<DocumentPreview> {
       if (pointerLocation == null) return false;
 
       final clickableLink = documentHierarchyProviderInstance.findClickableLink(
-          pointerLocation.pageNumber, pointerLocation.x, pointerLocation.y);
+        pointerLocation.pageNumber,
+        pointerLocation.x,
+        pointerLocation.y,
+      );
 
       return clickableLink != null;
     }
@@ -463,17 +492,19 @@ class DocumentPreviewState extends State<DocumentPreview> {
           onPointerHover: handleMouseHoverEvent,
           onPointerSignal: handleMouseScrollEvent,
           child: CustomPaint(
-              key: previewKey,
-              painter: DocumentPreviewPainter(
-                  backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  translate: translate,
-                  scale: scale,
-                  visiblePages: getVisiblePages(),
-                  isHighResolution: isHighResolution,
-                  highlightedArea: highlightedArea,
-                  interactionType: pointerHoverInteraction,
-                  pointerLocation: documentPreviewPointerLocationStateInstance.state,
-                  measurement: widget.manualMeasurementResult)),
+            key: previewKey,
+            painter: DocumentPreviewPainter(
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+              translate: translate,
+              scale: scale,
+              visiblePages: getVisiblePages(),
+              isHighResolution: isHighResolution,
+              highlightedArea: highlightedArea,
+              interactionType: pointerHoverInteraction,
+              pointerLocation: documentPreviewPointerLocationStateInstance.state,
+              measurement: widget.manualMeasurementResult,
+            ),
+          ),
         ),
       ),
     );
@@ -498,34 +529,36 @@ class DocumentPreviewState extends State<DocumentPreview> {
     final scrollbarStart = -translate.dy * ratio;
     final scrollbarHeight = renderBox.size.height * ratio + minScrollbarHeight;
 
-    final scrollbarColor =
-        (scrollbarHover || scrollbarMove) ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline;
+    final scrollbarColor = (scrollbarHover || scrollbarMove)
+        ? Theme.of(context).colorScheme.primary
+        : Theme.of(context).colorScheme.outline;
 
     return Positioned(
-        right: 0,
-        top: scrollbarStart,
-        child: Padding(
-          padding: const EdgeInsets.all(scrollbarTrackPadding),
-          child: Listener(
-            onPointerDown: (_) => setState(() => scrollbarMove = true),
-            onPointerUp: (_) => setState(() => scrollbarMove = false),
-            onPointerMove: (event) {
-              if (event.buttons == 0) return;
+      right: 0,
+      top: scrollbarStart,
+      child: Padding(
+        padding: const EdgeInsets.all(scrollbarTrackPadding),
+        child: Listener(
+          onPointerDown: (_) => setState(() => scrollbarMove = true),
+          onPointerUp: (_) => setState(() => scrollbarMove = false),
+          onPointerMove: (event) {
+            if (event.buttons == 0) return;
 
-              panBy(-ui.Offset(0, event.localDelta.dy) / ratio);
-            },
-            child: MouseRegion(
-              cursor: (scrollbarHover || scrollbarMove) ? SystemMouseCursors.click : SystemMouseCursors.basic,
-              onEnter: (_) => setState(() => scrollbarHover = true),
-              onExit: (_) => setState(() => scrollbarHover = false),
-              child: Container(
-                width: 8,
-                height: scrollbarHeight,
-                decoration: BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
-              ),
+            panBy(-ui.Offset(0, event.localDelta.dy) / ratio);
+          },
+          child: MouseRegion(
+            cursor: (scrollbarHover || scrollbarMove) ? SystemMouseCursors.click : SystemMouseCursors.basic,
+            onEnter: (_) => setState(() => scrollbarHover = true),
+            onExit: (_) => setState(() => scrollbarHover = false),
+            child: Container(
+              width: 8,
+              height: scrollbarHeight,
+              decoration: BoxDecoration(color: scrollbarColor, borderRadius: const BorderRadius.all(Radius.circular(8))),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   @override
@@ -551,7 +584,10 @@ class DocumentPreviewState extends State<DocumentPreview> {
     }
 
     return Stack(
-      children: [Positioned.fill(child: buildPreview()), buildScrollbar()],
+      children: [
+        Positioned.fill(child: buildPreview()),
+        buildScrollbar(),
+      ],
     );
   }
 }
@@ -569,16 +605,17 @@ class DocumentPreviewPainter extends CustomPainter {
 
   double get selectionThickness => 4 / scale;
 
-  DocumentPreviewPainter(
-      {required this.backgroundColor,
-      required this.translate,
-      required this.scale,
-      required this.visiblePages,
-      required this.isHighResolution,
-      required this.highlightedArea,
-      required this.interactionType,
-      required this.pointerLocation,
-      required this.measurement});
+  DocumentPreviewPainter({
+    required this.backgroundColor,
+    required this.translate,
+    required this.scale,
+    required this.visiblePages,
+    required this.isHighResolution,
+    required this.highlightedArea,
+    required this.interactionType,
+    required this.pointerLocation,
+    required this.measurement,
+  });
 
   @override
   void paint(Canvas canvas, Size size) async {
@@ -621,8 +658,9 @@ class DocumentPreviewPainter extends CustomPainter {
 
     // magnifier
     final magnifierClipRect = RRect.fromRectAndRadius(
-        Rect.fromCenter(center: Offset.zero, width: magnifierSize / scale, height: magnifierSize / scale),
-        ui.Radius.circular(12 / scale));
+      Rect.fromCenter(center: Offset.zero, width: magnifierSize / scale, height: magnifierSize / scale),
+      ui.Radius.circular(12 / scale),
+    );
     final magnifierClipPath = Path()..addRRect(magnifierClipRect);
 
     final magnifierBackgroundPaint = Paint()..color = backgroundColor;
@@ -640,7 +678,9 @@ class DocumentPreviewPainter extends CustomPainter {
 
     // page
     canvas.translate(
-        -pointerLocationInScreenSpace.dx * magnificationFactor, -pointerLocationInScreenSpace.dy * magnificationFactor);
+      -pointerLocationInScreenSpace.dx * magnificationFactor,
+      -pointerLocationInScreenSpace.dy * magnificationFactor,
+    );
     canvas.scale(magnificationFactor);
     drawPageContent(canvas, currentPage);
 
@@ -788,11 +828,12 @@ class DocumentPreviewPainter extends CustomPainter {
 
     // build text
     final paragraphStyle = ParagraphStyle(
-        textAlign: TextAlign.start,
-        fontSize: 14,
-        maxLines: 10,
-        height: 1.75,
-        textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false));
+      textAlign: TextAlign.start,
+      fontSize: 14,
+      maxLines: 10,
+      height: 1.75,
+      textHeightBehavior: TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false),
+    );
 
     final labelStyle = ui.TextStyle(color: Colors.white.withAlpha(196));
     final valueStyle = ui.TextStyle(color: Colors.white);
@@ -849,7 +890,8 @@ class DocumentPreviewPainter extends CustomPainter {
 
   void drawManualMeasurementResult(Canvas canvas, int pageNumber) {
     if (interactionType != PointerHoverInteraction.measureHorizontal &&
-        interactionType != PointerHoverInteraction.measureVertical) return;
+        interactionType != PointerHoverInteraction.measureVertical)
+      return;
 
     if (measurement == null) return;
 
@@ -913,11 +955,7 @@ class DocumentPreviewPainter extends CustomPainter {
     canvas.drawPath(path, linePaint);
 
     // create label
-    final paragraphStyle = ParagraphStyle(
-      textAlign: TextAlign.start,
-      fontSize: 14,
-      maxLines: 1,
-    );
+    final paragraphStyle = ParagraphStyle(textAlign: TextAlign.start, fontSize: 14, maxLines: 1);
 
     final paragraphBuilder = ParagraphBuilder(paragraphStyle);
     paragraphBuilder.pushStyle(ui.TextStyle(color: Colors.white));

@@ -12,12 +12,7 @@ enum CommunicationStatus { starting, active, error }
 
 enum CodeEditor { rider, visualCode, visualStudio }
 
-enum LicenseType {
-  evaluation,
-  community,
-  professional,
-  enterprise,
-}
+enum LicenseType { evaluation, community, professional, enterprise }
 
 class ApplicationStateProvider extends ChangeNotifier {
   SharedPreferences? _prefs;

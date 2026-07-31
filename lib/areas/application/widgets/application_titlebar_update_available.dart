@@ -26,11 +26,9 @@ class ApplicationTitlebarUpdateAvailable extends ConsumerWidget {
       title: "Update Available",
       content: [
         "Please consider updating the application to receive the latest features and improvements.",
-        "$currentVersion → $latestVersion"
+        "$currentVersion → $latestVersion",
       ],
-      actions: const [
-        ApplicationTitlebarCardAction(label: "Download", url: detailsUrl),
-      ],
+      actions: const [ApplicationTitlebarCardAction(label: "Download", url: detailsUrl)],
       onClicked: () => launchUrl(Uri.parse(detailsUrl)),
     );
   }

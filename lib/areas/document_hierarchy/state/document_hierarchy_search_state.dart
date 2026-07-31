@@ -89,8 +89,9 @@ class DocumentHierarchySearchState extends ChangeNotifier {
     searchableElements ??= getSearchableElements();
     searchableElementsForCurrentPhrase ??= searchableElements;
 
-    searchableElementsForCurrentPhrase =
-        searchableElementsForCurrentPhrase!.where((x) => x.text.contains(phrase)).toList();
+    searchableElementsForCurrentPhrase = searchableElementsForCurrentPhrase!
+        .where((x) => x.text.contains(phrase))
+        .toList();
     searchResults = searchableElementsForCurrentPhrase!.map((x) => x.element).distinct().toList();
   }
 

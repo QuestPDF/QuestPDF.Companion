@@ -23,9 +23,7 @@ class ApplicationTitlebarHotReloadWarning extends ConsumerWidget {
       content: const [
         "When using hot-reload, the code-navigation features are simplified. To take full advantage of this feature, please use dotnet watch.",
       ],
-      actions: const [
-        ApplicationTitlebarCardAction(label: "Learn More", url: detailsUrl),
-      ],
+      actions: const [ApplicationTitlebarCardAction(label: "Learn More", url: detailsUrl)],
       onClicked: () => launchUrl(Uri.parse(detailsUrl)),
     );
   }

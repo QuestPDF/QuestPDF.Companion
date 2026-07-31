@@ -11,8 +11,9 @@ import '../models/document_hierarchy_element.dart';
 import 'document_hierarchy_provider.dart';
 
 final documentHierarchyManualMeasurementProviderInstance = DocumentHierarchyManualMeasurement();
-final documentHierarchyManualMeasurementProvider =
-    ChangeNotifierProvider((ref) => documentHierarchyManualMeasurementProviderInstance);
+final documentHierarchyManualMeasurementProvider = ChangeNotifierProvider(
+  (ref) => documentHierarchyManualMeasurementProviderInstance,
+);
 
 class DocumentHierarchyManualMeasurement extends ChangeNotifier {
   DocumentManualMeasurementResult? manualMeasurementResult;
@@ -35,7 +36,11 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
     final horizontal = _getHorizontalMeasurement(measurableElements, pointerLocation, pageSize);
 
     manualMeasurementResult = DocumentManualMeasurementResult(
-        pageNumber: pointerLocation.pageNumber, point: point, vertical: vertical, horizontal: horizontal);
+      pageNumber: pointerLocation.pageNumber,
+      point: point,
+      vertical: vertical,
+      horizontal: horizontal,
+    );
 
     notifyListeners();
   }
@@ -66,7 +71,10 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
   }
 
   DocumentManualMeasurementResultAxis _getHorizontalMeasurement(
-      List<DocumentHierarchyElement> elements, PointerLocation pointer, DocumentStructurePageSize pageSize) {
+    List<DocumentHierarchyElement> elements,
+    PointerLocation pointer,
+    DocumentStructurePageSize pageSize,
+  ) {
     final closeToCursor = elements.mapNotNull((element) {
       final location = element.pageLocations.where((page) => page.pageNumber == pointer.pageNumber).firstOrNull;
 
@@ -80,18 +88,20 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
     final sortedSides = [
       0.0,
       ...closeToCursor.flatMap((x) => [x.location.left, x.location.right]),
-      pageSize.width
+      pageSize.width,
     ].distinct().sorted();
 
-    final index = Iterable.generate(sortedSides.length - 1)
-        .firstWhere((i) => sortedSides[i] <= pointer.x && pointer.x <= sortedSides[i + 1]);
+    final index = Iterable.generate(
+      sortedSides.length - 1,
+    ).firstWhere((i) => sortedSides[i] <= pointer.x && pointer.x <= sortedSides[i + 1]);
 
     final begin = Offset(sortedSides[index], pointer.y);
     final end = Offset(sortedSides[index + 1], pointer.y);
 
     Rect? findRelatedElement(double side) {
-      final touching =
-          closeToCursor.where((x) => isClose(x.location.left, side) || isClose(x.location.right, side)).toList();
+      final touching = closeToCursor
+          .where((x) => isClose(x.location.left, side) || isClose(x.location.right, side))
+          .toList();
 
       final preferred = touching
           .where((x) => x.location.left <= pointer.x && pointer.x <= x.location.right)
@@ -106,11 +116,18 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
     final relatedElementEnd = findRelatedElement(end.dx);
 
     return DocumentManualMeasurementResultAxis(
-        begin: begin, end: end, relatedElementBegin: relatedElementBegin, relatedElementEnd: relatedElementEnd);
+      begin: begin,
+      end: end,
+      relatedElementBegin: relatedElementBegin,
+      relatedElementEnd: relatedElementEnd,
+    );
   }
 
   DocumentManualMeasurementResultAxis _getVerticalMeasurement(
-      List<DocumentHierarchyElement> elements, PointerLocation pointer, DocumentStructurePageSize pageSize) {
+    List<DocumentHierarchyElement> elements,
+    PointerLocation pointer,
+    DocumentStructurePageSize pageSize,
+  ) {
     final closeToCursor = elements.mapNotNull((element) {
       final location = element.pageLocations.where((page) => page.pageNumber == pointer.pageNumber).firstOrNull;
 
@@ -124,18 +141,20 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
     final sortedSides = [
       0.0,
       ...closeToCursor.flatMap((x) => [x.location.top, x.location.bottom]),
-      pageSize.height
+      pageSize.height,
     ].distinct().sorted();
 
-    final index = Iterable.generate(sortedSides.length - 1)
-        .firstWhere((i) => sortedSides[i] <= pointer.y && pointer.y <= sortedSides[i + 1]);
+    final index = Iterable.generate(
+      sortedSides.length - 1,
+    ).firstWhere((i) => sortedSides[i] <= pointer.y && pointer.y <= sortedSides[i + 1]);
 
     final begin = Offset(pointer.x, sortedSides[index]);
     final end = Offset(pointer.x, sortedSides[index + 1]);
 
     Rect? findRelatedElement(double side) {
-      final touching =
-          closeToCursor.where((x) => isClose(x.location.top, side) || isClose(x.location.bottom, side)).toList();
+      final touching = closeToCursor
+          .where((x) => isClose(x.location.top, side) || isClose(x.location.bottom, side))
+          .toList();
 
       final preferred = touching
           .where((x) => x.location.top <= pointer.y && pointer.y <= x.location.bottom)
@@ -150,17 +169,27 @@ class DocumentHierarchyManualMeasurement extends ChangeNotifier {
     final relatedElementEnd = findRelatedElement(end.dy);
 
     return DocumentManualMeasurementResultAxis(
-        begin: begin, end: end, relatedElementBegin: relatedElementBegin, relatedElementEnd: relatedElementEnd);
+      begin: begin,
+      end: end,
+      relatedElementBegin: relatedElementBegin,
+      relatedElementEnd: relatedElementEnd,
+    );
   }
 
   DocumentManualMeasurementResultPoint? _getPointMeasurement(
-      List<DocumentHierarchyElement> elements, PointerLocation pointer, double tolerance) {
+    List<DocumentHierarchyElement> elements,
+    PointerLocation pointer,
+    double tolerance,
+  ) {
     final pointerLocation = Offset(pointer.x, pointer.y);
 
     double distanceFromPointToRect(Rect rect, Offset point) {
-      return [rect.left - point.dx, rect.right - point.dx, rect.top - point.dy, rect.bottom - point.dy]
-              .map((x) => x.abs())
-              .min() ??
+      return [
+            rect.left - point.dx,
+            rect.right - point.dx,
+            rect.top - point.dy,
+            rect.bottom - point.dy,
+          ].map((x) => x.abs()).min() ??
           0;
     }
 
@@ -211,8 +240,12 @@ class DocumentManualMeasurementResultAxis {
 
   double get length => (begin - end).distance;
 
-  DocumentManualMeasurementResultAxis(
-      {required this.begin, required this.end, required this.relatedElementBegin, required this.relatedElementEnd});
+  DocumentManualMeasurementResultAxis({
+    required this.begin,
+    required this.end,
+    required this.relatedElementBegin,
+    required this.relatedElementEnd,
+  });
 }
 
 class DocumentManualMeasurementResult {
@@ -221,6 +254,10 @@ class DocumentManualMeasurementResult {
   final DocumentManualMeasurementResultAxis vertical;
   final DocumentManualMeasurementResultAxis horizontal;
 
-  DocumentManualMeasurementResult(
-      {required this.pageNumber, required this.point, required this.vertical, required this.horizontal});
+  DocumentManualMeasurementResult({
+    required this.pageNumber,
+    required this.point,
+    required this.vertical,
+    required this.horizontal,
+  });
 }

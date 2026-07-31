@@ -42,12 +42,13 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
             runSpacing: 8,
             children: [
               ChoiceChip(
-                  label: Text('System', style: Theme.of(context).textTheme.bodySmall),
-                  showCheckmark: false,
-                  selected: applicationState.themeMode == ThemeMode.system,
-                  onSelected: (_) => applicationState.changeThemeMode(ThemeMode.system),
-                  visualDensity: VisualDensity.compact,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                label: Text('System', style: Theme.of(context).textTheme.bodySmall),
+                showCheckmark: false,
+                selected: applicationState.themeMode == ThemeMode.system,
+                onSelected: (_) => applicationState.changeThemeMode(ThemeMode.system),
+                visualDensity: VisualDensity.compact,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
               ChoiceChip(
                 label: Text('Light', style: Theme.of(context).textTheme.bodySmall),
                 showCheckmark: false,
@@ -74,21 +75,25 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          buildSectionHeader("Default code editor",
-              subtitle: "Opens source code in the selected editor when navigating from the document preview"),
+          buildSectionHeader(
+            "Default code editor",
+            subtitle: "Opens source code in the selected editor when navigating from the document preview",
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: CodeEditor.values
-                .map((editor) => ChoiceChip(
-                      label: Text(getEditorName(editor), style: Theme.of(context).textTheme.bodySmall),
-                      showCheckmark: false,
-                      selected: applicationState.defaultCodeEditor == editor,
-                      onSelected: (_) => applicationState.changeDefaultCodeEditor(editor),
-                      visualDensity: VisualDensity.compact,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ))
+                .map(
+                  (editor) => ChoiceChip(
+                    label: Text(getEditorName(editor), style: Theme.of(context).textTheme.bodySmall),
+                    showCheckmark: false,
+                    selected: applicationState.defaultCodeEditor == editor,
+                    onSelected: (_) => applicationState.changeDefaultCodeEditor(editor),
+                    visualDensity: VisualDensity.compact,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -118,9 +123,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
         child: Card(
           color: Theme.of(context).cardColor,
           elevation: 8,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -153,9 +156,7 @@ class ApplicationTitlebarSettings extends ConsumerWidget {
           style: ButtonStyle(
             visualDensity: VisualDensity.compact,
             padding: WidgetStateProperty.all(EdgeInsets.zero),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-            ),
+            shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
             iconColor: WidgetStateProperty.all(theme.colorScheme.onSurfaceVariant),
           ),
           onPressed: () => {},
@@ -247,16 +248,15 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
                   width: 8,
                   height: 8,
                   margin: const EdgeInsets.only(top: 1, left: 1),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: _getStatusColor(communicationStatus),
-                  ),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: _getStatusColor(communicationStatus)),
                 ),
                 const SizedBox(width: 6),
                 SizedBox(
                   width: 200,
-                  child: Text(_getStatusTooltip(isConnected, communicationStatus),
-                      style: theme.textTheme.bodySmall?.copyWith(color: _getStatusColor(communicationStatus))),
+                  child: Text(
+                    _getStatusTooltip(isConnected, communicationStatus),
+                    style: theme.textTheme.bodySmall?.copyWith(color: _getStatusColor(communicationStatus)),
+                  ),
                 ),
               ],
             ),

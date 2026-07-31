@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../document_hierarchy/models/page_location.dart';
 
 final documentPreviewVisibleContentStateInstance = DocumentPreviewVisibleContentState();
-final documentPreviewVisibleContentStateProvider =
-    ChangeNotifierProvider((ref) => documentPreviewVisibleContentStateInstance);
+final documentPreviewVisibleContentStateProvider = ChangeNotifierProvider(
+  (ref) => documentPreviewVisibleContentStateInstance,
+);
 
 class DocumentPreviewVisibleContentState extends ChangeNotifier {
   List<PageLocation> visiblePageLocations = [];
