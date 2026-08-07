@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:dartx/dartx.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/physics.dart';
 import 'package:flutter/services.dart';
 
 import '../../../shared/keyboard_shortcuts.dart';
@@ -41,13 +42,18 @@ class DocumentPreview extends StatefulWidget {
   State<DocumentPreview> createState() => DocumentPreviewState();
 }
 
-class DocumentPreviewState extends State<DocumentPreview> {
+class DocumentPreviewState extends State<DocumentPreview> with SingleTickerProviderStateMixin {
   final GlobalKey previewKey = GlobalKey();
 
   Offset translate = Offset.zero;
   double scale = 1;
 
   double scaleOnGestureStart = 1;
+
+  late final AnimationController flingController = AnimationController.unbounded(vsync: this)
+    ..addListener(handleFlingTick);
+  Offset flingDirection = Offset.zero;
+  double flingLastDistance = 0;
 
   num cacheRefreshId = 0;
   List<PageDrawingPlan> pagePositions = [];
@@ -85,6 +91,7 @@ class DocumentPreviewState extends State<DocumentPreview> {
   @override
   void dispose() {
     HardwareKeyboard.instance.removeHandler(handleKeyInteraction);
+    flingController.dispose();
     super.dispose();
   }
 
@@ -181,12 +188,14 @@ class DocumentPreviewState extends State<DocumentPreview> {
   }
 
   void handleMouseDownEvent(PointerDownEvent event) {
+    flingController.stop();
     documentHierarchyProviderInstance.setSelectedElement(null);
   }
 
   void handleMouseScrollEvent(PointerSignalEvent event) {
     if (event is! PointerScrollEvent) return;
 
+    flingController.stop();
     documentHierarchyProviderInstance.setSelectedElement(null);
 
     final scrollDelta = event.scrollDelta.dy / scrollPointsPerWheelTick;
@@ -281,6 +290,27 @@ class DocumentPreviewState extends State<DocumentPreview> {
       translate += delta;
       applyViewportChange();
     });
+  }
+
+  // momentum scrolling
+  void startFling(Velocity velocity) {
+    final pixelsPerSecond = velocity.pixelsPerSecond;
+
+    if (pixelsPerSecond.distance < kMinFlingVelocity) return;
+
+    const dragCoefficient = 0.135;
+    const constantDeceleration = 1400.0;
+
+    flingDirection = pixelsPerSecond / pixelsPerSecond.distance;
+    flingLastDistance = 0;
+    flingController.animateWith(
+      FrictionSimulation(dragCoefficient, 0, pixelsPerSecond.distance, constantDeceleration: constantDeceleration),
+    );
+  }
+
+  void handleFlingTick() {
+    panBy(flingDirection * (flingController.value - flingLastDistance));
+    flingLastDistance = flingController.value;
   }
 
   void zoomBy(double zoomFactor, Offset pivot, {Offset panDelta = Offset.zero}) {
@@ -379,6 +409,8 @@ class DocumentPreviewState extends State<DocumentPreview> {
 
   void zoomOn(int pageNumber, Rect location, {double zoomScalePadding = 1}) {
     const maxZoom = 3.0;
+
+    flingController.stop();
 
     final pagePosition = pagePositions[pageNumber - 1];
 
@@ -481,12 +513,18 @@ class DocumentPreviewState extends State<DocumentPreview> {
       cursor: getMouseCursor(),
       child: GestureDetector(
         onDoubleTap: onDoubleTap,
-        onScaleStart: (details) => scaleOnGestureStart = 1,
+        onScaleStart: (details) {
+          flingController.stop();
+          scaleOnGestureStart = 1;
+        },
         onScaleUpdate: (details) {
           zoomBy(details.scale / scaleOnGestureStart, details.localFocalPoint, panDelta: details.focalPointDelta);
           scaleOnGestureStart = details.scale;
         },
-        onScaleEnd: (details) => scaleOnGestureStart = 1,
+        onScaleEnd: (details) {
+          scaleOnGestureStart = 1;
+          startFling(details.velocity);
+        },
         child: Listener(
           onPointerDown: handleMouseDownEvent,
           onPointerHover: handleMouseHoverEvent,
@@ -539,7 +577,10 @@ class DocumentPreviewState extends State<DocumentPreview> {
       child: Padding(
         padding: const EdgeInsets.all(scrollbarTrackPadding),
         child: Listener(
-          onPointerDown: (_) => setState(() => scrollbarMove = true),
+          onPointerDown: (_) {
+            flingController.stop();
+            setState(() => scrollbarMove = true);
+          },
           onPointerUp: (_) => setState(() => scrollbarMove = false),
           onPointerMove: (event) {
             if (event.buttons == 0) return;
