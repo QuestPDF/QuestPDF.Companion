@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:questpdf_companion/areas/application/models/application_notify_command.dart';
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
 import 'package:questpdf_companion/areas/document_hierarchy/models/document_structure.dart';
@@ -13,6 +14,7 @@ import 'package:questpdf_companion/areas/generic_exception/generic_exception_vie
 import 'areas/application/models/application_supported_api_response.dart';
 import 'areas/document_hierarchy/models/page_snapshot_index.dart';
 import 'areas/document_hierarchy/state/document_layout_error_provider.dart';
+import 'areas/document_preview/models/page_snapshot_rendered.dart';
 import 'areas/document_preview/models/update_page_snapshots_command.dart';
 import 'areas/document_preview/state/document_viewer_state_provider.dart';
 import 'areas/generic_exception/models/show_generic_exception_command.dart';
@@ -23,6 +25,7 @@ final communicationServiceInstance = CommunicationService();
 
 class CommunicationService {
   static const _maxRequestBodyBytes = 128 * 1024 * 1024;
+  static const _parseInIsolateThresholdBytes = 256 * 1024;
 
   DateTime? _lastCommunication;
 
@@ -138,6 +141,20 @@ class CommunicationService {
     return builder.takeBytes();
   }
 
+  Future<T> _parseBody<T>(Uint8List body, T Function(Uint8List) parser) {
+    if (body.length < _parseInIsolateThresholdBytes) return Future.value(parser(body));
+
+    // large payloads are parsed in a separate isolate to keep the UI responsive
+    // and to avoid delaying the connection heartbeat
+    return compute(parser, body);
+  }
+
+  static DocumentStructure _parseDocumentStructure(Uint8List body) =>
+      DocumentStructure.fromJson(jsonDecode(utf8.decode(body)));
+
+  static List<PageSnapshotRendered> _parseRenderedPages(Uint8List body) =>
+      UpdatePageSnapshotsCommand.fromJson(jsonDecode(utf8.decode(body))).pages;
+
   Future<void> _handlePingRequest(HttpRequest request) async {
     request.response.statusCode = HttpStatus.ok;
   }
@@ -163,18 +180,16 @@ class CommunicationService {
 
   Future<void> _handlePreviewUpdate(HttpRequest request) async {
     final body = await _readRequestBody(request);
-    final documentStructure = DocumentStructure.fromJson(jsonDecode(utf8.decode(body)));
+    final documentStructure = await _parseBody(body, _parseDocumentStructure);
 
-    Future.microtask(() {
-      documentPreviewImageCacheStateInstance.updateDocumentStructure(documentStructure.pages);
-      documentHierarchyProviderInstance.setHierarchy(documentStructure.hierarchy);
-      documentHierarchySearchStateInstance.reset();
-      documentLayoutErrorProviderInstance.update();
+    documentPreviewImageCacheStateInstance.updateDocumentStructure(documentStructure.pages);
+    documentHierarchyProviderInstance.setHierarchy(documentStructure.hierarchy);
+    documentHierarchySearchStateInstance.reset();
+    documentLayoutErrorProviderInstance.update();
 
-      applicationStateProviderInstance.changeMode(ApplicationMode.documentPreview);
-      applicationStateProviderInstance.checkIfDisplayComplexDocumentWarningBasedOnJsonLength(body.length);
-      applicationStateProviderInstance.setDocumentAsHotReloaded(documentStructure.isDocumentHotReloaded);
-    });
+    applicationStateProviderInstance.changeMode(ApplicationMode.documentPreview);
+    applicationStateProviderInstance.checkIfDisplayComplexDocumentWarningBasedOnJsonLength(body.length);
+    applicationStateProviderInstance.setDocumentAsHotReloaded(documentStructure.isDocumentHotReloaded);
 
     request.response.statusCode = HttpStatus.ok;
   }
@@ -197,7 +212,7 @@ class CommunicationService {
 
   Future<void> _handleProvideRenderedImages(HttpRequest request) async {
     final body = await _readRequestBody(request);
-    final renderedPages = UpdatePageSnapshotsCommand.fromJson(jsonDecode(utf8.decode(body))).pages;
+    final renderedPages = await _parseBody(body, _parseRenderedPages);
 
     await documentPreviewImageCacheStateInstance.addImages(renderedPages);
 
