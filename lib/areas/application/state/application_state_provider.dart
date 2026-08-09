@@ -64,7 +64,8 @@ class ApplicationStateProvider extends ChangeNotifier {
   }
 
   static int sanitizePortNumber(String portText) {
-    return int.tryParse(portText)?.clamp(0, 65535) ?? communicationServiceDefaultPort;
+    return int.tryParse(portText)?.clamp(communicationServiceMinPort, communicationServiceMaxPort) ??
+        communicationServiceDefaultPort;
   }
 
   Future changeCommunicationPort(int newPort) async {

@@ -21,6 +21,11 @@ import 'areas/generic_exception/models/show_generic_exception_command.dart';
 
 const communicationServiceDefaultPort = 12500;
 
+// port 0 makes the operating system pick a random free port that the library cannot discover,
+// and ports below 1024 require elevated privileges on macOS and Linux
+const communicationServiceMinPort = 1024;
+const communicationServiceMaxPort = 65535;
+
 final communicationServiceInstance = CommunicationService();
 
 class CommunicationService {
