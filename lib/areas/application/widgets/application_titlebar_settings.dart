@@ -221,11 +221,11 @@ class _PortSettingSectionState extends ConsumerState<_PortSettingSection> {
 
     switch (status) {
       case CommunicationStatus.starting:
-        return 'Changing port';
+        return 'Starting the connection';
       case CommunicationStatus.active:
         return 'Active and listening';
       case CommunicationStatus.error:
-        return 'The port may already be in use. Please try a different one';
+        return 'The port may already be in use. Please retry or pick a different one';
     }
   }
 
