@@ -19,7 +19,6 @@ class DocumentPreviewImageCacheState extends ChangeNotifier {
   Map<String, ui.Image> images = {};
 
   List<String> neededImages = [];
-  Set<String> requestedImages = {};
 
   void updateDocumentStructure(List<DocumentStructurePageSize> newPages) {
     refreshId++;
@@ -43,7 +42,7 @@ class DocumentPreviewImageCacheState extends ChangeNotifier {
     final imagesToRequest = neededImages
         .where((element) => isImagesCacheInvalidated || !images.keys.contains(element))
         .toList();
-    imagesToRequest.forEach(requestedImages.add);
+
     neededImages.clear();
 
     return imagesToRequest.map((e) {
