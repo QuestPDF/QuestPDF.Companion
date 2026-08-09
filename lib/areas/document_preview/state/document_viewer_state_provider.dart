@@ -51,7 +51,7 @@ class DocumentPreviewImageCacheState extends ChangeNotifier {
     }).toList();
   }
 
-  void addImages(List<PageSnapshotRendered> imagesToAdd) async {
+  Future<void> addImages(List<PageSnapshotRendered> imagesToAdd) async {
     if (isImagesCacheInvalidated) {
       final imagesToClear = images.values.toList();
       images.clear();

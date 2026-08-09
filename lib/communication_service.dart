@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:questpdf_companion/areas/application/models/application_notify_command.dart';
 import 'package:questpdf_companion/areas/application/state/application_state_provider.dart';
@@ -21,6 +22,8 @@ const communicationServiceDefaultPort = 12500;
 final communicationServiceInstance = CommunicationService();
 
 class CommunicationService {
+  static const _maxRequestBodyBytes = 128 * 1024 * 1024;
+
   DateTime? _lastCommunication;
 
   HttpServer? server;
@@ -44,26 +47,7 @@ class CommunicationService {
     applicationStateProviderInstance.changeCommunicationStatus(CommunicationStatus.active);
 
     await for (HttpRequest request in server!) {
-      if (request.uri.path == '/ping' && request.method == 'GET') _handlePingRequest(request);
-
-      if (request.uri.path == '/version' && request.method == 'GET') _handleVersionRequest(request);
-
-      // API versions 2 and 3 are nearly identical: version 3 introduced new license type (evaluation),
-      // this change requires new API version to avoid breaking changes in newer library versions,
-      // but implementation can be backwards compatible, so both versions are handled in the same way.
-      for (var i in [2, 3]) {
-        if (request.uri.path == '/v$i/notify' && request.method == 'POST') _handleNotifyRequest(request);
-
-        if (request.uri.path == '/v$i/documentPreview/update' && request.method == 'POST') _handlePreviewUpdate(request);
-
-        if (request.uri.path == '/v$i/documentPreview/getRenderingRequests' && request.method == 'GET')
-          _handleGetRenderingRequests(request);
-
-        if (request.uri.path == '/v$i/documentPreview/provideRenderedImages' && request.method == 'POST')
-          _handleProvideRenderedImages(request);
-
-        if (request.uri.path == '/v$i/genericException/show' && request.method == 'POST') _handleGenericException(request);
-      }
+      _handleRequest(request);
     }
   }
 
@@ -81,38 +65,105 @@ class CommunicationService {
     applicationStateProviderInstance.changeMode(ApplicationMode.welcomeScreen);
   }
 
-  void _handlePingRequest(HttpRequest request) {
-    request.response
-      ..statusCode = HttpStatus.ok
-      ..close();
+  Future<void> _handleRequest(HttpRequest request) async {
+    try {
+      final handler = _findHandler(request);
+
+      if (handler == null) {
+        request.response.statusCode = HttpStatus.notFound;
+        return;
+      }
+
+      await handler(request);
+    } on FormatException {
+      _tryToSetResponseStatusCode(request, HttpStatus.badRequest);
+    } on TypeError {
+      _tryToSetResponseStatusCode(request, HttpStatus.badRequest);
+    } catch (e) {
+      _tryToSetResponseStatusCode(request, HttpStatus.internalServerError);
+    } finally {
+      try {
+        await request.response.close();
+      } catch (e) {
+        // the connection is already closed or broken
+      }
+    }
+  }
+
+  void _tryToSetResponseStatusCode(HttpRequest request, int statusCode) {
+    try {
+      request.response.statusCode = statusCode;
+    } catch (e) {
+      // headers were already sent; the status code cannot be changed anymore
+    }
+  }
+
+  Future<void> Function(HttpRequest)? _findHandler(HttpRequest request) {
+    final path = request.uri.path;
+    final method = request.method;
+
+    if (path == '/ping' && method == 'GET') return _handlePingRequest;
+
+    if (path == '/version' && method == 'GET') return _handleVersionRequest;
+
+    // API versions 2 and 3 are nearly identical: version 3 introduced new license type (evaluation),
+    // this change requires new API version to avoid breaking changes in newer library versions,
+    // but implementation can be backwards compatible, so both versions are handled in the same way.
+    for (var i in [2, 3]) {
+      if (path == '/v$i/notify' && method == 'POST') return _handleNotifyRequest;
+
+      if (path == '/v$i/documentPreview/update' && method == 'POST') return _handlePreviewUpdate;
+
+      if (path == '/v$i/documentPreview/getRenderingRequests' && method == 'GET') return _handleGetRenderingRequests;
+
+      if (path == '/v$i/documentPreview/provideRenderedImages' && method == 'POST') return _handleProvideRenderedImages;
+
+      if (path == '/v$i/genericException/show' && method == 'POST') return _handleGenericException;
+    }
+
+    return null;
+  }
+
+  Future<Uint8List> _readRequestBody(HttpRequest request) async {
+    final builder = BytesBuilder(copy: false);
+
+    await for (final chunk in request) {
+      builder.add(chunk);
+
+      if (builder.length > _maxRequestBodyBytes) {
+        throw const FormatException('The request body exceeds the maximum supported size');
+      }
+    }
+
+    return builder.takeBytes();
+  }
+
+  Future<void> _handlePingRequest(HttpRequest request) async {
+    request.response.statusCode = HttpStatus.ok;
   }
 
   Future<void> _handleNotifyRequest(HttpRequest request) async {
     _lastCommunication = DateTime.now();
 
-    final content = await utf8.decoder.bind(request).join();
-    final notifyCommand = ApplicationNotifyCommand.fromJson(jsonDecode(content));
+    final body = await _readRequestBody(request);
+    final notifyCommand = ApplicationNotifyCommand.fromJson(jsonDecode(utf8.decode(body)));
 
     applicationStateProviderInstance.setCurrentLicense(notifyCommand.license);
 
-    request.response
-      ..statusCode = HttpStatus.ok
-      ..close();
+    request.response.statusCode = HttpStatus.ok;
   }
 
-  void _handleVersionRequest(HttpRequest request) {
+  Future<void> _handleVersionRequest(HttpRequest request) async {
     final response = ApplicationSupportedApiResponse([2, 3]);
 
     request.response
-      ..headers.contentType = ContentType.text
       ..headers.contentType = ContentType.json
-      ..write(jsonEncode(response.toJson()))
-      ..close();
+      ..write(jsonEncode(response.toJson()));
   }
 
   Future<void> _handlePreviewUpdate(HttpRequest request) async {
-    final content = await utf8.decoder.bind(request).join();
-    final documentStructure = DocumentStructure.fromJson(jsonDecode(content));
+    final body = await _readRequestBody(request);
+    final documentStructure = DocumentStructure.fromJson(jsonDecode(utf8.decode(body)));
 
     Future.microtask(() {
       documentPreviewImageCacheStateInstance.updateDocumentStructure(documentStructure.pages);
@@ -121,16 +172,14 @@ class CommunicationService {
       documentLayoutErrorProviderInstance.update();
 
       applicationStateProviderInstance.changeMode(ApplicationMode.documentPreview);
-      applicationStateProviderInstance.checkIfDisplayComplexDocumentWarningBasedOnJsonLength(content.length);
+      applicationStateProviderInstance.checkIfDisplayComplexDocumentWarningBasedOnJsonLength(body.length);
       applicationStateProviderInstance.setDocumentAsHotReloaded(documentStructure.isDocumentHotReloaded);
     });
 
-    request.response
-      ..statusCode = HttpStatus.ok
-      ..close();
+    request.response.statusCode = HttpStatus.ok;
   }
 
-  void _handleGetRenderingRequests(HttpRequest request) async {
+  Future<void> _handleGetRenderingRequests(HttpRequest request) async {
     List<PageSnapshotIndex> neededImages = [];
 
     for (int i = 0; i < 100; i++) {
@@ -143,31 +192,25 @@ class CommunicationService {
 
     request.response
       ..headers.contentType = ContentType.json
-      ..write(jsonEncode(neededImages))
-      ..close();
+      ..write(jsonEncode(neededImages));
   }
 
   Future<void> _handleProvideRenderedImages(HttpRequest request) async {
-    final content = await utf8.decoder.bind(request).join();
+    final body = await _readRequestBody(request);
+    final renderedPages = UpdatePageSnapshotsCommand.fromJson(jsonDecode(utf8.decode(body))).pages;
 
-    final renderedList = UpdatePageSnapshotsCommand.fromJson(jsonDecode(content)).pages;
+    await documentPreviewImageCacheStateInstance.addImages(renderedPages);
 
-    documentPreviewImageCacheStateInstance.addImages(renderedList);
-
-    request.response
-      ..statusCode = HttpStatus.ok
-      ..close();
+    request.response.statusCode = HttpStatus.ok;
   }
 
   Future<void> _handleGenericException(HttpRequest request) async {
-    final content = await utf8.decoder.bind(request).join();
-    final genericException = ShowGenericExceptionCommand.fromJson(jsonDecode(content));
+    final body = await _readRequestBody(request);
+    final genericException = ShowGenericExceptionCommand.fromJson(jsonDecode(utf8.decode(body)));
 
     applicationStateProviderInstance.changeMode(ApplicationMode.genericException);
     genericExceptionViewStateInstance.setException(genericException);
 
-    request.response
-      ..statusCode = HttpStatus.ok
-      ..close();
+    request.response.statusCode = HttpStatus.ok;
   }
 }
