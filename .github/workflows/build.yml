@@ -37,7 +37,7 @@ jobs:
 
     - name: Install linux dependencies
       if: matrix.runtime.name == 'linux'
-      run: apt-get update && apt-get install -y jq curl xz-utils git ninja-build libgtk-3-dev cmake clang rpm patchelf
+      run: apt-get update && apt-get install -y jq curl xz-utils git ninja-build libgtk-3-dev cmake clang rpm patchelf unzip
 
     - name: Install appdmg
       if: matrix.runtime.name == 'macos'
