@@ -60,7 +60,10 @@ jobs:
       run: flutter pub get
 
     - name: Activate Packaging Tool
-      run: dart pub global activate fastforge
+      shell: bash
+      run: |
+        dart pub global activate fastforge
+        echo "$HOME/.pub-cache/bin" >> "$GITHUB_PATH"
       
     - name: Make windows/msix
       if: matrix.runtime.name == 'windows'
