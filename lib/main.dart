@@ -12,9 +12,9 @@ void main() async {
   await windowManager.setTitleBarStyle(TitleBarStyle.hidden, windowButtonVisibility: false);
   await windowManager.setMinimumSize(const Size(600, 500));
 
-  Future.microtask(() async {
-    await applicationStateProviderInstance.loadDefaultSettings();
+  await applicationStateProviderInstance.loadDefaultSettings();
 
+  Future.microtask(() async {
     final communicationPort = applicationStateProviderInstance.communicationPort;
     await communicationServiceInstance.tryToStartTheServer(communicationPort);
   });
