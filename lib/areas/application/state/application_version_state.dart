@@ -53,12 +53,10 @@ class ApplicationVersion {
   bool isNewerThan(ApplicationVersion? other) {
     if (other == null) return false;
 
-    if (major < other.major) return false;
-    if (major > other.major) return true;
+    if (major != other.major) return major > other.major;
+    if (minor != other.minor) return minor > other.minor;
+    if (path != other.path) return path > other.path;
 
-    if (minor < other.minor) return false;
-    if (minor > other.minor) return true;
-
-    return path > other.path;
+    return false;
   }
 }
