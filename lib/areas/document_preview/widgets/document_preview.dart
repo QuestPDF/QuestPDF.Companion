@@ -50,8 +50,7 @@ class DocumentPreviewState extends State<DocumentPreview> with SingleTickerProvi
 
   double scaleOnGestureStart = 1;
 
-  late final AnimationController flingController = AnimationController.unbounded(vsync: this)
-    ..addListener(handleFlingTick);
+  late final AnimationController flingController;
   Offset flingDirection = Offset.zero;
   double flingLastDistance = 0;
 
@@ -84,8 +83,10 @@ class DocumentPreviewState extends State<DocumentPreview> with SingleTickerProvi
 
   @override
   void initState() {
-    HardwareKeyboard.instance.addHandler(handleKeyInteraction);
     super.initState();
+
+    flingController = AnimationController.unbounded(vsync: this)..addListener(handleFlingTick);
+    HardwareKeyboard.instance.addHandler(handleKeyInteraction);
   }
 
   @override
@@ -608,13 +609,16 @@ class DocumentPreviewState extends State<DocumentPreview> with SingleTickerProvi
       cacheRefreshId = documentPreviewImageCacheStateInstance.refreshId;
 
       initNewDocument();
-      Future(updateNeededImages);
 
-      Future.delayed(const Duration(milliseconds: 50), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+
         setState(() {
           handleTranslateLimits();
           handleScaleLimits();
         });
+
+        updateNeededImages();
       });
     }
 
